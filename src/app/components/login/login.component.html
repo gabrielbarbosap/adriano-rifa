@@ -1,14 +1,13 @@
 <div class="login-container">
-  <div class="login-illustration">
-    <img
-      src="../../../assets/logo-removebg-preview.png"
-      alt="Ilustração do Login"
-    />
-  </div>
   <div class="login-form">
+    <img
+      src="../../../assets/logo.png"
+      alt="Logo Dahora"
+      style="width: 183px; margin: 0 auto 1rem; display: block"
+    />
     <nb-card>
       <nb-card-body>
-        <h2 class="title">LOGIN</h2>
+        <h2 class="title">Bem-vindo</h2>
         <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
           <nb-form-field>
             <input
@@ -28,7 +27,7 @@
             />
           </nb-form-field>
 
-          <button nbButton status="primary" fullWidth>Entrar</button>
+          <button nbButton fullWidth>Entrar</button>
         </form>
       </nb-card-body>
     </nb-card>

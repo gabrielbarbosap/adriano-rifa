@@ -246,6 +246,22 @@ export class SupabaseService {
     );
   }
 
+  buscarDadosPorCapitalizadora(table: any): Observable<any[]> {
+    const sorteiosPromise = this.supabase
+      .from(table)
+      .select("*")
+      .eq("razao_social", localStorage.getItem("capitalizadora"));
+
+    return from(
+      sorteiosPromise.then(({ data, error }) => {
+        if (error) {
+          throw new Error(`Erro ao buscar dados: ${error.message}`);
+        }
+        return data || [];
+      })
+    );
+  }
+
   async insertCapitalizadora(data: any) {
     const { error } = await this.supabase.from("capitalizadoras").insert([
       {
@@ -509,22 +525,11 @@ export class SupabaseService {
     );
   }
 
-  async saveSocio(socio: any) {
-    const { data, error } = await this.supabase
-      .from("influencer_socios")
-      .insert({
-        ...socio,
-        id_influencer: localStorage.getItem("id_influencer"),
-      });
-    if (error) throw error;
-    return data;
-  }
-
   async buscarAdiantamentos() {
     const { data, error } = await this.supabase
       .from("sorteio_adiantamentos")
       .select("*")
-      .eq("id_influencer", localStorage.getItem("id_influencer"));
+      .eq("id_sorteio", localStorage.getItem("edicao"));
     if (error) throw error;
     return data;
   }
@@ -556,6 +561,18 @@ export class SupabaseService {
       .eq("id", id);
     if (error) throw error;
     return data;
+  }
+
+  async deletarSocio(id: number) {
+    const { data, error } = await this.supabase
+      .from("influencer_socios")
+      .delete()
+      .eq("id", id);
+    if (error) {
+      console.error("Erro ao deletar no banco de dados:", error);
+      throw error;
+    }
+    return true;
   }
 
   async inserirTitulosPremiados(titulos: any[]) {
@@ -595,6 +612,57 @@ export class SupabaseService {
       .from("sorteio_titulos_premiados")
       .select("*");
 
+    if (error) throw error;
+    return data;
+  }
+
+  async existeSocio(id: string): Promise<boolean> {
+    const { data, error } = await this.supabase
+      .from("influencer_socios")
+      .select("id")
+      .eq("id", id)
+      .single();
+
+    if (error && error.code !== "PGRST116") {
+      // Se o erro não for de "linha não encontrada", lançamos o erro
+      console.error("Erro ao verificar sócio:", error);
+      throw error;
+    }
+
+    return !!data; // Retorna true se o sócio existir, false caso contrário
+  }
+
+  async updateSocio(socio: any): Promise<void> {
+    const { error } = await this.supabase
+      .from("influencer_socios")
+      .update(socio)
+      .eq("id", socio.id);
+
+    if (error) {
+      console.error("Erro ao atualizar sócio:", error);
+      throw error;
+    }
+  }
+
+  async createSocio(socio: any): Promise<void> {
+    const { error } = await this.supabase.from("influencer_socios").insert({
+      ...socio,
+      id_influencer: localStorage.getItem("id_influencer"),
+    });
+
+    if (error) {
+      console.error("Erro ao criar sócio:", error);
+      throw error;
+    }
+  }
+
+  async saveSocio(socio: any) {
+    const { data, error } = await this.supabase
+      .from("influencer_socios")
+      .insert({
+        ...socio,
+        id_influencer: localStorage.getItem("id_influencer"),
+      });
     if (error) throw error;
     return data;
   }

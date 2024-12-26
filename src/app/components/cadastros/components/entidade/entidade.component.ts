@@ -1,5 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { NbDialogService } from "@nebular/theme";
+import { ErrorReqComponent } from "src/app/components/error-req/error-req.component";
+import { SucessReqComponent } from "src/app/components/sucess-req/sucess-req.component";
 import { CnpjService } from "src/app/service/cnpj-service.service";
 import { SupabaseService } from "src/app/service/supabase.service";
 
@@ -15,7 +18,8 @@ export class EntidadeComponent {
   constructor(
     private fb: FormBuilder,
     private supabaseService: SupabaseService,
-    private cnpjService: CnpjService
+    private cnpjService: CnpjService,
+    private dialogService: NbDialogService
   ) {
     this.entidadeForm = this.fb.group({
       cnpj: ["", [Validators.required, Validators.minLength(14)]],
@@ -102,11 +106,24 @@ export class EntidadeComponent {
   // Function to handle form submission
   onSubmit(): void {
     if (this.entidadeForm.valid) {
-      const formData = this.entidadeForm.value;
-      this.supabaseService.insertEntidade(formData, "entidade");
-      console.log("Form Submitted", formData);
+      try {
+        const formData = this.entidadeForm.value;
+        this.supabaseService.insertEntidade(formData, "entidade");
+        console.log("Form Submitted", formData);
+        this.open(true);
+      } catch (error) {
+        this.openError(true);
+      }
     } else {
       this.checkInvalidFields();
     }
+  }
+
+  open(hasBackdrop: boolean) {
+    this.dialogService.open(SucessReqComponent, { hasBackdrop });
+  }
+
+  openError(hasBackdrop: boolean) {
+    this.dialogService.open(ErrorReqComponent, { hasBackdrop });
   }
 }

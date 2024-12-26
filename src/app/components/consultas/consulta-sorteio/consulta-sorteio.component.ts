@@ -49,10 +49,12 @@ export class ConsultaSorteioComponent {
   }
 
   ngOnInit(): void {
-    this.supabase.buscarDados("view_sorteio_influencer").subscribe((it) => {
-      this.sorteios = it;
-      this.aplicarFiltros();
-    });
+    this.supabase
+      .buscarDadosPorCapitalizadora("view_sorteio_influencer")
+      .subscribe((it) => {
+        this.sorteios = it;
+        this.aplicarFiltros();
+      });
     this.supabase.buscarDados("influencer").subscribe((it) => {
       this.influencers = it;
       this.influencersFiltrados = this.influencers;

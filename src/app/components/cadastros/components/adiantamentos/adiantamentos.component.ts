@@ -1,5 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, FormArray, Validators } from "@angular/forms";
+import { NbDialogService } from "@nebular/theme";
+import { ErrorReqComponent } from "src/app/components/error-req/error-req.component";
+import { SucessReqComponent } from "src/app/components/sucess-req/sucess-req.component";
 import { SupabaseService } from "src/app/service/supabase.service";
 
 @Component({
@@ -14,7 +17,8 @@ export class AdiantamentosComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private supabaseService: SupabaseService
+    private supabaseService: SupabaseService,
+    private dialogService: NbDialogService
   ) {
     this.pagamentoForm = this.fb.group({
       pagamentos: this.fb.array([]),
@@ -143,5 +147,13 @@ export class AdiantamentosComponent implements OnInit {
     } else {
       this.pagamentoForm.markAllAsTouched();
     }
+  }
+
+  open(hasBackdrop: boolean) {
+    this.dialogService.open(SucessReqComponent, { hasBackdrop });
+  }
+
+  openError(hasBackdrop: boolean) {
+    this.dialogService.open(ErrorReqComponent, { hasBackdrop });
   }
 }

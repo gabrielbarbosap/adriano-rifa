@@ -1,7 +1,10 @@
 import { Component } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ErrorReqComponent } from "src/app/components/error-req/error-req.component";
+import { SucessReqComponent } from "src/app/components/sucess-req/sucess-req.component";
 import { CnpjService } from "src/app/service/cnpj-service.service";
 import { SupabaseService } from "src/app/service/supabase.service";
+import { NbDialogService } from "@nebular/theme";
 
 @Component({
   selector: "app-cadastro-influencer",
@@ -40,7 +43,8 @@ export class CadastroInfluencerComponent {
   constructor(
     private fb: FormBuilder,
     private cnpjService: CnpjService,
-    private supabaseService: SupabaseService
+    private supabaseService: SupabaseService,
+    private dialogService: NbDialogService
   ) {
     this.cadastroForm = this.fb.group({
       cpf: [
@@ -153,7 +157,9 @@ export class CadastroInfluencerComponent {
   }
 
   preencherFormulario(data: any) {
+    console.log(data);
     this.cadastroForm.patchValue({
+      id: data.id,
       // Dados pessoais
       cpf: data.cpf,
       data_nascimento: data.data_nascimento,
@@ -300,8 +306,10 @@ export class CadastroInfluencerComponent {
 
         const result = await this.supabaseService.editInfluencer(payload);
         console.log("Dados inseridos com sucesso", result);
+        this.open(true);
       } catch (error) {
         console.error("Erro ao inserir dados", error);
+        this.openError(true);
       }
     } else {
       console.log("Campos inválidos: ", this.invalidFields);
@@ -466,16 +474,24 @@ export class CadastroInfluencerComponent {
   }
 
   // Remover um sócio do FormArray
-  removeSocio(index: number) {
-    this.socios.removeAt(index);
+  async removeSocio(index: number, socio: any) {
+    try {
+      console.log(socio.value);
+      const result = await this.supabaseService.deletarSocio(socio.value.id);
+      if (result) {
+        this.socios.removeAt(index); // Só remove do array se a chamada for bem-sucedida
+      }
+    } catch (error) {
+      console.error("Erro ao deletar sócio:", error);
+    }
   }
 
-  // Preencher o FormArray de sócios a partir de dados recebidos
   preencherSocios(sociosData: any[]) {
-    this.socios.clear(); // Limpa o FormArray antes de preencher
+    this.socios.clear();
     sociosData.forEach((socio) => {
       this.socios.push(
         this.fb.group({
+          id: socio.id,
           nome: [socio.nome, Validators.required],
           cpf: [
             socio.cpf,
@@ -499,17 +515,33 @@ export class CadastroInfluencerComponent {
     });
   }
 
-  // Salvar os sócios
   async salvarSocios() {
     const socios = this.socios.value; // Obtém os dados dos sócios do FormArray
+    console.log(socios);
     try {
       for (const socio of socios) {
-        // Salvar cada sócio (implementar lógica específica para o backend)
-        await this.supabaseService.saveSocio(socio);
+        if (socio.id) {
+          if (await this.supabaseService.existeSocio(socio.id)) {
+            await this.supabaseService.updateSocio(socio);
+          }
+        } else {
+          // Cria um novo sócio
+          await this.supabaseService.createSocio(socio);
+        }
       }
-      console.log("Sócios salvos com sucesso!");
+      console.log("Sócios processados com sucesso!");
+      this.open(true); // Abre o diálogo de sucesso
     } catch (error) {
       console.error("Erro ao salvar os sócios:", error);
+      this.openError(true); // Abre o diálogo de erro
     }
+  }
+
+  open(hasBackdrop: boolean) {
+    this.dialogService.open(SucessReqComponent, { hasBackdrop });
+  }
+
+  openError(hasBackdrop: boolean) {
+    this.dialogService.open(ErrorReqComponent, { hasBackdrop });
   }
 }
