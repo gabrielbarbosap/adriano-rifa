@@ -1,0 +1,164 @@
+<div class="card-row">
+  <div class="card-col">
+    <nb-card size="tiny">
+      <nb-card-header
+        >Sorteio
+        <div>
+          <button
+            nbButton
+            class="button-success"
+            routerLink="../cadastros-sorteio"
+          >
+            <nb-icon icon="folder-add-outline"></nb-icon>
+          </button>
+          <button
+            routerLink="../consulta-sorteio"
+            class="btn-actions"
+            nbButton
+            status="warning"
+          >
+            <nb-icon icon="search-outline"></nb-icon>
+          </button>
+        </div>
+      </nb-card-header>
+    </nb-card>
+
+    <nb-card size="tiny">
+      <nb-card-header
+        >Entidade
+        <div>
+          <button
+            routerLink="../cadastros-entidade"
+            nbButton
+            class="button-success"
+          >
+            <nb-icon icon="folder-add-outline"></nb-icon>
+          </button>
+          <button
+            class="btn-actions"
+            nbButton
+            status="warning"
+            routerLink="../consulta-entidade"
+          >
+            <nb-icon icon="search-outline"></nb-icon>
+          </button>
+        </div>
+      </nb-card-header>
+    </nb-card>
+
+    <nb-card size="tiny">
+      <nb-card-header
+        >Usuário
+        <div>
+          <button (click)="clickToDesenv()" nbButton class="button-success">
+            <nb-icon icon="folder-add-outline"></nb-icon>
+          </button>
+          <button
+            class="btn-actions"
+            nbButton
+            status="warning"
+            (click)="clickToDesenv()"
+          >
+            <nb-icon icon="search-outline"></nb-icon>
+          </button>
+        </div>
+      </nb-card-header>
+    </nb-card>
+
+    <nb-card size="tiny">
+      <nb-card-header
+        >Integradora Sistema
+        <div>
+          <button
+            routerLink="../cadastros-integradora-sistema"
+            nbButton
+            class="button-success"
+          >
+            <nb-icon icon="folder-add-outline"></nb-icon>
+          </button>
+          <button
+            class="btn-actions"
+            nbButton
+            status="warning"
+            routerLink="../consulta-integradora-sistema"
+          >
+            <nb-icon icon="search-outline"></nb-icon>
+          </button>
+        </div>
+      </nb-card-header>
+    </nb-card>
+  </div>
+
+  <div class="card-col">
+    <nb-card size="tiny">
+      <nb-card-header
+        >Influencer
+        <div>
+          <button
+            routerLink="../cadastros-influencer"
+            nbButton
+            class="button-success"
+          >
+            <nb-icon icon="folder-add-outline"></nb-icon>
+          </button>
+          <button
+            class="btn-actions"
+            nbButton
+            status="warning"
+            routerLink="../consulta-influencer"
+          >
+            <nb-icon icon="search-outline"></nb-icon>
+          </button>
+        </div>
+      </nb-card-header>
+    </nb-card>
+
+    <nb-card size="tiny">
+      <nb-card-header
+        >Capitalizadora
+        <div>
+          <button
+            routerLink="../cadastros-capitalizadora"
+            nbButton
+            class="button-success"
+          >
+            <nb-icon icon="folder-add-outline"></nb-icon>
+          </button>
+          <button
+            class="btn-actions"
+            nbButton
+            status="warning"
+            routerLink="../consulta-capitalizadora"
+          >
+            <nb-icon icon="search-outline"></nb-icon>
+          </button>
+        </div>
+      </nb-card-header>
+    </nb-card>
+
+    <nb-card size="tiny">
+      <nb-card-header
+        >Integradora PIX
+        <div>
+          <button
+            routerLink="../cadastros-integradora-pix"
+            nbButton
+            class="button-success"
+          >
+            <nb-icon icon="folder-add-outline"></nb-icon>
+          </button>
+          <button
+            class="btn-actions"
+            nbButton
+            status="warning"
+            routerLink="../consulta-integradora-pix"
+          >
+            <nb-icon icon="search-outline"></nb-icon>
+          </button>
+        </div>
+      </nb-card-header>
+    </nb-card>
+  </div>
+</div>
+
+<nb-alert *ngIf="clickDesenv" outline="warning">Em desenvolvimento!</nb-alert>

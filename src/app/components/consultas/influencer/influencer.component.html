@@ -1,0 +1,156 @@
+<nb-layout>
+  <nb-layout-column>
+    <nb-card>
+      <nb-card-header>
+        Consulta de Influencers Cadastrados
+        <button
+          nbButton
+          class="button-success"
+          routerLink="../cadastro-influencer"
+        >
+          <nb-icon icon="folder-add-outline"></nb-icon> Novo Cadastro
+        </button>
+      </nb-card-header>
+      <nb-card-body>
+        <!-- Filtros -->
+        <div class="filters">
+          <form
+            [formGroup]="filtroForm"
+            (ngSubmit)="aplicarFiltros()"
+            class="form-inline"
+          >
+            <div class="filter-row">
+              <div class="form-group col-md-3">
+                <label for="filtroCpf">CPF</label>
+                <input
+                  nbInput
+                  fullWidth
+                  placeholder="Filtrar por CPF"
+                  formControlName="filtroCpf"
+                />
+              </div>
+              <div class="form-group col-md-3">
+                <label for="filtroUf">UF</label>
+                <input
+                  nbInput
+                  fullWidth
+                  placeholder="Filtrar por UF"
+                  formControlName="filtroUf"
+                />
+              </div>
+              <div class="form-group col-md-3">
+                <label for="filtroCidade">Cidade</label>
+                <input
+                  nbInput
+                  fullWidth
+                  placeholder="Filtrar por Cidade"
+                  formControlName="filtroCidade"
+                />
+              </div>
+              <div class="form-group col-md-3">
+                <label for="filtroAtivo">Status</label>
+                <nb-select
+                  fullWidth
+                  placeholder="Filtrar por Status"
+                  formControlName="filtroAtivo"
+                >
+                  <nb-option [value]="true">Ativo</nb-option>
+                  <nb-option [value]="false">Inativo</nb-option>
+                </nb-select>
+              </div>
+              <div class="form-group col-md-3">
+                <label for="filtroMesAniversario">Mês de Aniversário</label>
+                <nb-select
+                  fullWidth
+                  placeholder="Selecione o Mês"
+                  formControlName="filtroMesAniversario"
+                >
+                  <nb-option *ngFor="let mes of meses" [value]="mes.numero">
+                    {{ mes.nome }}
+                  </nb-option>
+                </nb-select>
+              </div>
+            </div>
+
+            <!-- Botões de Aplicar Filtros e Limpar -->
+            <div class="filter-actions">
+              <button nbButton status="primary" size="small" type="submit">
+                Aplicar Filtros
+              </button>
+              <button
+                nbButton
+                status="warning"
+                size="small"
+                type="button"
+                (click)="limparFiltros()"
+              >
+                Limpar Filtros
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Tabela de Resultados -->
+        <div class="table-container">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>CPF</th>
+                <th>Nome Completo</th>
+                <th>Data de Nascimento</th>
+                <th>Contato</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="influencersPaginados.length; else noResults">
+              <tr
+                *ngFor="let influencer of influencersPaginados; let i = index"
+              >
+                <td>{{ influencer.cnpj }}</td>
+                <td>{{ influencer.nome_completo }}</td>
+                <td>{{ influencer.data_nascimento | date : "dd/MM/yyyy" }}</td>
+                <td>{{ influencer.fone_movel }}</td>
+                <td>
+                  <button
+                    nbButton
+                    status="info"
+                    (click)="editarInfluencer(influencer.id)"
+                  >
+                    <nb-icon icon="edit-2-outline"></nb-icon>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <ng-template #noResults>
+          <div class="no-results">
+            <p>Nenhum influencer encontrado.</p>
+          </div>
+        </ng-template>
+
+        <!-- Paginação -->
+        <div class="pagination">
+          <button
+            nbButton
+            status="primary"
+            (click)="paginaAnterior()"
+            [disabled]="paginaAtual === 1"
+          >
+            Anterior
+          </button>
+          <span>Página {{ paginaAtual }} de {{ totalPaginas }}</span>
+          <button
+            nbButton
+            status="primary"
+            (click)="proximaPagina()"
+            [disabled]="paginaAtual === totalPaginas"
+          >
+            Próxima
+          </button>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </nb-layout-column>
+</nb-layout>

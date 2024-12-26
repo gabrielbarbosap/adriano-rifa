@@ -1,0 +1,10 @@
+nb-layout-header {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+}
+
+nb-layout-header nav {
+  box-shadow: none !important;
+}

@@ -1,0 +1,68 @@
+<nb-card>
+  <nb-card-header
+    >Consulta de Ganhadores Cadastrados
+    <button nbButton class="button-success" (click)="cadastroSorteado()">
+      <nb-icon icon="folder-add-outline"></nb-icon></button
+  ></nb-card-header>
+  <nb-card-body>
+    <!-- Tabela de Resultados -->
+    <div class="table-container">
+      <table class="custom-table" *ngIf="sorteios.length > 0">
+        <thead>
+          <tr>
+            <th>Número do Título</th>
+            <th>Valor Líquido</th>
+            <th>Nome Completo</th>
+            <!-- Nova coluna para o influencer -->
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let sorteio of sorteiosPaginados; let i = index">
+            <td>{{ sorteio.numero_titulo }}</td>
+            <td>{{ sorteio.valor_liquido }}</td>
+            <td>{{ sorteio.nome_completo }}</td>
+            <td>
+              <button (click)="editarSorteio(sorteio.id)" nbButton>
+                <nb-icon icon="edit-2-outline"></nb-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="sorteios.length === 0">
+        <h2>Nenhum Ganhador cadastrado para este sorteio.</h2>
+      </div>
+    </div>
+
+    <!-- Paginação -->
+    <div class="pagination" *ngIf="sorteios.length > 0">
+      <button
+        nbButton
+        status="primary"
+        (click)="paginaAnterior()"
+        [disabled]="paginaAtual === 1"
+      >
+        Anterior
+      </button>
+      <span>Página {{ paginaAtual }} de {{ totalPaginas }}</span>
+      <button
+        nbButton
+        status="primary"
+        (click)="proximaPagina()"
+        [disabled]="paginaAtual === totalPaginas"
+      >
+        Próxima
+      </button>
+    </div>
+  </nb-card-body>
+</nb-card>
+
+<div
+  [nbSpinner]="sorteios.length === 0"
+  nbSpinnerStatus="danger"
+  *ngIf="sorteios.length === 0"
+  nbSpinnerSize="giant"
+  class="spinner"
+></div>

@@ -1,0 +1,47 @@
+:host {
+  display: block;
+}
+
+.card-row {
+  display: flex;
+  margin: 0 -0.5rem;
+}
+
+.card-col {
+  flex: 1 0 calc(50% - 1rem);
+  margin: 0 0.5rem;
+}
+
+nb-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+}
+
+nb-card {
+  min-width: 18rem;
+  height: 4.5rem;
+}
+
+.button-success {
+  background-color: #3366ff !important;
+  color: aliceblue !important;
+}
+
+.btn-actions {
+  margin-left: 0.5rem;
+}
+
+::ng-deep nb-list-item {
+  display: flex !important;
+  justify-content: space-between !important;
+}
+
+::ng-deep nb-alert {
+  width: 20rem;
+  float: right;
+  right: 2rem;
+  position: absolute !important;
+  top: 5rem;
+}

@@ -1,0 +1,150 @@
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+h4 {
+  margin-top: 24px;
+  margin-bottom: 12px;
+  font-size: 1.2rem;
+  color: #3a3a3a;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.form-group ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.form-group li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.form-group li button {
+  margin-left: 10px;
+}
+
+[nbInput].shape-rectangle {
+  margin-bottom: 1rem;
+}
+
+.button-success {
+  background-color: #38b53f !important;
+  color: aliceblue !important;
+}
+
+::ng-deep
+  nb-layout
+  .layout
+  .layout-container
+  .content
+  .columns
+  nb-layout-column {
+  padding: 18px !important;
+}
+
+.btn-wd {
+  width: 10rem;
+  margin-top: 1rem;
+}
+
+ul {
+  border-bottom: solid 1px #b9d5ff;
+  margin-bottom: 2rem;
+}
+
+.em-construcao {
+  text-align: center;
+  padding: 2rem;
+  nb-icon {
+    font-size: 2rem;
+  }
+
+  h3 {
+    color: #818181;
+  }
+}
+
+/* Estilo específico para a seção de documentos */
+.form-array-container {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  margin-bottom: 20px;
+}
+
+.form-array-container h4 {
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #3a3a3a;
+}
+
+.form-array-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.form-array-item input[type="file"] {
+  flex: 1;
+}
+
+.form-array-item input[type="text"] {
+  flex: 2;
+}
+
+.form-array-item button {
+  background-color: #ff4d4f;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.form-array-item button:hover {
+  background-color: #d9363e;
+}
+
+button.add-document {
+  display: inline-block;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button.add-document:hover {
+  background-color: #0056b3;
+}
+
+nb-card-body.example-items-rows {
+  align-items: center;
+}
+
+nb-checkbox:not(:only-child) {
+  margin-right: 1.5rem;
+}

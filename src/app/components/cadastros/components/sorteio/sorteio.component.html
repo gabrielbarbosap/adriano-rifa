@@ -1,0 +1,681 @@
+<nb-layout>
+  <nb-layout-column>
+    <nb-card>
+      <nb-card-body id="pdfContent">
+        <nb-tabset fullWidth>
+          <nb-tab tabTitle="Sorteio">
+            <form
+              [nbSpinner]="isEdit"
+              nbSpinnerStatus="danger"
+              nbSpinnerSize="giant"
+              class="spinner"
+              [formGroup]="cadastroForm"
+              (ngSubmit)="onSubmit()"
+            >
+              <!-- Exibe lista de campos inválidos no topo -->
+              <div *ngIf="invalidFields.length > 0">
+                <p class="text-danger">
+                  Campos inválidos: {{ invalidFields.join(", ") }}
+                </p>
+              </div>
+
+              <!-- Informações do Sorteio -->
+              <h4>Informações do Sorteio</h4>
+              <div class="form-row">
+                <div class="form-group col-md-3">
+                  <label for="edicao">Edição</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Edição"
+                    formControlName="edicao"
+                    maxlength="3"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('edicao')?.invalid &&
+                      cadastroForm.get('edicao')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Edição é obrigatória e deve ter no máximo 3
+                      dígitos.</small
+                    >
+                  </div>
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="data_sorteio">Data do Sorteio</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    type="date"
+                    formControlName="data_sorteio"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('data_sorteio')?.invalid &&
+                      cadastroForm.get('data_sorteio')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Data do sorteio é obrigatória.</small
+                    >
+                  </div>
+                </div>
+
+                <div class="form-group col-md-3">
+                  <label for="data_real">Data Real do Sorteio</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    type="date"
+                    formControlName="data_real"
+                  />
+                </div>
+
+                <div class="form-group col-md-3">
+                  <label for="id_sistema">Integradora Sistema</label>
+                  <nb-select
+                    fullWidth
+                    placeholder="Integradora Sistema"
+                    formControlName="id_sistema"
+                  >
+                    <nb-option
+                      *ngFor="let it of integradoraSistema"
+                      value="{{ it.id }}"
+                      >{{ it.razao_social }}</nb-option
+                    >
+                  </nb-select>
+                  <div
+                    *ngIf="
+                      cadastroForm.get('serie')?.invalid &&
+                      cadastroForm.get('serie')?.touched
+                    "
+                  >
+                    <small class="text-danger">Série é obrigatória.</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="nome_processo">Nome do Processo</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Nome do Processo"
+                    formControlName="nome_processo"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('nome_processo')?.invalid &&
+                      cadastroForm.get('nome_processo')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Nome do processo é obrigatório.</small
+                    >
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="processo_susepe">Processo Susepe</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Processo Susepe"
+                    formControlName="processo_susepe"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('processo_susepe')?.invalid &&
+                      cadastroForm.get('processo_susepe')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Processo Susepe é obrigatório.</small
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="premio_principal">Prêmio Principal</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Prêmio Principal"
+                    formControlName="premio_principal"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('premio_principal')?.invalid &&
+                      cadastroForm.get('premio_principal')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Prêmio principal é obrigatório.</small
+                    >
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="id_influencer">Influencer</label>
+                  <nb-select
+                    fullWidth
+                    placeholder="Selecione o influencer"
+                    formControlName="id_influencer"
+                  >
+                    <nb-option value="1">Felipe Neto</nb-option>
+                    <nb-option value="3">Petter Jordan</nb-option>
+                    <nb-option value="4">Cristiano Ronaldo</nb-option>
+                  </nb-select>
+                </div>
+              </div>
+
+              <!-- Informações de Venda -->
+              <h4>Informações de Venda</h4>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label for="valor_venda_titulo"
+                    >Valor de Venda do Título</label
+                  >
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Valor de Venda"
+                    formControlName="valor_venda_titulo"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('valor_venda_titulo')?.invalid &&
+                      cadastroForm.get('valor_venda_titulo')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Valor de venda do título é obrigatório.</small
+                    >
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="serie">Série</label>
+                  <nb-select
+                    fullWidth
+                    placeholder="Selecione a serie"
+                    formControlName="serie"
+                  >
+                    <nb-option value="1-100.000">R$1 - 100.000</nb-option>
+                    <nb-option value="2000-3000">R$1 - 500.000</nb-option>
+                    <nb-option value="1-1.000.000">R$1 - 1.000.000</nb-option>
+                    <nb-option value="1-1.000.000">R$1 - 10.000.000</nb-option>
+                  </nb-select>
+                  <div
+                    *ngIf="
+                      cadastroForm.get('serie')?.invalid &&
+                      cadastroForm.get('serie')?.touched
+                    "
+                  >
+                    <small class="text-danger">Série é obrigatória.</small>
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="data_inicio_vendas"
+                    >Data de Início de Vendas</label
+                  >
+                  <input
+                    nbInput
+                    fullWidth
+                    type="date"
+                    formControlName="data_inicio_vendas"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('data_inicio_vendas')?.invalid &&
+                      cadastroForm.get('data_inicio_vendas')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Data de início de vendas é obrigatória.</small
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label for="tipo_sorteio">Tipo do Sorteio</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Tipo do Sorteio"
+                    formControlName="tipo_sorteio"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('tipo_sorteio')?.invalid &&
+                      cadastroForm.get('tipo_sorteio')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Tipo do sorteio é obrigatório.</small
+                    >
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="venda_minima">Venda Mínima</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Venda Mínima"
+                    formControlName="venda_minima"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('venda_minima')?.invalid &&
+                      cadastroForm.get('venda_minima')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Venda mínima é obrigatória.</small
+                    >
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="cota_sorteio">Cota do Sorteio</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Cota do Sorteio"
+                    formControlName="cota_sorteio"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('cota_sorteio')?.invalid &&
+                      cadastroForm.get('cota_sorteio')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Cota do sorteio é obrigatória.</small
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label for="cota_resgate">Cota Resgate</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Cota resgate"
+                    formControlName="cota_resgate"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('cota_resgate')?.invalid &&
+                      cadastroForm.get('cota_resgate')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Cota REsgate é obrigatório.</small
+                    >
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="cota_resgate">Cota Carregamento</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Cota Carregamento"
+                    formControlName="cota_resgate"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('cota_resgate')?.invalid &&
+                      cadastroForm.get('cota_resgate')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Cota Carregamento é obrigatória.</small
+                    >
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="capital_minimo">Capital Mínimo</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Capital Mínimo"
+                    formControlName="capital_minimo"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('capital_minimo')?.invalid &&
+                      cadastroForm.get('capital_minimo')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Capital Mínimo é obrigatória.</small
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- Informações de Pagamento -->
+              <h4>Informações de Pagamento</h4>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="data_carregamento">Período de Carregamento</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    type="date"
+                    formControlName="data_carregamento"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('data_carregamento')?.invalid &&
+                      cadastroForm.get('data_carregamento')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Período de carregamento é obrigatório.</small
+                    >
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="data_resgate">Período de Resgate</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    type="date"
+                    placeholder="Período de Resgate"
+                    formControlName="data_resgate"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('data_resgate')?.invalid &&
+                      cadastroForm.get('data_resgate')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Período de resgate é obrigatório.</small
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label for="premiacao_bruta">Premiação Bruta</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Premiação Bruta"
+                    formControlName="premiacao_bruta"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('premiacao_bruta')?.invalid &&
+                      cadastroForm.get('premiacao_bruta')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Premiação bruta é obrigatória.</small
+                    >
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="id_banco">Integradora PIX</label>
+                  <nb-select
+                    fullWidth
+                    placeholder="Selecione a integradora"
+                    formControlName="id_banco"
+                  >
+                    <nb-option
+                      *ngFor="let banco of integradoras"
+                      value="{{ banco.id }}"
+                      >{{ banco.razao_social }}</nb-option
+                    >
+                  </nb-select>
+                  <div
+                    *ngIf="
+                      cadastroForm.get('id_banco')?.invalid &&
+                      cadastroForm.get('id_banco')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Integradora PIX é obrigatória.</small
+                    >
+                  </div>
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label for="obs_integradora">Obs Integradora</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Obs Integradora"
+                    formControlName="obs_integradora"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('obs_integradora')?.invalid &&
+                      cadastroForm.get('obs_integradora')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Obs Integradora é obrigatória.</small
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- Informações da Integradora e Sistema -->
+              <!-- <h4>Integradora e Sistema</h4>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="id_banco">Integradora</label>
+                  <nb-select
+                    fullWidth
+                    placeholder="Selecione a Integradora"
+                    formControlName="id_banco"
+                  >
+                    <nb-option value="1">Itau</nb-option>
+                    <nb-option value="2">Banco Do Brasil</nb-option>
+                    <nb-option value="3">Santander</nb-option>
+                  </nb-select>
+                  <div
+                    *ngIf="
+                      cadastroForm.get('id_banco')?.invalid &&
+                      cadastroForm.get('id_banco')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Integradora é obrigatória.</small
+                    >
+                  </div>
+                </div>
+              </div> -->
+
+              <!-- Informações da Entidade e Produto -->
+              <h4>Entidade e Produto</h4>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label for="id_entidade">Entidade</label>
+                  <nb-select
+                    fullWidth
+                    placeholder="Selecione a Entidade"
+                    formControlName="id_entidade"
+                  >
+                    <nb-option
+                      *ngFor="let entidade of entidades"
+                      value="{{ entidade.id }}"
+                      >{{ entidade.razao_social }}</nb-option
+                    >
+                  </nb-select>
+                  <div
+                    *ngIf="
+                      cadastroForm.get('id_entidade')?.invalid &&
+                      cadastroForm.get('id_entidade')?.touched
+                    "
+                  >
+                    <small class="text-danger">Entidade é obrigatória.</small>
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="produto">Produto</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Produto"
+                    formControlName="produto"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('produto')?.invalid &&
+                      cadastroForm.get('produto')?.touched
+                    "
+                  >
+                    <small class="text-danger">Produto é obrigatório.</small>
+                  </div>
+                </div>
+                <!-- <div class="form-group col-md-4">
+                  <label for="distribuidor">Distribuidor</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Distribuidor"
+                    formControlName="distribuidor"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('distribuidor')?.invalid &&
+                      cadastroForm.get('distribuidor')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Distribuidor é obrigatório.</small
+                    >
+                  </div>
+                </div> -->
+              </div>
+
+              <!-- Informações da Capitalizadora -->
+              <h4>Capitalizadora</h4>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="id_capitalizadora">Capitalizadora</label>
+                  <nb-select
+                    fullWidth
+                    placeholder="Selecione a Capitalizadora"
+                    formControlName="id_capitalizadora"
+                  >
+                    <nb-option value="2">Capemisa</nb-option>
+                    <nb-option value="1">Kovr</nb-option>
+                    <nb-option value="3">Aplicap</nb-option>
+                  </nb-select>
+                  <div
+                    *ngIf="
+                      cadastroForm.get('id_capitalizadora')?.invalid &&
+                      cadastroForm.get('id_capitalizadora')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Capitalizadora é obrigatória.</small
+                    >
+                  </div>
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label for="obs_capitalizadora">Obs Capitalizadora</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Obs Capitalizadora"
+                    formControlName="obs_capitalizadora"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('obs_capitalizadora')?.invalid &&
+                      cadastroForm.get('obs_capitalizadora')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Obs Capitalizadora é obrigatória.</small
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- Botões de ação -->
+              <div class="form-actions">
+                <button
+                  nbButton
+                  class="button-success"
+                  type="submit"
+                  [disabled]="!regulamento.valid || !cadastroForm.valid"
+                >
+                  Salvar Dados
+                </button>
+                <button nbButton status="info" (click)="exportPDF()">
+                  Exportar PDF
+                </button>
+              </div>
+            </form>
+          </nb-tab>
+
+          <!-- Outras tabs -->
+          <nb-tab
+            tabTitle="Regulamento"
+            [badgeText]="badgeText"
+            [badgeStatus]="badgeStatus"
+          >
+            <textarea
+              nbInput
+              [formControl]="regulamento"
+              fullWidth
+              fieldSize="large"
+              placeholder="Inserir Regulamento PSTC"
+            ></textarea>
+
+            <!-- Exibe lista de campos inválidos no topo -->
+            <div *ngIf="invalidFields.length > 0">
+              <p class="text-danger">
+                Campos inválidos: {{ invalidFields.join(", ") }}
+              </p>
+            </div>
+          </nb-tab>
+
+          <nb-tab tabTitle="Premiados" [disabled]="!isEditTab">
+            <app-titulos-premiados></app-titulos-premiados>
+          </nb-tab>
+
+          <nb-tab tabTitle="Ganhadores" [disabled]="!isEditTab">
+            <app-sorteado
+              *ngIf="!cadastroSorteado"
+              (clickCadastro)="clickCadastroSorteado()"
+              (editarSorteado)="clickCadastroSorteado()"
+            ></app-sorteado>
+            <app-cadastro-sorteado
+              *ngIf="cadastroSorteado"
+              (clickCadastro)="clickCadastroSorteado()"
+            ></app-cadastro-sorteado>
+          </nb-tab>
+
+          <nb-tab tabTitle="Adiantamentos">
+            <div>
+              <app-adiantamentos></app-adiantamentos>
+            </div>
+          </nb-tab>
+
+          <nb-tab tabTitle="Financeiro">
+            <div class="em-construcao">
+              <h3>Em construção</h3>
+              <nb-icon status="warning" icon="alert-triangle-outline"></nb-icon>
+            </div>
+          </nb-tab>
+        </nb-tabset>
+      </nb-card-body>
+    </nb-card>
+  </nb-layout-column>
+</nb-layout>

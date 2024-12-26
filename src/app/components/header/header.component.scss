@@ -1,0 +1,63 @@
+header {
+  padding: 0 20px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.logo img {
+  height: 50px;
+}
+
+.logo {
+  float: left;
+  position: absolute;
+  left: 2rem;
+}
+
+.user-cap {
+  position: absolute;
+  right: 6rem;
+}
+
+nb-user {
+  position: absolute;
+  right: 2rem;
+  cursor: pointer;
+}
+
+.menu {
+  display: flex;
+  gap: 30px;
+}
+
+.menu-item {
+  text-decoration: none;
+  font-weight: bold;
+  color: #333;
+  font-size: 16px;
+  padding: 10px 15px;
+  transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.menu-item:hover {
+  color: #563d7c;
+}
+
+.active {
+  color: #38b53f;
+  border-bottom: 2px solid #38b53f;
+}
+
+::ng-deep nb-layout-header nav {
+  box-shadow: none !important;
+}

@@ -1,0 +1,71 @@
+.filters {
+  margin-bottom: 20px;
+}
+
+.filter-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.form-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: flex-end;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.custom-table th,
+.custom-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+}
+
+.custom-table th {
+  background-color: #f7f7f7;
+}
+
+.custom-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.button-success {
+  background-color: #3366ff !important;
+  color: aliceblue !important;
+}
+
+nb-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.spinner {
+  height: 20rem;
+  font-size: 4rem;
+  background-color: #edf1f7;
+}

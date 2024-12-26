@@ -1,0 +1,108 @@
+/* Título */
+h4 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.div-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Campos de entrada */
+input[nbInput],
+select[nbInput] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  background-color: #f8f9fa; /* Fundo cinza claro */
+}
+
+input[nbInput]:focus,
+select[nbInput]:focus {
+  border-color: #007bff; /* Azul para o foco */
+  outline: none;
+  box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+/* Radio Buttons */
+.form-group label {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+input[type="radio"] {
+  margin-right: 5px;
+}
+
+/* Botões */
+button {
+  padding: 10px 15px;
+  font-size: 1rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[nbButton][status="success"] {
+  background-color: #38b53f; /* Verde para salvar */
+  color: white;
+}
+
+button[nbButton][status="success"]:hover {
+  background-color: #2e8c32; /* Verde mais escuro no hover */
+}
+
+button[nbButton][status="info"] {
+  background-color: #007bff; /* Azul para ações secundárias */
+  color: white;
+}
+
+button[nbButton][status="info"]:hover {
+  background-color: #0056b3; /* Azul mais escuro no hover */
+}
+
+button[nbButton][status="danger"] {
+  background-color: #ff4d4f; /* Vermelho para remover */
+  color: white;
+}
+
+button[nbButton][status="danger"]:hover {
+  background-color: #d9363e; /* Vermelho mais escuro no hover */
+}
+
+/* Layout */
+.form-array-container {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #f8f9fa; /* Fundo cinza claro */
+  margin-bottom: 20px;
+}
+
+.form-array-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Botões de ação */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 20px;
+}

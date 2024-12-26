@@ -1,0 +1,114 @@
+/* Estilos gerais */
+nb-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.filters {
+  margin-bottom: 20px;
+}
+
+.filter-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.form-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+/* Estilos dos botões de filtro */
+.filter-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.button-success {
+  background-color: #38b53f;
+  color: white;
+  border-radius: 4px;
+}
+
+.button-success:hover {
+  background-color: #2d9b32;
+}
+
+/* Tabela de resultados */
+.table-container {
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  margin-top: 10px;
+}
+
+.custom-table th,
+.custom-table td {
+  padding: 12px;
+  border-bottom: 1px solid #ccc;
+}
+
+.custom-table th {
+  background-color: #f7f7f7;
+  font-weight: bold;
+}
+
+.custom-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.custom-table td {
+  word-break: break-word;
+}
+
+/* Ações da tabela (editar/deletar) */
+.custom-table button {
+  margin-right: 10px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+}
+
+.custom-table button nb-icon {
+  margin-right: 5px;
+}
+
+button[status="danger"] {
+  background-color: #ff4c4c !important;
+  color: white !important;
+}
+
+button[status="danger"]:hover {
+  background-color: #ff1f1f !important;
+}
+
+/* Paginação */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  min-width: 100px;
+  padding: 10px;
+}
+
+.pagination span {
+  font-size: 1rem;
+}

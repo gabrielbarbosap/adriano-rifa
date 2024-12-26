@@ -1,0 +1,77 @@
+<form [formGroup]="titulosPremiadosForm" (ngSubmit)="salvarTitulos()">
+  <h4>Títulos Premiados</h4>
+
+  <div formArrayName="titulos">
+    <div
+      *ngFor="let titulo of titulos.controls; let i = index"
+      [formGroupName]="i"
+      class="form-row"
+    >
+      <div class="item-div">
+        <label for="numeroTitulo">Número do Título</label>
+        <input
+          nbInput
+          fullWidth
+          placeholder="Número do Título"
+          formControlName="numeroTitulo"
+        />
+        <div
+          *ngIf="
+            titulo.get('numeroTitulo')?.invalid &&
+            titulo.get('numeroTitulo')?.touched
+          "
+        >
+          <small class="text-danger">Número do título é obrigatório.</small>
+        </div>
+      </div>
+
+      <div class="item-div">
+        <label for="valorPremiado">Valor Premiado</label>
+        <input
+          nbInput
+          fullWidth
+          placeholder="Valor Premiado"
+          formControlName="valorPremiado"
+        />
+        <div
+          *ngIf="
+            titulo.get('valorPremiado')?.invalid &&
+            titulo.get('valorPremiado')?.touched
+          "
+        >
+          <small class="text-danger">Valor premiado é obrigatório.</small>
+        </div>
+      </div>
+
+      <div class="item-div">
+        <label for="fonte">Fonte Pagadora</label>
+        <input nbInput fullWidth placeholder="Fonte" formControlName="fonte" />
+      </div>
+
+      <div class="item-div">
+        <label>
+          <input type="radio" formControlName="pago" value="sim" />
+          Sim
+        </label>
+        <label class="ml-4">
+          <input type="radio" formControlName="pago" value="nao" />
+          Não
+        </label>
+      </div>
+
+      <div class="">
+        <button nbButton status="danger" (click)="removerTitulo(i)">
+          Remover
+        </button>
+      </div>
+      <div class="divider"></div>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button nbButton status="primary" class="mt-2" (click)="adicionarTitulo()">
+      Adicionar Título
+    </button>
+    <button nbButton status="success" type="submit">Salvar Títulos</button>
+  </div>
+</form>

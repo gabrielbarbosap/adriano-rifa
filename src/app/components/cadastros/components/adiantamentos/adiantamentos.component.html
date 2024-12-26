@@ -1,0 +1,131 @@
+<form [formGroup]="pagamentoForm" (ngSubmit)="salvarAdiantamentos()">
+  <div class="div-total">
+    <h4>Adiantamentos</h4>
+    <span style="font-size: 1rem; font-weight: bold">
+      Saldo: {{ total | currency : "BRL" : "symbol" : "1.2-2" }}
+    </span>
+  </div>
+  <div formArrayName="pagamentos" class="form-array-container">
+    <div
+      *ngFor="let pagamento of pagamentos.controls; let i = index"
+      [formGroupName]="i"
+      class="form-array-item"
+    >
+      <!-- Data -->
+      <div class="form-group col-md-4">
+        <label for="data">Data</label>
+        <input
+          nbInput
+          type="date"
+          formControlName="data"
+          placeholder="Selecione a data"
+          id="data-{{ i }}"
+        />
+        <div
+          *ngIf="
+            pagamento.get('data')?.invalid && pagamento.get('data')?.touched
+          "
+        >
+          <small class="text-danger">A data é obrigatória.</small>
+        </div>
+      </div>
+
+      <!-- Descrição -->
+      <div class="form-group col-md-4">
+        <label for="descricao">Descrição</label>
+        <input
+          nbInput
+          type="text"
+          formControlName="descricao"
+          placeholder="Descrição"
+          id="descricao-{{ i }}"
+        />
+        <div
+          *ngIf="
+            pagamento.get('descricao')?.invalid &&
+            pagamento.get('descricao')?.touched
+          "
+        >
+          <small class="text-danger">A descrição é obrigatória.</small>
+        </div>
+      </div>
+
+      <!-- Valor -->
+      <div class="form-group col-md-4">
+        <label for="valor">Valor</label>
+        <input
+          nbInput
+          type="number"
+          formControlName="valor"
+          placeholder="Valor"
+          id="valor-{{ i }}"
+        />
+        <div
+          *ngIf="
+            pagamento.get('valor')?.invalid && pagamento.get('valor')?.touched
+          "
+        >
+          <small class="text-danger">O valor é obrigatório.</small>
+        </div>
+      </div>
+
+      <!-- Tipo -->
+      <div class="form-group col-md-4">
+        <label for="tipo">Tipo</label>
+        <div class="d-flex align-items-center">
+          <label>
+            <input type="radio" formControlName="tipo" value="recebimento" />
+            Recebimento
+          </label>
+          <label class="ml-4">
+            <input type="radio" formControlName="tipo" value="pagamento" />
+            Pagamento
+          </label>
+        </div>
+        <div
+          *ngIf="
+            pagamento.get('tipo')?.invalid && pagamento.get('tipo')?.touched
+          "
+        >
+          <small class="text-danger">Selecione um tipo.</small>
+        </div>
+      </div>
+
+      <!-- Botão de Remover -->
+      <div class="form-group col-md-4">
+        <button
+          nbButton
+          status="danger"
+          size="small"
+          type="button"
+          (click)="removerAdiantamento(i, pagamento.get('id'))"
+        >
+          Remover
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botão para Adicionar -->
+  <button
+    nbButton
+    status="success"
+    type="button"
+    (click)="adicionarAdiantamento()"
+    class="add-document"
+  >
+    Adicionar Pagamento
+  </button>
+
+  <!-- Botão de Salvar -->
+  <div class="form-actions">
+    <button
+      nbButton
+      class="button-success"
+      type="submit"
+      [disabled]="!pagamentoForm.valid"
+    >
+      Salvar Pagamentos
+    </button>
+  </div>
+</form>

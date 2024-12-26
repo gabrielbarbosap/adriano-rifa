@@ -1,0 +1,361 @@
+<nb-layout>
+  <nb-layout-column>
+    <nb-card>
+      <nb-card-header>Cadastro da Capitalizadora</nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="entidadeForm" (ngSubmit)="onSubmit()">
+          <!-- Exibe lista de campos inválidos no topo -->
+          <div *ngIf="invalidFields.length > 0">
+            <p class="text-danger">
+              Campos inválidos: {{ invalidFields.join(", ") }}
+            </p>
+          </div>
+
+          <!-- Dados da Capitalizadora -->
+          <h4>Dados da Entidade</h4>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="cnpj">CNPJ</label>
+              <input
+                nbInput
+                fullWidth
+                placeholder="CNPJ"
+                formControlName="cnpj"
+                maxlength="14"
+                (blur)="consultaCnpjCapitalizadora()"
+              />
+              <div
+                *ngIf="
+                  entidadeForm.get('cnpj')?.invalid &&
+                  entidadeForm.get('cnpj')?.touched
+                "
+              >
+                <small class="text-danger">CNPJ deve ter 14 dígitos.</small>
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="razao_social">Razão Social</label>
+              <input
+                nbInput
+                fullWidth
+                placeholder="Razão Social"
+                formControlName="razao_social"
+              />
+              <div
+                *ngIf="
+                  entidadeForm.get('razao_social')?.invalid &&
+                  entidadeForm.get('razao_social')?.touched
+                "
+              >
+                <small class="text-danger">Razão social é obrigatória.</small>
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="nome_fantasia">Nome Fantasia</label>
+              <input
+                nbInput
+                fullWidth
+                placeholder="Nome fantasia"
+                formControlName="nome_fantasia"
+              />
+              <div
+                *ngIf="
+                  entidadeForm.get('nome_fantasia')?.invalid &&
+                  entidadeForm.get('nome_fantasia')?.touched
+                "
+              >
+                <small class="text-danger">Email é inválido.</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="fone_fixo">Telefone Fixo</label>
+              <input
+                nbInput
+                fullWidth
+                placeholder="Telefone Fixo"
+                formControlName="fone_fixo"
+              />
+              <div
+                *ngIf="
+                  entidadeForm.get('fone_fixo')?.invalid &&
+                  entidadeForm.get('fone_fixo')?.touched
+                "
+              >
+                <small class="text-danger">Telefone fixo é obrigatório.</small>
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="fone_movel">Celular</label>
+              <input
+                nbInput
+                fullWidth
+                placeholder="Celular"
+                formControlName="fone_movel"
+              />
+              <div
+                *ngIf="
+                  entidadeForm.get('fone_movel')?.invalid &&
+                  entidadeForm.get('fone_movel')?.touched
+                "
+              >
+                <small class="text-danger">Celular é obrigatório.</small>
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="email">Email</label>
+              <input
+                nbInput
+                fullWidth
+                placeholder="Email"
+                formControlName="email"
+              />
+              <div
+                *ngIf="
+                  entidadeForm.get('email')?.invalid &&
+                  entidadeForm.get('email')?.touched
+                "
+              >
+                <small class="text-danger">Email é inválido.</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dados de Contato Comercial -->
+          <h4>Contato Comercial</h4>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="contato">Nome Contato Comercial</label>
+              <input
+                nbInput
+                fullWidth
+                placeholder="Nome Contato Comercial"
+                formControlName="contato"
+              />
+              <div
+                *ngIf="
+                  entidadeForm.get('contato_comercial')?.invalid &&
+                  entidadeForm.get('contato_comercial')?.touched
+                "
+              >
+                <small class="text-danger"
+                  >Contato comercial é obrigatório.</small
+                >
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="email_contato_comercial"
+                >Email Contato Comercial</label
+              >
+              <input
+                nbInput
+                fullWidth
+                placeholder="Email Contato Comercial"
+                formControlName="email_contato_comercial"
+              />
+              <div
+                *ngIf="
+                  entidadeForm.get('email_contato_comercial')?.invalid &&
+                  entidadeForm.get('email_contato_comercial')?.touched
+                "
+              >
+                <small class="text-danger"
+                  >Email do contato comercial é inválido.</small
+                >
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="celular_contato_comercial"
+                >Celular Contato Comercial</label
+              >
+              <input
+                nbInput
+                fullWidth
+                placeholder="Celular Contato Comercial"
+                formControlName="celular_contato_comercial"
+              />
+              <div
+                *ngIf="
+                  entidadeForm.get('celular_contato_comercial')?.invalid &&
+                  entidadeForm.get('celular_contato_comercial')?.touched
+                "
+              >
+                <small class="text-danger"
+                  >Celular do contato comercial é obrigatório.</small
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Endereço da Empresa -->
+          <h4>Endereço da Empresa</h4>
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label for="cep">CEP</label>
+              <input
+                nbInput
+                fullWidth
+                placeholder="CEP"
+                formControlName="cep"
+                maxlength="8"
+              />
+              <div
+                *ngIf="
+                  entidadeForm.get('cep')?.invalid &&
+                  entidadeForm.get('cep')?.touched
+                "
+              >
+                <small class="text-danger">CEP deve ter 8 dígitos.</small>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="endereco">Endereço</label>
+              <input
+                nbInput
+                fullWidth
+                placeholder="Endereço"
+                formControlName="endereco"
+              />
+              <div
+                *ngIf="
+                  entidadeForm.get('endereco')?.invalid &&
+                  entidadeForm.get('endereco')?.touched
+                "
+              >
+                <small class="text-danger">Endereço é obrigatório.</small>
+              </div>
+            </div>
+            <div class="form-group col-md-3">
+              <label for="numero">Número</label>
+              <input
+                nbInput
+                fullWidth
+                placeholder="Número"
+                formControlName="numero"
+              />
+              <div
+                *ngIf="
+                  entidadeForm.get('numero')?.invalid &&
+                  entidadeForm.get('numero')?.touched
+                "
+              >
+                <small class="text-danger">Número é obrigatório.</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label for="complemento">Complemento</label>
+              <input
+                nbInput
+                fullWidth
+                placeholder="Complemento"
+                formControlName="complemento"
+              />
+              <!-- Campo opcional, sem validação de erro -->
+            </div>
+            <div class="form-group col-md-3">
+              <label for="bairro">Bairro</label>
+              <input
+                nbInput
+                fullWidth
+                placeholder="Bairro"
+                formControlName="bairro"
+              />
+              <div
+                *ngIf="
+                  entidadeForm.get('bairro')?.invalid &&
+                  entidadeForm.get('bairro')?.touched
+                "
+              >
+                <small class="text-danger">Bairro é obrigatório.</small>
+              </div>
+            </div>
+            <div class="form-group col-md-3">
+              <label for="cidade">Cidade</label>
+              <input
+                nbInput
+                fullWidth
+                placeholder="Cidade"
+                formControlName="cidade"
+              />
+              <div
+                *ngIf="
+                  entidadeForm.get('cidade')?.invalid &&
+                  entidadeForm.get('cidade')?.touched
+                "
+              >
+                <small class="text-danger">Cidade é obrigatória.</small>
+              </div>
+            </div>
+            <div class="form-group col-md-3">
+              <label for="uf">UF</label>
+              <input
+                nbInput
+                fullWidth
+                placeholder="UF"
+                formControlName="uf"
+                maxlength="2"
+              />
+              <div
+                *ngIf="
+                  entidadeForm.get('uf')?.invalid &&
+                  entidadeForm.get('uf')?.touched
+                "
+              >
+                <small class="text-danger">UF deve ter 2 caracteres.</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dados Adicionais -->
+          <h4>Dados Adicionais</h4>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="comissao">Comissão (%)</label>
+              <input
+                nbInput
+                fullWidth
+                placeholder="Comissão"
+                formControlName="comissao"
+              />
+              <div
+                *ngIf="
+                  entidadeForm.get('comissao')?.invalid &&
+                  entidadeForm.get('comissao')?.touched
+                "
+              >
+                <small class="text-danger">Comissão é obrigatória.</small>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="obs">Observações</label>
+              <textarea
+                nbInput
+                fullWidth
+                placeholder="Observações"
+                formControlName="obs"
+              ></textarea>
+              <!-- Campo opcional, sem validação de erro -->
+            </div>
+          </div>
+
+          <!-- Botão de submissão -->
+          <div class="form-actions">
+            <button
+              nbButton
+              class="button-success"
+              type="submit"
+              [disabled]="!entidadeForm.valid"
+            >
+              Salvar Dados
+            </button>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </nb-layout-column>
+</nb-layout>

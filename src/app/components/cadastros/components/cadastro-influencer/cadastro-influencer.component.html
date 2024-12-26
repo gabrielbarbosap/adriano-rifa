@@ -1,0 +1,902 @@
+<nb-layout>
+  <nb-layout-column>
+    <nb-card>
+      <nb-card-header>Cadastro do Influencer</nb-card-header>
+      <nb-card-body>
+        <nb-tabset fullWidth>
+          <nb-tab tabTitle="Principal">
+            <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()">
+              <!-- Dados Pessoais -->
+              <h4>Dados Pessoais</h4>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label for="cpf">CPF</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="CPF"
+                    formControlName="cpf"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('cpf')?.invalid &&
+                      cadastroForm.get('cpf')?.touched
+                    "
+                  >
+                    <small class="text-danger">CPF deve ter 11 dígitos.</small>
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="data_nascimento">Data de Nascimento</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    type="date"
+                    formControlName="data_nascimento"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('data_nascimento')?.invalid &&
+                      cadastroForm.get('data_nascimento')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Data de nascimento é obrigatória.</small
+                    >
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <nb-checkbox
+                    style="align-items: center; margin-top: 22px"
+                    status="basic"
+                    formControlName="ativo"
+                    >Ativo</nb-checkbox
+                  >
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label for="nome_completo">Nome Completo</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Nome Completo"
+                    formControlName="nome_completo"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('nome_completo')?.invalid &&
+                      cadastroForm.get('nome_completo')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Nome completo é obrigatório.</small
+                    >
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="rg">RG</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="RG"
+                    formControlName="rg"
+                  />
+                  <!-- Campo não obrigatório, sem mensagem de erro -->
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="titulo_eleitor">Título de Eleitor</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Título de Eleitor"
+                    formControlName="titulo_eleitor"
+                  />
+                  <!-- Campo não obrigatório, sem mensagem de erro -->
+                </div>
+              </div>
+
+              <h4>Dados Bancários</h4>
+              <div class="form-row">
+                <div class="form-group col-md-3">
+                  <label for="banco">Banco</label>
+                  <nb-select
+                    fullWidth
+                    placeholder="Selecione o banco"
+                    formControlName="banco"
+                  >
+                    <nb-option
+                      *ngFor="let bancos of bancos"
+                      value="{{ bancos.codigo }}"
+                      >{{ bancos.nome }}</nb-option
+                    >
+                  </nb-select>
+                  <div
+                    *ngIf="
+                      cadastroForm.get('banco')?.invalid &&
+                      cadastroForm.get('banco')?.touched
+                    "
+                  >
+                    <small class="text-danger">Selecione um banco.</small>
+                  </div>
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="agencia">Agência</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Agência"
+                    formControlName="agencia"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('agencia')?.invalid &&
+                      cadastroForm.get('agencia')?.touched
+                    "
+                  >
+                    <small class="text-danger">Agência é obrigatória.</small>
+                  </div>
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="conta">Conta</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="conta"
+                    formControlName="conta"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('conta')?.invalid &&
+                      cadastroForm.get('conta')?.touched
+                    "
+                  >
+                    <small class="text-danger">conta é obrigatório.</small>
+                  </div>
+                </div>
+
+                <div class="form-group col-md-3">
+                  <label for="chave_pix">Chave PIX</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Chave PIX"
+                    formControlName="chave_pix"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('chave_pix')?.invalid &&
+                      cadastroForm.get('chave_pix')?.touched
+                    "
+                  >
+                    <small class="text-danger">Chave PIX é obrigatório.</small>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Dados Cadastrais Pessoais -->
+              <h4>Dados Cadastrais</h4>
+              <div class="form-row">
+                <div class="form-group col-md-3">
+                  <label for="cep">CEP</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="CEP"
+                    formControlName="cep"
+                    maxlength="8"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('cep')?.invalid &&
+                      cadastroForm.get('cep')?.touched
+                    "
+                  >
+                    <small class="text-danger">CEP deve ter 8 dígitos.</small>
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="endereco">Endereço</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Endereço"
+                    formControlName="endereco"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('endereco')?.invalid &&
+                      cadastroForm.get('endereco')?.touched
+                    "
+                  >
+                    <small class="text-danger">Endereço é obrigatório.</small>
+                  </div>
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="numero">Número</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Número"
+                    formControlName="numero"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('numero')?.invalid &&
+                      cadastroForm.get('numero')?.touched
+                    "
+                  >
+                    <small class="text-danger">Número é obrigatório.</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-md-3">
+                  <label for="complemento">Complemento</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Complemento"
+                    formControlName="complemento"
+                  />
+                  <!-- Campo não obrigatório, sem mensagem de erro -->
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="bairro">Bairro</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Bairro"
+                    formControlName="bairro"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('bairro')?.invalid &&
+                      cadastroForm.get('bairro')?.touched
+                    "
+                  >
+                    <small class="text-danger">Bairro é obrigatório.</small>
+                  </div>
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="cidade">Cidade</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Cidade"
+                    formControlName="cidade"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('cidade')?.invalid &&
+                      cadastroForm.get('cidade')?.touched
+                    "
+                  >
+                    <small class="text-danger">Cidade é obrigatória.</small>
+                  </div>
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="uf">UF</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="UF"
+                    formControlName="uf"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('uf')?.invalid &&
+                      cadastroForm.get('uf')?.touched
+                    "
+                  >
+                    <small class="text-danger">UF deve ter 2 caracteres.</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="email">Email</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Email"
+                    formControlName="email"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('email')?.invalid &&
+                      cadastroForm.get('email')?.touched
+                    "
+                  >
+                    <small class="text-danger">Email é inválido.</small>
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="fone_movel">Telefone Móvel</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Telefone Móvel"
+                    formControlName="fone_movel"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('fone_movel')?.invalid &&
+                      cadastroForm.get('fone_movel')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Telefone móvel é obrigatório.</small
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- Dados de Contato -->
+              <h4>Dados de Contato</h4>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label for="contato">Nome do Contato</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Nome do Contato"
+                    formControlName="contato"
+                  />
+                  <!-- Campo não obrigatório, sem mensagem de erro -->
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="telefone_contato">Telefone do Contato</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Telefone do Contato"
+                    formControlName="telefone_contato"
+                  />
+                  <!-- Campo não obrigatório, sem mensagem de erro -->
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="celular_contato">Celular do Contato</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Celular do Contato"
+                    formControlName="celular_contato"
+                  />
+                  <!-- Campo não obrigatório, sem mensagem de erro -->
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <label for="email_contato">Email do Contato</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Email do Contato"
+                    formControlName="email_contato"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('email_contato')?.invalid &&
+                      cadastroForm.get('email_contato')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Email do contato é inválido.</small
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- Dados Cadastrais da Empresa -->
+              <h4>Dados da Empresa</h4>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label for="cnpj">CNPJ</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    (blur)="consultaCnpj()"
+                    placeholder="CNPJ"
+                    formControlName="cnpj"
+                    maxlength="14"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('cnpj')?.invalid &&
+                      cadastroForm.get('cnpj')?.touched
+                    "
+                  >
+                    <small class="text-danger">CNPJ deve ter 14 dígitos.</small>
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="razao_social">Razão Social</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Razão Social"
+                    formControlName="razao_social"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('razao_social')?.invalid &&
+                      cadastroForm.get('razao_social')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Razão social é obrigatória.</small
+                    >
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="nome_fantasia">Nome Fantasia</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Nome Fantasia"
+                    formControlName="nome_fantasia"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('nome_fantasia')?.invalid &&
+                      cadastroForm.get('nome_fantasia')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Nome fantasia é obrigatório.</small
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <h5>Endereço da Empresa</h5>
+              <div class="form-row">
+                <div class="form-group col-md-3">
+                  <label for="cep_empresa">CEP</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="CEP"
+                    formControlName="cep_empresa"
+                    maxlength="8"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('cep_empresa')?.invalid &&
+                      cadastroForm.get('cep_empresa')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >CEP da empresa deve ter 8 dígitos.</small
+                    >
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="endereco_pj">Endereço</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Endereço"
+                    formControlName="endereco_pj"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('endereco_pj')?.invalid &&
+                      cadastroForm.get('endereco_pj')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Endereço da empresa é obrigatório.</small
+                    >
+                  </div>
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="numero_pj">Número</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Número"
+                    formControlName="numero_pj"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('numero_pj')?.invalid &&
+                      cadastroForm.get('numero_pj')?.touched
+                    "
+                  >
+                    <small class="text-danger">Número é obrigatório.</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-md-3">
+                  <label for="complemento_pj">Complemento</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Complemento"
+                    formControlName="complemento_pj"
+                  />
+                  <!-- Campo não obrigatório, sem mensagem de erro -->
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="bairro_pj">Bairro</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Bairro"
+                    formControlName="bairro_pj"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('bairro_pj')?.invalid &&
+                      cadastroForm.get('bairro_pj')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Bairro da empresa é obrigatório.</small
+                    >
+                  </div>
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="cidade_pj">Cidade</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Cidade"
+                    formControlName="cidade_pj"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('cidade_pj')?.invalid &&
+                      cadastroForm.get('cidade_pj')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Cidade da empresa é obrigatória.</small
+                    >
+                  </div>
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="uf_pj">UF</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="UF"
+                    formControlName="uf_pj"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('uf_pj')?.invalid &&
+                      cadastroForm.get('uf_pj')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >UF da empresa deve ter 2 caracteres.</small
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="email_pj">Email da Empresa</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Email da Empresa"
+                    formControlName="email_pj"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('email_pj')?.invalid &&
+                      cadastroForm.get('email_pj')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Email da empresa é inválido.</small
+                    >
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="fone_pj">Telefone da Empresa</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Telefone da Empresa"
+                    formControlName="fone_pj"
+                  />
+                  <!-- Campo não obrigatório, sem mensagem de erro -->
+                </div>
+              </div>
+
+              <!-- Dados Adicionais -->
+              <h4>Dados Adicionais</h4>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="id_capitalizadora">Capitalizadora</label>
+                  <nb-select
+                    fullWidth
+                    placeholder="Selecione a Capitalizadora"
+                    formControlName="id_capitalizadora"
+                  >
+                    <nb-option value="2">Capemisa</nb-option>
+                    <nb-option value="1">Kovr</nb-option>
+                    <nb-option value="3">Aplicap</nb-option>
+                  </nb-select>
+                  <div
+                    *ngIf="
+                      cadastroForm.get('id_capitalizadora')?.invalid &&
+                      cadastroForm.get('id_capitalizadora')?.touched
+                    "
+                  >
+                    <small class="text-danger"
+                      >Selecione a capitalizadora.</small
+                    >
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="comissao">Taxa de Regularidade</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Comissão"
+                    formControlName="comissao"
+                  />
+                  <div
+                    *ngIf="
+                      cadastroForm.get('comissao')?.invalid &&
+                      cadastroForm.get('comissao')?.touched
+                    "
+                  >
+                    <small class="text-danger">Comissão é obrigatória.</small>
+                  </div>
+                </div>
+              </div>
+
+              <h4>Documentos</h4>
+              <div formArrayName="documentos" class="form-array-container">
+                <div
+                  *ngFor="let doc of documentos.controls; let i = index"
+                  [formGroupName]="i"
+                  class="form-array-item"
+                >
+                  <!-- Botão de lupa -->
+                  <div *ngIf="doc.get('isUploaded')?.value; else fileInput">
+                    <nb-icon
+                      status="primary"
+                      icon="search-outline"
+                      style="
+                        font-size: 2rem;
+                        margin-bottom: 1rem;
+                        cursor: pointer;
+                      "
+                      (click)="
+                        openDocumento(
+                          doc.get('arquivo')?.value,
+                          doc.get('descricao')?.value
+                        )
+                      "
+                    ></nb-icon>
+                  </div>
+
+                  <!-- Input de upload -->
+                  <ng-template #fileInput>
+                    <input
+                      nbInput
+                      type="file"
+                      (change)="onFileChange($event, i)"
+                      placeholder="Selecione um arquivo"
+                    />
+                  </ng-template>
+
+                  <!-- Campo de descrição -->
+                  <input
+                    nbInput
+                    placeholder="Descrição do documento"
+                    formControlName="descricao"
+                  />
+                  <button
+                    nbButton
+                    status="danger"
+                    size="small"
+                    type="button"
+                    style="margin-bottom: 1rem"
+                    (click)="removeDocumento(i)"
+                  >
+                    Remover
+                  </button>
+                </div>
+              </div>
+              <button
+                nbButton
+                status="success"
+                type="button"
+                (click)="addDocumento()"
+                class="add-document"
+              >
+                Adicionar Documento
+              </button>
+
+              <!-- Botão de submissão -->
+              <div class="form-actions">
+                <button
+                  nbButton
+                  class="button-success"
+                  type="submit"
+                  [disabled]="!cadastroForm.valid"
+                >
+                  Salvar Dados
+                </button>
+              </div>
+
+              <!-- Exibe lista de campos inválidos no topo -->
+              <div *ngIf="invalidFields.length > 0">
+                <p class="text-danger">
+                  Campos inválidos: {{ invalidFields.join(", ") }}
+                </p>
+              </div>
+            </form>
+          </nb-tab>
+
+          <nb-tab tabTitle="Sócios">
+            <form [formGroup]="cadastroForm">
+              <div formArrayName="socios" class="socios-container">
+                <div
+                  *ngFor="let socio of socios.controls; let i = index"
+                  [formGroupName]="i"
+                  class="socio-item"
+                >
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="nome">Nome</label>
+                      <input
+                        nbInput
+                        fullWidth
+                        placeholder="Nome"
+                        formControlName="nome"
+                      />
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="cpf">CPF/CNPJ</label>
+                      <input
+                        nbInput
+                        fullWidth
+                        placeholder="CPF/CNPJ"
+                        formControlName="cpf"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="data_nascimento">Data de Nascimento</label>
+                      <input
+                        nbInput
+                        type="date"
+                        fullWidth
+                        formControlName="data_nascimento"
+                      />
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="email">Email</label>
+                      <input
+                        nbInput
+                        fullWidth
+                        placeholder="Email"
+                        formControlName="email"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="telefone">Telefone</label>
+                      <input
+                        nbInput
+                        fullWidth
+                        placeholder="Telefone"
+                        formControlName="fone"
+                      />
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="cep">CEP</label>
+                      <input
+                        nbInput
+                        fullWidth
+                        placeholder="CEP"
+                        formControlName="cep"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="endereco">Endereço</label>
+                      <input
+                        nbInput
+                        fullWidth
+                        placeholder="Endereço"
+                        formControlName="endereco"
+                      />
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="complemento">Complemento</label>
+                      <input
+                        nbInput
+                        fullWidth
+                        placeholder="Complemento"
+                        formControlName="complemento"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group col-md-4">
+                      <label for="bairro">Bairro</label>
+                      <input
+                        nbInput
+                        fullWidth
+                        placeholder="Bairro"
+                        formControlName="bairro"
+                      />
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="cidade">Cidade</label>
+                      <input
+                        nbInput
+                        fullWidth
+                        placeholder="Cidade"
+                        formControlName="cidade"
+                      />
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="uf">UF</label>
+                      <input
+                        nbInput
+                        fullWidth
+                        placeholder="UF"
+                        formControlName="uf"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-actions">
+                    <button nbButton status="danger" (click)="removeSocio(i)">
+                      Remover Sócio
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button
+                  nbButton
+                  status="info"
+                  type="button"
+                  (click)="addSocio()"
+                >
+                  Adicionar Sócio
+                </button>
+                <button
+                  nbButton
+                  status="success"
+                  type="button"
+                  (click)="salvarSocios()"
+                >
+                  Salvar Sócios
+                </button>
+              </div>
+            </form>
+          </nb-tab>
+        </nb-tabset>
+      </nb-card-body>
+    </nb-card>
+  </nb-layout-column>
+</nb-layout>

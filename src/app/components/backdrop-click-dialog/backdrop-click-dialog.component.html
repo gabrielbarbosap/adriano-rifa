@@ -1,0 +1,19 @@
+<nb-card>
+  <nb-card-header>{{ textInit }} a Capitalizadora</nb-card-header>
+  <nb-card-body>
+    <nb-select
+      placeholder="Selecione uma capitalizadora"
+      size="large"
+      [(selected)]="selectedCapitalizadora"
+    >
+      <nb-option
+        *ngFor="let capitalizadora of capitalizadoras"
+        [value]="capitalizadora"
+        >{{ capitalizadora }}</nb-option
+      >
+    </nb-select>
+  </nb-card-body>
+  <nb-card-footer>
+    <button nbButton status="primary" (click)="submit()">Confirmar</button>
+  </nb-card-footer>
+</nb-card>

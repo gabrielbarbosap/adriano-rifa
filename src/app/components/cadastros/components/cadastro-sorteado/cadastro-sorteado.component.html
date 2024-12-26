@@ -1,0 +1,659 @@
+<form [formGroup]="cadastroForm">
+  <!-- Exibe lista de campos inválidos no topo -->
+  <div *ngIf="invalidFields.length > 0">
+    <p class="text-danger">Campos inválidos: {{ invalidFields.join(", ") }}</p>
+  </div>
+
+  <!-- Dados da Extração -->
+  <h4>Dados da Extração</h4>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="produto">Produto</label>
+      <nb-select
+        fullWidth
+        placeholder="Selecione o Produto"
+        formControlName="produto"
+      >
+        <nb-option value="principal">Principal</nb-option>
+        <nb-option value="titulo-premiado">Título Prêmiado</nb-option>
+      </nb-select>
+      <div
+        *ngIf="
+          cadastroForm.get('produto')?.invalid &&
+          cadastroForm.get('produto')?.touched
+        "
+      >
+        <small class="text-danger">Produto é obrigatório.</small>
+      </div>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="dataSorteio">Data do Sorteio</label>
+      <input nbInput fullWidth type="date" formControlName="dataSorteio" />
+      <div
+        *ngIf="
+          cadastroForm.get('dataSorteio')?.invalid &&
+          cadastroForm.get('dataSorteio')?.touched
+        "
+      >
+        <small class="text-danger">Data do sorteio é obrigatória.</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="numeroTitulo">Número do Título</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Número do Título"
+        formControlName="numeroTitulo"
+      />
+      <div
+        *ngIf="
+          cadastroForm.get('numeroTitulo')?.invalid &&
+          cadastroForm.get('numeroTitulo')?.touched
+        "
+      >
+        <small class="text-danger">Número do título é obrigatório.</small>
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="valorLiquido">Valor Líquido do Sorteio</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Valor Líquido"
+        formControlName="valorLiquido"
+      />
+      <div
+        *ngIf="
+          cadastroForm.get('valorLiquido')?.invalid &&
+          cadastroForm.get('valorLiquido')?.touched
+        "
+      >
+        <small class="text-danger">Valor líquido é obrigatório.</small>
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="dataGeracao">Data da Geração</label>
+      <input nbInput fullWidth type="date" formControlName="dataGeracao" />
+      <div
+        *ngIf="
+          cadastroForm.get('dataGeracao')?.invalid &&
+          cadastroForm.get('dataGeracao')?.touched
+        "
+      >
+        <small class="text-danger">Data de geração é obrigatória.</small>
+      </div>
+    </div>
+
+    <div class="form-group col-md-4">
+      <label for="opcao_premio">Opção prêmio</label>
+
+      <nb-select
+        fullWidth
+        placeholder="Selecione a opção"
+        formControlName="opcao_premio"
+      >
+        <nb-option value="dinheiro">Dinheiro</nb-option>
+        <nb-option value="bem">Bem</nb-option>
+      </nb-select>
+    </div>
+  </div>
+
+  <!-- Dados Cadastrais -->
+  <h4>Dados Cadastrais</h4>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="cpf">CPF</label>
+      <input nbInput fullWidth placeholder="CPF" formControlName="cpf" />
+      <div
+        *ngIf="
+          cadastroForm.get('cpf')?.invalid && cadastroForm.get('cpf')?.touched
+        "
+      >
+        <small class="text-danger"
+          >CPF é obrigatório e deve ter 11 dígitos.</small
+        >
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="dataNascimento">Data de Nascimento</label>
+      <input nbInput fullWidth type="date" formControlName="dataNascimento" />
+      <div
+        *ngIf="
+          cadastroForm.get('dataNascimento')?.invalid &&
+          cadastroForm.get('dataNascimento')?.touched
+        "
+      >
+        <small class="text-danger">Data de nascimento é obrigatória.</small>
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="nomeSocial">Nome Social</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Nome Social"
+        formControlName="nomeSocial"
+      />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="nomeCompleto">Nome Completo</label>
+    <input
+      nbInput
+      fullWidth
+      placeholder="Nome Completo"
+      formControlName="nomeCompleto"
+    />
+    <div
+      *ngIf="
+        cadastroForm.get('nomeCompleto')?.invalid &&
+        cadastroForm.get('nomeCompleto')?.touched
+      "
+    >
+      <small class="text-danger">Nome completo é obrigatório.</small>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="profissao">Profissão</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Profissão"
+        formControlName="profissao"
+      />
+      <div
+        *ngIf="
+          cadastroForm.get('profissao')?.invalid &&
+          cadastroForm.get('profissao')?.touched
+        "
+      >
+        <small class="text-danger">Profissão é obrigatória.</small>
+      </div>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="renda">Renda</label>
+      <nb-select
+        fullWidth
+        placeholder="Selecione a Renda"
+        formControlName="renda"
+      >
+        <nb-option value="0-1000">R$0,00 - 1.000,00</nb-option>
+        <nb-option value="1000-2000">R$1.000,00 - 2.000,00</nb-option>
+        <nb-option value="2000-3000">R$2.000,00 - 3.000,00</nb-option>
+        <nb-option value="3000-5000">R$3.000,00 - 5.000,00</nb-option>
+        <nb-option value="acima">Acima de R$ 5.000,00</nb-option>
+      </nb-select>
+      <div
+        *ngIf="
+          cadastroForm.get('renda')?.invalid &&
+          cadastroForm.get('renda')?.touched
+        "
+      >
+        <small class="text-danger">Renda é obrigatória.</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="formaPagamento">Forma de Pagamento</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Forma de Pagamento"
+        formControlName="formaPagamento"
+      />
+      <div
+        *ngIf="
+          cadastroForm.get('formaPagamento')?.invalid &&
+          cadastroForm.get('formaPagamento')?.touched
+        "
+      >
+        <small class="text-danger">Forma de pagamento é obrigatória.</small>
+      </div>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="tipoConta">Tipo de Conta</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Tipo de Conta"
+        formControlName="tipoConta"
+      />
+      <div
+        *ngIf="
+          cadastroForm.get('tipoConta')?.invalid &&
+          cadastroForm.get('tipoConta')?.touched
+        "
+      >
+        <small class="text-danger">Tipo de conta é obrigatório.</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="banco">Banco</label>
+      <input nbInput fullWidth placeholder="Banco" formControlName="banco" />
+      <div
+        *ngIf="
+          cadastroForm.get('banco')?.invalid &&
+          cadastroForm.get('banco')?.touched
+        "
+      >
+        <small class="text-danger">Banco é obrigatório.</small>
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="agencia">Agência</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Agência"
+        formControlName="agencia"
+      />
+      <div
+        *ngIf="
+          cadastroForm.get('agencia')?.invalid &&
+          cadastroForm.get('agencia')?.touched
+        "
+      >
+        <small class="text-danger">Agência é obrigatória.</small>
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="conta">Conta</label>
+      <input nbInput fullWidth placeholder="Conta" formControlName="conta" />
+      <div
+        *ngIf="
+          cadastroForm.get('conta')?.invalid &&
+          cadastroForm.get('conta')?.touched
+        "
+      >
+        <small class="text-danger">Conta é obrigatória.</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dados do Registro -->
+  <h4>Dados do Registro</h4>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="numeroRegistro">Número de Registro</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Número de Registro"
+        formControlName="numeroRegistro"
+      />
+      <div
+        *ngIf="
+          cadastroForm.get('numeroRegistro')?.invalid &&
+          cadastroForm.get('numeroRegistro')?.touched
+        "
+      >
+        <small class="text-danger">Número de registro é obrigatório.</small>
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="dataEmissaoRegistro">Data de Emissão</label>
+      <input
+        nbInput
+        fullWidth
+        type="date"
+        formControlName="dataEmissaoRegistro"
+      />
+      <div
+        *ngIf="
+          cadastroForm.get('dataEmissaoRegistro')?.invalid &&
+          cadastroForm.get('dataEmissaoRegistro')?.touched
+        "
+      >
+        <small class="text-danger">Data de emissão é obrigatória.</small>
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="orgaoEmissorRegistro">Órgão Emissor</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Órgão Emissor"
+        formControlName="orgaoEmissorRegistro"
+      />
+      <div
+        *ngIf="
+          cadastroForm.get('orgaoEmissorRegistro')?.invalid &&
+          cadastroForm.get('orgaoEmissorRegistro')?.touched
+        "
+      >
+        <small class="text-danger">Órgão emissor é obrigatório.</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Endereço -->
+  <h4>Endereço</h4>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="cep">CEP</label>
+      <input nbInput fullWidth placeholder="CEP" formControlName="cep" />
+      <div
+        *ngIf="
+          cadastroForm.get('cep')?.invalid && cadastroForm.get('cep')?.touched
+        "
+      >
+        <small class="text-danger">CEP é obrigatório.</small>
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="uf">UF</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="UF"
+        formControlName="uf"
+        maxlength="2"
+      />
+      <div
+        *ngIf="
+          cadastroForm.get('uf')?.invalid && cadastroForm.get('uf')?.touched
+        "
+      >
+        <small class="text-danger"
+          >UF é obrigatório e deve ter 2 caracteres.</small
+        >
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="cidade">Cidade</label>
+      <input nbInput fullWidth placeholder="Cidade" formControlName="cidade" />
+      <div
+        *ngIf="
+          cadastroForm.get('cidade')?.invalid &&
+          cadastroForm.get('cidade')?.touched
+        "
+      >
+        <small class="text-danger">Cidade é obrigatória.</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="endereco">Endereço</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Endereço"
+        formControlName="endereco"
+      />
+      <div
+        *ngIf="
+          cadastroForm.get('endereco')?.invalid &&
+          cadastroForm.get('endereco')?.touched
+        "
+      >
+        <small class="text-danger">Endereço é obrigatório.</small>
+      </div>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="numeroEndereco">Número</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Número"
+        formControlName="numeroEndereco"
+      />
+      <div
+        *ngIf="
+          cadastroForm.get('numeroEndereco')?.invalid &&
+          cadastroForm.get('numeroEndereco')?.touched
+        "
+      >
+        <small class="text-danger">Número é obrigatório.</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="complemento">Complemento</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Complemento"
+        formControlName="complemento"
+      />
+    </div>
+    <div class="form-group col-md-6">
+      <label for="bairro">Bairro</label>
+      <input nbInput fullWidth placeholder="Bairro" formControlName="bairro" />
+      <div
+        *ngIf="
+          cadastroForm.get('bairro')?.invalid &&
+          cadastroForm.get('bairro')?.touched
+        "
+      >
+        <small class="text-danger">Bairro é obrigatório.</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contato -->
+  <h4>Contato</h4>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="tipoTelefone">Tipo de Telefone</label>
+      <nb-select
+        fullWidth
+        placeholder="Selecione o tipo de telefone"
+        formControlName="tipoTelefone"
+      >
+        <nb-option value="celular">Celular</nb-option>
+        <nb-option value="fixo">Fixo</nb-option>
+      </nb-select>
+      <div
+        *ngIf="
+          cadastroForm.get('tipoTelefone')?.invalid &&
+          cadastroForm.get('tipoTelefone')?.touched
+        "
+      >
+        <small class="text-danger">Tipo de telefone é obrigatório.</small>
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="ddd">DDD</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="DDD"
+        formControlName="ddd"
+        maxlength="2"
+      />
+      <div
+        *ngIf="
+          cadastroForm.get('ddd')?.invalid && cadastroForm.get('ddd')?.touched
+        "
+      >
+        <small class="text-danger"
+          >DDD é obrigatório e deve ter 2 dígitos.</small
+        >
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="numeroTelefone">Número de Telefone</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Número de Telefone"
+        formControlName="numeroTelefone"
+      />
+      <div
+        *ngIf="
+          cadastroForm.get('numeroTelefone')?.invalid &&
+          cadastroForm.get('numeroTelefone')?.touched
+        "
+      >
+        <small class="text-danger">Número de telefone é obrigatório.</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="email">E-mail</label>
+    <input nbInput fullWidth placeholder="E-mail" formControlName="email" />
+    <div
+      *ngIf="
+        cadastroForm.get('email')?.invalid && cadastroForm.get('email')?.touched
+      "
+    >
+      <small class="text-danger">E-mail é obrigatório e deve ser válido.</small>
+    </div>
+  </div>
+
+  <!-- Documentos Obrigatórios -->
+  <h4>Documentos Obrigatórios</h4>
+  <div class="form-group">
+    <label for="tituloCapitalizacaoFrente"
+      >Anexar Título de Capitalização Completo (frente)*</label
+    >
+    <input
+      type="file"
+      id="tituloCapitalizacaoFrente"
+      (change)="onFilesSelected($event, 'tituloCapitalizacaoFrente')"
+      multiple
+      style="display: none"
+    />
+    <button
+      nbButton
+      status="primary"
+      outline
+      class="btn-wd"
+      (click)="triggerFileInput('tituloCapitalizacaoFrente')"
+    >
+      Procurar
+    </button>
+    <div *ngIf="uploadedFiles['tituloCapitalizacaoFrente']?.length === 0">
+      <small class="text-danger">Título de capitalização é obrigatório.</small>
+    </div>
+    <ul>
+      <li
+        *ngFor="
+          let file of uploadedFiles['tituloCapitalizacaoFrente'];
+          let i = index
+        "
+      >
+        {{ file.name }}
+        <button
+          nbButton
+          status="danger"
+          size="tiny"
+          outline
+          (click)="removeFile('tituloCapitalizacaoFrente', i)"
+        >
+          Remover
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  <div class="form-group">
+    <label for="documentoIdentificacaoFoto">Anexar Documento com Foto</label>
+    <input
+      type="file"
+      id="documentoIdentificacaoFoto"
+      (change)="onFilesSelected($event, 'documentoIdentificacaoFoto')"
+      multiple
+      style="display: none"
+    />
+    <button
+      nbButton
+      status="primary"
+      outline
+      class="btn-wd"
+      (click)="triggerFileInput('documentoIdentificacaoFoto')"
+    >
+      Procurar
+    </button>
+    <div *ngIf="uploadedFiles['documentoIdentificacaoFoto']?.length === 0">
+      <small class="text-danger">Documento com foto é obrigatório.</small>
+    </div>
+    <ul>
+      <li
+        *ngFor="
+          let file of uploadedFiles['documentoIdentificacaoFoto'];
+          let i = index
+        "
+      >
+        {{ file.name }}
+        <button
+          nbButton
+          status="danger"
+          size="tiny"
+          outline
+          (click)="removeFile('documentoIdentificacaoFoto', i)"
+        >
+          Remover
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  <div class="form-group">
+    <label for="comprovanteResidencia">Anexar Comprovante de Residência</label>
+    <input
+      type="file"
+      id="comprovanteResidencia"
+      (change)="onFilesSelected($event, 'comprovanteResidencia')"
+      multiple
+      style="display: none"
+    />
+    <button
+      nbButton
+      status="primary"
+      outline
+      class="btn-wd"
+      (click)="triggerFileInput('comprovanteResidencia')"
+    >
+      Procurar
+    </button>
+    <div *ngIf="uploadedFiles['comprovanteResidencia']?.length === 0">
+      <small class="text-danger"
+        >Comprovante de residência é obrigatório.</small
+      >
+    </div>
+    <ul>
+      <li
+        *ngFor="
+          let file of uploadedFiles['comprovanteResidencia'];
+          let i = index
+        "
+      >
+        {{ file.name }}
+        <button
+          nbButton
+          status="danger"
+          size="tiny"
+          outline
+          (click)="removeFile('comprovanteResidencia', i)"
+        >
+          Remover
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  <div class="form-actions">
+    <button nbButton class="button-success" (click)="onSubmit()">
+      Salvar Dados
+    </button>
+    <button nbButton status="info" (click)="exportPDF()">Exportar PDF</button>
+  </div>
+</form>

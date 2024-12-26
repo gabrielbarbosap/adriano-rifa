@@ -1,0 +1,36 @@
+<div class="login-container">
+  <div class="login-illustration">
+    <img
+      src="../../../assets/logo-removebg-preview.png"
+      alt="Ilustração do Login"
+    />
+  </div>
+  <div class="login-form">
+    <nb-card>
+      <nb-card-body>
+        <h2 class="title">LOGIN</h2>
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+          <nb-form-field>
+            <input
+              nbInput
+              fullWidth
+              placeholder="Usuário"
+              formControlName="username"
+            />
+          </nb-form-field>
+          <nb-form-field>
+            <input
+              nbInput
+              fullWidth
+              placeholder="Senha"
+              formControlName="password"
+              type="password"
+            />
+          </nb-form-field>
+
+          <button nbButton status="primary" fullWidth>Entrar</button>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

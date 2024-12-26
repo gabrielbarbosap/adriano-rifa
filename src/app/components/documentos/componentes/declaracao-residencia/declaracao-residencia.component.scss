@@ -1,0 +1,42 @@
+/* app.component.css */
+.document-container {
+  width: 794px; /* Largura aproximada de uma folha A4 com margens */
+  height: 1123px; /* Altura aproximada de uma folha A4 com margens */
+  padding: 40px; /* Margens ao redor para respeitar a estética */
+  margin: 0 auto;
+  font-family: "Arial", sans-serif;
+  border: 1px solid black; /* Apenas para visualização do layout durante o desenvolvimento */
+  line-height: 2;
+  box-sizing: border-box; /* Garantir que o padding seja considerado na largura total */
+}
+
+.title {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 30px;
+  font-size: 1rem;
+}
+
+p {
+  margin-bottom: 42px;
+  font-size: 12px;
+}
+
+.final-statement {
+  margin-top: 40px;
+  font-style: italic;
+}
+
+.date-area {
+  margin-top: 30px;
+}
+
+button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
