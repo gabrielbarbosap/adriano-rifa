@@ -32,6 +32,8 @@ export class SorteioComponent {
   integradoraSistema = [] as any;
   integradoras = [] as any;
   entidades = [] as any;
+  capitalizadoras = [] as any;
+  influencers = [] as any;
 
   items = [
     { title: "Sorteio" },
@@ -159,6 +161,14 @@ export class SorteioComponent {
     this.supabaseService
       .buscarDados("sistema")
       .subscribe((it) => (this.integradoraSistema = it));
+
+    this.supabaseService
+      .buscarDados("influencer")
+      .subscribe((it) => (this.influencers = it));
+
+    this.supabaseService
+      .buscarDados("capitalizadoras")
+      .subscribe((it) => (this.capitalizadoras = it));
   }
 
   checkInvalidFields(): void {

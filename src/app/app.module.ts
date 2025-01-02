@@ -113,6 +113,7 @@ import { AdiantamentosComponent } from "./components/cadastros/components/adiant
     NbSpinnerModule,
     NbCheckboxModule,
   ],
+  exports: [],
   providers: [],
   bootstrap: [AppComponent],
 })

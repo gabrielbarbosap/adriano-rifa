@@ -5,6 +5,7 @@ import { SucessReqComponent } from "src/app/components/sucess-req/sucess-req.com
 import { CnpjService } from "src/app/service/cnpj-service.service";
 import { SupabaseService } from "src/app/service/supabase.service";
 import { NbDialogService } from "@nebular/theme";
+import { cpfValidator } from "src/app/service/validatorCpf";
 
 @Component({
   selector: "app-cadastro-influencer",
@@ -14,6 +15,7 @@ import { NbDialogService } from "@nebular/theme";
 export class CadastroInfluencerComponent {
   cadastroForm: FormGroup;
   invalidFields: string[] = []; // Array para armazenar campos inválidos
+  capitalizadoras: any;
 
   bancos = [
     { codigo: "001", nome: "Banco do Brasil S.A." },
@@ -53,6 +55,7 @@ export class CadastroInfluencerComponent {
           Validators.required,
           Validators.minLength(11),
           Validators.maxLength(11),
+          cpfValidator(),
         ],
       ],
       data_nascimento: ["", Validators.required],
@@ -81,7 +84,7 @@ export class CadastroInfluencerComponent {
       // Dados de contato
       contato: [""], // Não obrigatório
       telefone_contato: [""], // Não obrigatório
-      email_contato: ["", Validators.email], // Não obrigatório
+      email_contato: [""], // Não obrigatório
       celular_contato: [""], // Não obrigatório
 
       // Dados da empresa
@@ -133,6 +136,11 @@ export class CadastroInfluencerComponent {
 
   ngOnInit(): void {
     const influencerId = localStorage.getItem("id_influencer");
+
+    this.supabaseService
+      .buscarDados("capitalizadoras")
+      .subscribe((it) => (this.capitalizadoras = it));
+
     if (influencerId) {
       console.log("Carregando dados do influencer com ID:", influencerId);
 
@@ -457,6 +465,7 @@ export class CadastroInfluencerComponent {
           Validators.required,
           Validators.minLength(11),
           Validators.maxLength(11),
+          cpfValidator(),
         ],
       ],
       data_nascimento: ["", Validators.required],

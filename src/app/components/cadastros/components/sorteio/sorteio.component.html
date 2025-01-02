@@ -23,7 +23,7 @@
               <h4>Informações do Sorteio</h4>
               <div class="form-row">
                 <div class="form-group col-md-3">
-                  <label for="edicao">Edição</label>
+                  <label for="edicao">Edição *</label>
                   <input
                     nbInput
                     fullWidth
@@ -44,7 +44,7 @@
                   </div>
                 </div>
                 <div class="form-group col-md-3">
-                  <label for="data_sorteio">Data do Sorteio</label>
+                  <label for="data_sorteio">Data do Sorteio *</label>
                   <input
                     nbInput
                     fullWidth
@@ -74,7 +74,7 @@
                 </div>
 
                 <div class="form-group col-md-3">
-                  <label for="id_sistema">Integradora Sistema</label>
+                  <label for="id_sistema">Integradora Sistema *</label>
                   <nb-select
                     fullWidth
                     placeholder="Integradora Sistema"
@@ -99,7 +99,7 @@
 
               <div class="form-row">
                 <div class="form-group col-md-6">
-                  <label for="nome_processo">Nome do Processo</label>
+                  <label for="nome_processo">Nome do Processo *</label>
                   <input
                     nbInput
                     fullWidth
@@ -118,7 +118,7 @@
                   </div>
                 </div>
                 <div class="form-group col-md-6">
-                  <label for="processo_susepe">Processo Susepe</label>
+                  <label for="processo_susepe">Processo Susepe *</label>
                   <input
                     nbInput
                     fullWidth
@@ -140,7 +140,7 @@
 
               <div class="form-row">
                 <div class="form-group col-md-6">
-                  <label for="premio_principal">Prêmio Principal</label>
+                  <label for="premio_principal">Prêmio Principal *</label>
                   <input
                     nbInput
                     fullWidth
@@ -159,15 +159,17 @@
                   </div>
                 </div>
                 <div class="form-group col-md-6">
-                  <label for="id_influencer">Influencer</label>
+                  <label for="id_influencer">Influencer *</label>
                   <nb-select
                     fullWidth
                     placeholder="Selecione o influencer"
                     formControlName="id_influencer"
                   >
-                    <nb-option value="1">Felipe Neto</nb-option>
-                    <nb-option value="3">Petter Jordan</nb-option>
-                    <nb-option value="4">Cristiano Ronaldo</nb-option>
+                    <nb-option
+                      *ngFor="let it of influencers"
+                      value="{{ it.id }}"
+                      >{{ it.nome_completo }}</nb-option
+                    >
                   </nb-select>
                 </div>
               </div>
@@ -197,7 +199,7 @@
                   </div>
                 </div>
                 <div class="form-group col-md-4">
-                  <label for="serie">Série</label>
+                  <label for="serie">Série *</label>
                   <nb-select
                     fullWidth
                     placeholder="Selecione a serie"
@@ -242,7 +244,7 @@
 
               <div class="form-row">
                 <div class="form-group col-md-4">
-                  <label for="tipo_sorteio">Tipo do Sorteio</label>
+                  <label for="tipo_sorteio">Tipo do Sorteio *</label>
                   <input
                     nbInput
                     fullWidth
@@ -261,7 +263,7 @@
                   </div>
                 </div>
                 <div class="form-group col-md-4">
-                  <label for="venda_minima">Venda Mínima</label>
+                  <label for="venda_minima">Venda Mínima *</label>
                   <input
                     nbInput
                     fullWidth
@@ -280,7 +282,7 @@
                   </div>
                 </div>
                 <div class="form-group col-md-4">
-                  <label for="cota_sorteio">Cota do Sorteio</label>
+                  <label for="cota_sorteio">Cota do Sorteio *</label>
                   <input
                     nbInput
                     fullWidth
@@ -302,7 +304,7 @@
 
               <div class="form-row">
                 <div class="form-group col-md-4">
-                  <label for="cota_resgate">Cota Resgate</label>
+                  <label for="cota_resgate">Cota Resgate *</label>
                   <input
                     nbInput
                     fullWidth
@@ -321,7 +323,7 @@
                   </div>
                 </div>
                 <div class="form-group col-md-4">
-                  <label for="cota_resgate">Cota Carregamento</label>
+                  <label for="cota_resgate">Cota Carregamento *</label>
                   <input
                     nbInput
                     fullWidth
@@ -340,7 +342,7 @@
                   </div>
                 </div>
                 <div class="form-group col-md-4">
-                  <label for="capital_minimo">Capital Mínimo</label>
+                  <label for="capital_minimo">Capital Mínimo *</label>
                   <input
                     nbInput
                     fullWidth
@@ -364,7 +366,9 @@
               <h4>Informações de Pagamento</h4>
               <div class="form-row">
                 <div class="form-group col-md-6">
-                  <label for="data_carregamento">Período de Carregamento</label>
+                  <label for="data_carregamento"
+                    >Período de Carregamento *</label
+                  >
                   <input
                     nbInput
                     fullWidth
@@ -383,7 +387,7 @@
                   </div>
                 </div>
                 <div class="form-group col-md-6">
-                  <label for="data_resgate">Período de Resgate</label>
+                  <label for="data_resgate">Período de Resgate *</label>
                   <input
                     nbInput
                     fullWidth
@@ -406,7 +410,7 @@
 
               <div class="form-row">
                 <div class="form-group col-md-4">
-                  <label for="premiacao_bruta">Premiação Bruta</label>
+                  <label for="premiacao_bruta">Premiação Bruta *</label>
                   <input
                     nbInput
                     fullWidth
@@ -425,7 +429,7 @@
                   </div>
                 </div>
                 <div class="form-group col-md-4">
-                  <label for="id_banco">Integradora PIX</label>
+                  <label for="id_banco">Integradora PIX *</label>
                   <nb-select
                     fullWidth
                     placeholder="Selecione a integradora"
@@ -450,7 +454,7 @@
                 </div>
 
                 <div class="form-group col-md-4">
-                  <label for="obs_integradora">Obs Integradora</label>
+                  <label for="obs_integradora">Obs Integradora *</label>
                   <input
                     nbInput
                     fullWidth
@@ -474,7 +478,7 @@
               <!-- <h4>Integradora e Sistema</h4>
               <div class="form-row">
                 <div class="form-group col-md-6">
-                  <label for="id_banco">Integradora</label>
+                  <label for="id_banco">Integradora *</label>
                   <nb-select
                     fullWidth
                     placeholder="Selecione a Integradora"
@@ -501,7 +505,7 @@
               <h4>Entidade e Produto</h4>
               <div class="form-row">
                 <div class="form-group col-md-4">
-                  <label for="id_entidade">Entidade</label>
+                  <label for="id_entidade">Entidade *</label>
                   <nb-select
                     fullWidth
                     placeholder="Selecione a Entidade"
@@ -523,7 +527,7 @@
                   </div>
                 </div>
                 <div class="form-group col-md-4">
-                  <label for="produto">Produto</label>
+                  <label for="produto">Produto *</label>
                   <input
                     nbInput
                     fullWidth
@@ -540,7 +544,7 @@
                   </div>
                 </div>
                 <!-- <div class="form-group col-md-4">
-                  <label for="distribuidor">Distribuidor</label>
+                  <label for="distribuidor">Distribuidor *</label>
                   <input
                     nbInput
                     fullWidth
@@ -564,15 +568,17 @@
               <h4>Capitalizadora</h4>
               <div class="form-row">
                 <div class="form-group col-md-6">
-                  <label for="id_capitalizadora">Capitalizadora</label>
+                  <label for="id_capitalizadora">Capitalizadora *</label>
                   <nb-select
                     fullWidth
                     placeholder="Selecione a Capitalizadora"
                     formControlName="id_capitalizadora"
                   >
-                    <nb-option value="2">Capemisa</nb-option>
-                    <nb-option value="1">Kovr</nb-option>
-                    <nb-option value="3">Aplicap</nb-option>
+                    <nb-option
+                      *ngFor="let it of capitalizadoras"
+                      value="{{ it.id }}"
+                      >{{ it.razao_social }}</nb-option
+                    >
                   </nb-select>
                   <div
                     *ngIf="
@@ -587,7 +593,7 @@
                 </div>
 
                 <div class="form-group col-md-6">
-                  <label for="obs_capitalizadora">Obs Capitalizadora</label>
+                  <label for="obs_capitalizadora">Obs Capitalizadora *</label>
                   <input
                     nbInput
                     fullWidth
@@ -662,7 +668,7 @@
             ></app-cadastro-sorteado>
           </nb-tab>
 
-          <nb-tab tabTitle="Adiantamentos">
+          <nb-tab tabTitle="Adiantamentos" [disabled]="!isEditTab">
             <div>
               <app-adiantamentos></app-adiantamentos>
             </div>

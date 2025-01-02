@@ -273,7 +273,7 @@ export class SupabaseService {
         fone_movel: data.fone_movel,
 
         // Contato comercial
-        contato: data.contato_comercial,
+        contato_comercial: data.contato_comercial,
         email_contato_comercial: data.email_contato_comercial,
         celular_contato_comercial: data.celular_contato_comercial,
 

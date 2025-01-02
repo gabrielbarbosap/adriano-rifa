@@ -6,6 +6,7 @@ import jsPDF from "jspdf";
 import { ErrorReqComponent } from "src/app/components/error-req/error-req.component";
 import { SucessReqComponent } from "src/app/components/sucess-req/sucess-req.component";
 import { SupabaseService } from "src/app/service/supabase.service";
+import { cpfValidator } from "src/app/service/validatorCpf";
 
 @Component({
   selector: "app-cadastro-sorteado",
@@ -40,6 +41,7 @@ export class CadastroSorteadoComponent implements OnInit {
           Validators.required,
           Validators.minLength(11),
           Validators.maxLength(11),
+          cpfValidator(),
         ],
       ],
       dataNascimento: ["", Validators.required],
