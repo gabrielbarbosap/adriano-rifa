@@ -53,6 +53,7 @@ import { SucessReqComponent } from "./components/sucess-req/sucess-req.component
 import { LoginComponent } from "./components/login/login.component";
 import { ErrorReqComponent } from "./components/error-req/error-req.component";
 import { AdiantamentosComponent } from "./components/cadastros/components/adiantamentos/adiantamentos.component";
+import { provideNgxMask, NgxMaskDirective } from "ngx-mask";
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import { AdiantamentosComponent } from "./components/cadastros/components/adiant
     AppRoutingModule,
     BrowserAnimationsModule,
     NbThemeModule.forRoot({ name: "default" }),
+    NgxMaskDirective,
     NbDialogModule.forRoot(),
     NbLayoutModule,
     NbEvaIconsModule,
@@ -114,7 +116,9 @@ import { AdiantamentosComponent } from "./components/cadastros/components/adiant
     NbCheckboxModule,
   ],
   exports: [],
-  providers: [],
+  providers: [
+    provideNgxMask({ validation: false }), // Configuração global (opcional)
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
