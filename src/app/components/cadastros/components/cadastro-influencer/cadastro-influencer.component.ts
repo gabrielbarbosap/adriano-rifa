@@ -362,9 +362,11 @@ export class CadastroInfluencerComponent {
         };
 
         const result = await this.supabaseService.insertInfluencer(payload);
+        this.open(true);
         console.log("Dados inseridos com sucesso", result);
       } catch (error) {
         console.error("Erro ao inserir dados", error);
+        this.openError(true);
       }
     } else {
       console.log("Campos inválidos: ", this.invalidFields);

@@ -323,17 +323,17 @@
                   </div>
                 </div>
                 <div class="form-group col-md-4">
-                  <label for="cota_resgate">Cota Carregamento *</label>
+                  <label for="cota_carregamento">Cota Carregamento *</label>
                   <input
                     nbInput
                     fullWidth
                     placeholder="Cota Carregamento"
-                    formControlName="cota_resgate"
+                    formControlName="cota_carregamento"
                   />
                   <div
                     *ngIf="
-                      cadastroForm.get('cota_resgate')?.invalid &&
-                      cadastroForm.get('cota_resgate')?.touched
+                      cadastroForm.get('cota_carregamento')?.invalid &&
+                      cadastroForm.get('cota_carregamento')?.touched
                     "
                   >
                     <small class="text-danger"

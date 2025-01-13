@@ -74,7 +74,7 @@ export class SorteioComponent {
       data_carregamento: [null, Validators.required],
       data_resgate: ["", Validators.required],
       premiacao_bruta: ["", Validators.required],
-      id_banco: ["", Validators.required],
+      id_banco: [""],
       id_capitalizadora: [null, Validators.required],
       id_entidade: [null, Validators.required],
       produto: ["", Validators.required],
