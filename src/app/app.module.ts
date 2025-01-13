@@ -54,6 +54,7 @@ import { LoginComponent } from "./components/login/login.component";
 import { ErrorReqComponent } from "./components/error-req/error-req.component";
 import { AdiantamentosComponent } from "./components/cadastros/components/adiantamentos/adiantamentos.component";
 import { provideNgxMask, NgxMaskDirective } from "ngx-mask";
+import { FinanceiroComponent } from "./components/cadastros/components/financeiro/financeiro.component";
 
 @NgModule({
   declarations: [
@@ -84,6 +85,7 @@ import { provideNgxMask, NgxMaskDirective } from "ngx-mask";
     LoginComponent,
     ErrorReqComponent,
     AdiantamentosComponent,
+    FinanceiroComponent,
   ],
   imports: [
     BrowserModule,
@@ -114,6 +116,7 @@ import { provideNgxMask, NgxMaskDirective } from "ngx-mask";
     NbTabsetModule,
     NbSpinnerModule,
     NbCheckboxModule,
+    NbLayoutModule,
   ],
   exports: [],
   providers: [

@@ -1,0 +1,186 @@
+<form [formGroup]="detalhadoForm" (ngSubmit)="onSubmit()">
+  <h4>Dados do Sorteio</h4>
+  <div class="form-row">
+    <div class="form-group col-md-3">
+      <label for="edicao">Edição *</label>
+      <input nbInput fullWidth placeholder="Edição" formControlName="edicao" />
+    </div>
+    <div class="form-group col-md-3">
+      <label for="nome_sorteio">Nome do Sorteio *</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Nome do Sorteio"
+        formControlName="nome_sorteio"
+      />
+    </div>
+    <div class="form-group col-md-3">
+      <label for="data_sorteio">Data do Sorteio *</label>
+      <input nbInput fullWidth type="date" formControlName="data_sorteio" />
+    </div>
+    <div class="form-group col-md-3">
+      <label for="data_inicio">Data de Início *</label>
+      <input nbInput fullWidth type="date" formControlName="data_inicio" />
+    </div>
+  </div>
+
+  <h4>Informações Financeiras</h4>
+  <div class="form-row">
+    <div class="form-group col-md-3">
+      <label for="valor_transacao">Valor da Transação *</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Valor da Transação"
+        formControlName="valor_transacao"
+      />
+    </div>
+    <div class="form-group col-md-3">
+      <label for="valor_venda">Valor de Venda *</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Valor de Venda"
+        formControlName="valor_venda"
+      />
+    </div>
+    <div class="form-group col-md-3">
+      <label for="premio_bruto">Prêmio Bruto *</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Prêmio Bruto"
+        formControlName="premio_bruto"
+      />
+    </div>
+    <div class="form-group col-md-3">
+      <label for="percentual_resgate">Percentual de Resgate *</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Percentual de Resgate"
+        formControlName="percentual_resgate"
+      />
+    </div>
+  </div>
+
+  <h4>Informações de Prêmios</h4>
+  <div class="form-row">
+    <div class="form-group col-md-3">
+      <label for="premio_principal">Prêmio Principal *</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Prêmio Principal"
+        formControlName="premio_principal"
+      />
+    </div>
+    <div class="form-group col-md-3">
+      <label for="prêmio_liquido">Prêmio Líquido *</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Prêmio Líquido"
+        formControlName="premio_liquido"
+      />
+    </div>
+    <div class="form-group col-md-3">
+      <label for="ir_sobre_premio">IR sobre Prêmio *</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="IR sobre Prêmio"
+        formControlName="ir_sobre_premio"
+      />
+    </div>
+    <div class="form-group col-md-3">
+      <label for="taxa_ir">Taxa de IR (%) *</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Taxa de IR"
+        formControlName="taxa_ir"
+      />
+    </div>
+  </div>
+
+  <h4>Outras Informações</h4>
+  <div class="form-row">
+    <div class="form-group col-md-3">
+      <label for="serie">Série *</label>
+      <input nbInput fullWidth placeholder="Série" formControlName="serie" />
+    </div>
+    <div class="form-group col-md-3">
+      <label for="entidade">Entidade *</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Entidade"
+        formControlName="entidade"
+      />
+    </div>
+    <div class="form-group col-md-3">
+      <label for="banco">Banco *</label>
+      <input nbInput fullWidth placeholder="Banco" formControlName="banco" />
+    </div>
+    <div class="form-group col-md-3">
+      <label for="distribuidor">Distribuidor *</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Distribuidor"
+        formControlName="distribuidor"
+      />
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-3">
+      <label for="plataforma_vendas">Plataforma de Vendas *</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Plataforma de Vendas"
+        formControlName="plataforma_vendas"
+      />
+    </div>
+    <div class="form-group col-md-3">
+      <label for="processo_susepe">Processo Susepe *</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Processo Susepe"
+        formControlName="processo_susepe"
+      />
+    </div>
+    <div class="form-group col-md-3">
+      <label for="transacoes_bancarias">Transações Bancárias *</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Transações Bancárias"
+        formControlName="transacoes_bancarias"
+      />
+    </div>
+    <div class="form-group col-md-3">
+      <label for="regularidade">Período de Regularidade *</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="Regularidade"
+        formControlName="regularidade"
+      />
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button
+      nbButton
+      status="success"
+      type="submit"
+      [disabled]="!detalhadoForm.valid"
+    >
+      Salvar
+    </button>
+  </div>
+</form>

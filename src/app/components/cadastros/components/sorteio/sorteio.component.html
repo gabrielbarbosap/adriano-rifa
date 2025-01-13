@@ -674,10 +674,12 @@
             </div>
           </nb-tab>
 
-          <nb-tab tabTitle="Financeiro">
-            <div class="em-construcao">
-              <h3>Em construção</h3>
-              <nb-icon status="warning" icon="alert-triangle-outline"></nb-icon>
+          <nb-tab tabTitle="Financeiro" [disabled]="!isEditTab">
+            <div>
+              <app-financeiro
+                *ngIf="isEditTab"
+                [formulario]="cadastroForm"
+              ></app-financeiro>
             </div>
           </nb-tab>
         </nb-tabset>
