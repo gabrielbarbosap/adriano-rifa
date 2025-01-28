@@ -55,6 +55,7 @@ import { ErrorReqComponent } from "./components/error-req/error-req.component";
 import { AdiantamentosComponent } from "./components/cadastros/components/adiantamentos/adiantamentos.component";
 import { provideNgxMask, NgxMaskDirective } from "ngx-mask";
 import { FinanceiroComponent } from "./components/cadastros/components/financeiro/financeiro.component";
+import { UsuariosComponent } from './components/cadastros/usuarios/usuarios.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +87,7 @@ import { FinanceiroComponent } from "./components/cadastros/components/financeir
     ErrorReqComponent,
     AdiantamentosComponent,
     FinanceiroComponent,
+    UsuariosComponent,
   ],
   imports: [
     BrowserModule,

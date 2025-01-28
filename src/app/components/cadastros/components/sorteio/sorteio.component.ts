@@ -34,6 +34,7 @@ export class SorteioComponent {
   entidades = [] as any;
   capitalizadoras = [] as any;
   influencers = [] as any;
+  dataInput: any;
 
   items = [
     { title: "Sorteio" },
@@ -116,6 +117,7 @@ export class SorteioComponent {
     if (sorteioId) {
       this.supabaseService.getSorteioById(sorteioId).subscribe((data) => {
         if (data) {
+          this.dataInput = data;
           this.cadastroForm.patchValue(data); // Preenche o formulário com os dados existentes
           this.regulamento.setValue(data.regulamento); // Define o regulamento, se houver
           localStorage.setItem("id_sorteio", data.id);

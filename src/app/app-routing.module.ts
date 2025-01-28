@@ -19,6 +19,7 @@ import { EntidadeComponent } from "./components/cadastros/components/entidade/en
 import { IntegradoraPixComponent } from "./components/cadastros/components/integradora-pix/integradora-pix.component";
 import { ConsultaInfluencerComponent } from "./components/consultas/influencer/influencer.component";
 import { LoginComponent } from "./components/login/login.component";
+import { UsuariosComponent } from "./components/cadastros/usuarios/usuarios.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "login", pathMatch: "full" },
@@ -34,6 +35,7 @@ const routes: Routes = [
   { path: "cadastros-influencer", component: CadastroInfluencerComponent },
   { path: "cadastros-sorteio", component: SorteioComponent },
   { path: "cadastros-entidade", component: EntidadeComponent },
+  { path: "cadastros-usuario", component: UsuariosComponent },
   {
     path: "consulta-integradora-sistema",
     component: IntegradoraSistemaComponent,

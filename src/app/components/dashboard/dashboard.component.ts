@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { NbDialogService } from "@nebular/theme";
 import { BackdropClickDialogComponent } from "../backdrop-click-dialog/backdrop-click-dialog.component";
+import { CnpjService } from "src/app/service/cnpj-service.service";
 
 @Component({
   selector: "app-dashboard",
@@ -8,12 +9,19 @@ import { BackdropClickDialogComponent } from "../backdrop-click-dialog/backdrop-
   styleUrls: ["./dashboard.component.scss"],
 })
 export class DashboardComponent implements OnInit {
-  constructor(private dialogService: NbDialogService) {}
+  constructor(
+    private dialogService: NbDialogService,
+    private auth: CnpjService
+  ) {}
 
   ngOnInit(): void {
     if (!localStorage.getItem("capitalizadora")) {
       this.openWithoutBackdropClick();
     }
+
+    // this.auth.auth().subscribe((res) => {
+    //   console.log(res);
+    // });
   }
 
   openWithoutBackdropClick() {

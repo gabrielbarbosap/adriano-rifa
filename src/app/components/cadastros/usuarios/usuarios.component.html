@@ -1,0 +1,97 @@
+<nb-layout>
+  <nb-layout-column>
+    <nb-card>
+      <nb-card-header>Cadastro de Usuário</nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()">
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label for="nome">Nome *</label>
+              <input
+                nbInput
+                fullWidth
+                placeholder="Nome"
+                formControlName="nome"
+              />
+              <div
+                *ngIf="
+                  cadastroForm.get('nome')?.invalid &&
+                  cadastroForm.get('nome')?.touched
+                "
+              >
+                <small class="text-danger">Nome é obrigatório.</small>
+              </div>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label for="nome">Senha *</label>
+              <input
+                nbInput
+                fullWidth
+                type="password"
+                placeholder="Senha"
+                formControlName="senha"
+              />
+              <div
+                *ngIf="
+                  cadastroForm.get('senha')?.invalid &&
+                  cadastroForm.get('senha')?.touched
+                "
+              >
+                <small class="text-danger">Senha é obrigatório.</small>
+              </div>
+            </div>
+            <div class="form-group col-md-3">
+              <label for="celular">Celular *</label>
+              <input
+                nbInput
+                fullWidth
+                placeholder="Celular"
+                formControlName="celular"
+                mask="(00) 00000-0000"
+              />
+              <div
+                *ngIf="
+                  cadastroForm.get('celular')?.invalid &&
+                  cadastroForm.get('celular')?.touched
+                "
+              >
+                <small class="text-danger">Celular é obrigatório.</small>
+              </div>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label for="tipo">Tipo *</label>
+              <nb-select fullWidth formControlName="tipo_usuario">
+                <nb-option *ngFor="let tipo of tiposUsuarios" [value]="tipo.id">
+                  {{ tipo.descricao }}
+                </nb-option>
+              </nb-select>
+              <div
+                *ngIf="
+                  cadastroForm.get('tipo_usuario')?.invalid &&
+                  cadastroForm.get('tipo_usuario')?.touched
+                "
+              >
+                <small class="text-danger">Selecione um tipo.</small>
+              </div>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button
+              nbButton
+              status="success"
+              type="submit"
+              [disabled]="!cadastroForm.valid"
+            >
+              Salvar
+            </button>
+            <!-- <button nbButton status="danger" type="button" (click)="onExit()">
+              Sair
+            </button> -->
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </nb-layout-column>
+</nb-layout>

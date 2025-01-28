@@ -13,9 +13,13 @@
       <a routerLink="/movimentacao" routerLinkActive="active" class="menu-item"
         >Movimentação</a
       >
-      <a routerLink="/configuracoes" routerLinkActive="active" class="menu-item"
+      <a
+        routerLink="/cadastros-usuario"
+        routerLinkActive="active"
+        class="menu-item"
         >Configurações</a
       >
+      <!-- Botão Sair no final do menu -->
     </nav>
 
     <nb-user class="user-cap" size="large" name="Nome Usuário" onlyPicture>
@@ -29,7 +33,8 @@
       onlyPicture
       (click)="openModal()"
     >
-      >
     </nb-user>
+
+    <button class="btn-sair" (click)="logout()">Sair</button>
   </div>
 </header>

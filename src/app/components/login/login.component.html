@@ -9,6 +9,7 @@
       <nb-card-body>
         <h2 class="title">Bem-vindo</h2>
         <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+          <!-- Campo Usuário -->
           <nb-form-field>
             <input
               nbInput
@@ -17,6 +18,8 @@
               formControlName="username"
             />
           </nb-form-field>
+
+          <!-- Campo Senha -->
           <nb-form-field>
             <input
               nbInput
@@ -27,8 +30,18 @@
             />
           </nb-form-field>
 
+          <!-- Botão Entrar -->
           <button nbButton fullWidth>Entrar</button>
         </form>
+
+        <!-- Mensagem de Erro -->
+        <div
+          *ngIf="errorMessage"
+          class="error-message"
+          style="color: red; margin-top: 1rem; text-align: center"
+        >
+          {{ errorMessage }}
+        </div>
       </nb-card-body>
     </nb-card>
   </div>

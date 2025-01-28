@@ -21,17 +21,17 @@ header {
 .logo {
   float: left;
   position: absolute;
-  left: 2rem;
+  left: 3rem;
 }
 
 .user-cap {
   position: absolute;
-  right: 6rem;
+  right: 10rem;
 }
 
 nb-user {
   position: absolute;
-  right: 2rem;
+  right: 6rem;
   cursor: pointer;
 }
 
@@ -60,4 +60,27 @@ nb-user {
 
 ::ng-deep nb-layout-header nav {
   box-shadow: none !important;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.btn-sair {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: auto; /* Coloca o botão ao final */
+  position: absolute;
+  right: 3rem;
+}
+
+.btn-sair:hover {
+  background-color: #d9363e;
 }

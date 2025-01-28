@@ -44,6 +44,10 @@ export class HeaderComponent {
   ) {}
 
   ngOnInit() {
+    if (!localStorage.getItem("nome_usuario")) {
+      this.router.navigate(["/login"]); // Redireciona para a página de login
+    }
+
     this.router.events.subscribe((val) => {
       this.menuItems.forEach((item) => {
         item.selected = this.router.url.includes(item.link || "");
@@ -53,14 +57,21 @@ export class HeaderComponent {
     this.capitalizadoraService.capitalizadora$.subscribe((cap) => {
       if (cap === "Kovr") {
         this.base64 = this.kovr;
-      } else if (cap === "Capemisa") {
+      } else if (cap.includes("Capemisa")) {
         this.base64 = this.capemisa;
-      } else if (cap === "Aplicap") {
+      } else if (cap.includes("Aplicap")) {
         this.base64 = this.aplicap;
-      } else if (cap === "ViaCap") {
+      } else if (cap.includes("ViaCap")) {
         this.base64 = this.viacap;
       }
     });
+  }
+
+  logout() {
+    // Aqui você pode limpar os dados do usuário, tokens, etc.
+    console.log("Usuário saiu");
+    localStorage.removeItem("nome_usuario");
+    this.router.navigate(["/login"]); // Redireciona para a página de login
   }
 
   openModal() {

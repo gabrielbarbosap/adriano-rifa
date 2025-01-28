@@ -246,6 +246,24 @@ export class SupabaseService {
     );
   }
 
+  buscarLogin(username: string, password: string): Observable<any[]> {
+    // Consulta ao Supabase com base no nome de usuário e senha
+    const loginPromise = this.supabase
+      .from("login") // Nome da tabela no Supabase
+      .select("*")
+      .eq("nome", username) // Verifica se o username é igual
+      .eq("senha", password); // Verifica se a senha é igual
+
+    return from(
+      loginPromise.then(({ data, error }) => {
+        if (error) {
+          throw new Error(`Erro ao buscar dados: ${error.message}`);
+        }
+        return data || []; // Retorna os dados ou uma lista vazia
+      })
+    );
+  }
+
   buscarDadosPorCapitalizadora(table: any): Observable<any[]> {
     const sorteiosPromise = this.supabase
       .from(table)
@@ -335,6 +353,46 @@ export class SupabaseService {
 
     if (error) {
       throw new Error(`Erro ao inserir dados: ${error.message}`);
+    }
+  }
+
+  async updateSorteio(data: any, nameTable: string, id: number) {
+    const { error } = await this.supabase
+      .from(nameTable)
+      .update({
+        // Dados do sorteio
+        edicao: data.edicao || null,
+        nome_sorteio: data.nome_sorteio || null,
+        data_sorteio: data.data_sorteio || null,
+        data_inicio_vendas: data.data_inicio_vendas || null,
+        valor_transacao: data.valor_transacao || null,
+
+        // Informações financeiras
+        valor_venda_titulo: data.valor_venda_titulo || null,
+        premiacao_bruta: data.premiacao_bruta || null,
+        resgate: data.resgate || null,
+
+        // Informações de prêmios
+        premio_principal: data.premio_principal || null,
+        premio_liquido: data.premio_liquido || null,
+        ir_premio_principal: data.ir_premio_principal || null,
+        ir_titulos_premiados: data.ir_titulos_premiados || null,
+
+        // Outras informações
+        serie: data.serie || null,
+        id_entidade: data.id_entidade || null,
+        banco: data.banco || null,
+        distribuidor: data.distribuidor || null,
+        plataforma_vendas: data.plataforma_vendas || null,
+        processo_susepe: data.processo_susepe || null,
+        transacoes_bancarias: data.valor_transacionado || null,
+        per_regularidade: data.per_regularidade || null,
+        vendidos: data.vendidos || null, // Campo opcional
+      })
+      .eq("edicao", id); // Filtra pelo ID da entidade
+
+    if (error) {
+      throw new Error(`Erro ao atualizar dados: ${error.message}`);
     }
   }
 
@@ -523,6 +581,10 @@ export class SupabaseService {
         ])
         .eq("id", localStorage.getItem("id_sorteado"))
     );
+  }
+
+  inserirUsuarios(usuario: any): Observable<any> {
+    return from(this.supabase.from("login").insert(usuario));
   }
 
   async buscarAdiantamentos() {

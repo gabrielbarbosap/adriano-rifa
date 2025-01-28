@@ -88,8 +88,8 @@
                   </nb-select>
                   <div
                     *ngIf="
-                      cadastroForm.get('serie')?.invalid &&
-                      cadastroForm.get('serie')?.touched
+                      cadastroForm.get('id_sistema')?.invalid &&
+                      cadastroForm.get('id_sistema')?.touched
                     "
                   >
                     <small class="text-danger">Série é obrigatória.</small>
@@ -678,7 +678,7 @@
             <div>
               <app-financeiro
                 *ngIf="isEditTab"
-                [formulario]="cadastroForm"
+                [formulario]="dataInput"
               ></app-financeiro>
             </div>
           </nb-tab>

@@ -19,47 +19,52 @@
       <input nbInput fullWidth type="date" formControlName="data_sorteio" />
     </div>
     <div class="form-group col-md-3">
-      <label for="data_inicio">Data de Início *</label>
-      <input nbInput fullWidth type="date" formControlName="data_inicio" />
+      <label for="data_inicio_vendas">Data de Início *</label>
+      <input
+        nbInput
+        fullWidth
+        type="date"
+        formControlName="data_inicio_vendas"
+      />
     </div>
   </div>
 
   <h4>Informações Financeiras</h4>
   <div class="form-row">
     <div class="form-group col-md-3">
-      <label for="valor_transacao">Valor da Transação *</label>
+      <label for="valor_transacao">Quantidade de vendidos *</label>
       <input
         nbInput
         fullWidth
-        placeholder="Valor da Transação"
+        placeholder="Quantidade de vendido"
         formControlName="valor_transacao"
       />
     </div>
     <div class="form-group col-md-3">
-      <label for="valor_venda">Valor de Venda *</label>
+      <label for="valor_venda_titulo">Valor de Venda *</label>
       <input
         nbInput
         fullWidth
         placeholder="Valor de Venda"
-        formControlName="valor_venda"
+        formControlName="valor_venda_titulo"
       />
     </div>
     <div class="form-group col-md-3">
-      <label for="premio_bruto">Prêmio Bruto *</label>
+      <label for="premiacao_bruta">Prêmio Bruto *</label>
       <input
         nbInput
         fullWidth
         placeholder="Prêmio Bruto"
-        formControlName="premio_bruto"
+        formControlName="premiacao_bruta"
       />
     </div>
     <div class="form-group col-md-3">
-      <label for="percentual_resgate">Percentual de Resgate *</label>
+      <label for="resgate">Percentual de Resgate *</label>
       <input
         nbInput
         fullWidth
         placeholder="Percentual de Resgate"
-        formControlName="percentual_resgate"
+        formControlName="resgate"
       />
     </div>
   </div>
@@ -94,12 +99,12 @@
       />
     </div>
     <div class="form-group col-md-3">
-      <label for="taxa_ir">Taxa de IR (%) *</label>
+      <label for="ir_titulos_premiados">IR sobre premiados (%) *</label>
       <input
         nbInput
         fullWidth
         placeholder="Taxa de IR"
-        formControlName="taxa_ir"
+        formControlName="ir_titulos_premiados"
       />
     </div>
   </div>
@@ -108,20 +113,42 @@
   <div class="form-row">
     <div class="form-group col-md-3">
       <label for="serie">Série *</label>
-      <input nbInput fullWidth placeholder="Série" formControlName="serie" />
+      <nb-select
+        fullWidth
+        placeholder="Selecione a serie"
+        formControlName="serie"
+      >
+        <nb-option value="1-100.000">R$1 - 100.000</nb-option>
+        <nb-option value="2000-3000">R$1 - 500.000</nb-option>
+        <nb-option value="1-1.000.000">R$1 - 1.000.000</nb-option>
+        <nb-option value="1-1.000.000">R$1 - 10.000.000</nb-option>
+      </nb-select>
     </div>
     <div class="form-group col-md-3">
       <label for="entidade">Entidade *</label>
-      <input
-        nbInput
+      <nb-select
         fullWidth
-        placeholder="Entidade"
-        formControlName="entidade"
-      />
+        placeholder="Selecione a Entidade"
+        formControlName="id_entidade"
+      >
+        <nb-option
+          *ngFor="let entidade of entidades"
+          value="{{ entidade.id }}"
+          >{{ entidade.razao_social }}</nb-option
+        >
+      </nb-select>
     </div>
     <div class="form-group col-md-3">
       <label for="banco">Banco *</label>
-      <input nbInput fullWidth placeholder="Banco" formControlName="banco" />
+      <nb-select
+        fullWidth
+        placeholder="Selecione o banco"
+        formControlName="banco"
+      >
+        <nb-option *ngFor="let banco of bancos" value="{{ banco.codigo }}">{{
+          banco.nome
+        }}</nb-option>
+      </nb-select>
     </div>
     <div class="form-group col-md-3">
       <label for="distribuidor">Distribuidor *</label>
@@ -163,12 +190,22 @@
       />
     </div>
     <div class="form-group col-md-3">
-      <label for="regularidade">Período de Regularidade *</label>
+      <label for="per_regularidade">Percentual de Regularidade *</label>
       <input
         nbInput
         fullWidth
         placeholder="Regularidade"
-        formControlName="regularidade"
+        formControlName="per_regularidade"
+      />
+    </div>
+
+    <div class="form-group col-md-3">
+      <label for="vendidos">Vendidos *</label>
+      <input
+        nbInput
+        fullWidth
+        placeholder="vendidos"
+        formControlName="vendidos"
       />
     </div>
   </div>

@@ -15,4 +15,8 @@ export class CnpjService {
     const url = `${this.baseUrl}${cnpj}`;
     return this.http.get(url);
   }
+
+  auth(): Observable<any> {
+    return this.http.post("http://localhost:3000/api/auth", {});
+  }
 }
