@@ -22,24 +22,9 @@ export class IntegradoraPixComponent {
     private dialogService: NbDialogService
   ) {
     this.integradoraPixForm = this.fb.group({
-      cnpj: ["", [Validators.required, Validators.minLength(14)]],
-      razao_social: ["", Validators.required],
-      email: ["", [Validators.required, Validators.email]],
-      nome_fantasia: ["", [Validators.required]],
-      fone_fixo: [""],
-      fone_movel: [""],
-      contato: [""],
-      email_contato_comercial: ["", Validators.email],
-      celular_contato_comercial: [""],
-      cep: ["", [Validators.required, Validators.maxLength(8)]],
-      endereco: ["", Validators.required],
-      bairro: ["", Validators.required],
-      cidade: ["", Validators.required],
-      uf: ["", [Validators.required, Validators.maxLength(2)]],
-      numero: ["", Validators.required],
-      complemento: [""],
-      comissao: ["", Validators.required],
-      obs: [""],
+      razao_social: ["", [Validators.required]],
+      contato: ["", Validators.required],
+      fone_contato: [""],
     });
   }
 
@@ -48,48 +33,6 @@ export class IntegradoraPixComponent {
     this.integradoraPixForm.statusChanges.subscribe(() => {
       this.checkInvalidFields();
     });
-  }
-
-  consultaCnpjCapitalizadora() {
-    const cnpj = this.integradoraPixForm.get("cnpj")?.value;
-
-    if (cnpj && cnpj.length === 14) {
-      this.cnpjService.consultarCnpj(cnpj).subscribe(
-        (dados) => {
-          this.integradoraPixForm.patchValue({
-            razao_social: dados.razao_social || "",
-            nome_fantasia: dados.nome_fantasia || "",
-            email: dados.email || "",
-            fone_fixo: dados.ddd_telefone_1 || "",
-            fone_movel: dados.ddd_telefone_2 || "",
-
-            contato_comercial: dados.contato_comercial || "",
-            email_contato_comercial: dados.email_contato_comercial || "",
-            celular_contato_comercial: dados.celular_contato_comercial || "",
-
-            contato_adm: dados.contato_adm || "",
-            email_contato_adm: dados.email_contato_adm || "",
-            celular_contato_adm: dados.celular_contato_adm || "",
-
-            cep: dados.cep || "",
-            endereco: dados.logradouro || "",
-            numero: dados.numero || "",
-            complemento: dados.complemento || "",
-            bairro: dados.bairro || "",
-            cidade: dados.municipio || "",
-            uf: dados.uf || "",
-
-            comissao: dados.comissao || "",
-            obs: dados.obs || "",
-          });
-        },
-        (erro) => {
-          console.error("Erro ao consultar CNPJ:", erro);
-        }
-      );
-    } else {
-      console.warn("CNPJ inválido ou incompleto");
-    }
   }
 
   // Function to check invalid fields in the form
@@ -108,7 +51,9 @@ export class IntegradoraPixComponent {
     if (this.integradoraPixForm.valid) {
       try {
         const formData = this.integradoraPixForm.value;
-        this.supabaseService.insertEntidade(formData, "banco");
+        this.supabaseService
+          .inserirIntegraPix(formData)
+          .subscribe((it) => console.log(it));
         console.log("Form Submitted", formData);
         this.open(true);
       } catch (error) {

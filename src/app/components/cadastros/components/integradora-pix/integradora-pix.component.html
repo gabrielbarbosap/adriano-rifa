@@ -15,30 +15,11 @@
           <h4>Dados da Integradora Pix</h4>
           <div class="form-row">
             <div class="form-group col-md-4">
-              <label for="cnpj">CNPJ *</label>
+              <label for="razao_social">Nome *</label>
               <input
                 nbInput
                 fullWidth
-                placeholder="CNPJ"
-                formControlName="cnpj"
-                maxlength="14"
-                (blur)="consultaCnpjCapitalizadora()"
-              />
-              <div
-                *ngIf="
-                  integradoraPixForm.get('cnpj')?.invalid &&
-                  integradoraPixForm.get('cnpj')?.touched
-                "
-              >
-                <small class="text-danger">CNPJ deve ter 14 dígitos.</small>
-              </div>
-            </div>
-            <div class="form-group col-md-4">
-              <label for="razao_social">Razão Social *</label>
-              <input
-                nbInput
-                fullWidth
-                placeholder="Razão Social"
+                placeholder="Nome"
                 formControlName="razao_social"
               />
               <div
@@ -47,95 +28,16 @@
                   integradoraPixForm.get('razao_social')?.touched
                 "
               >
-                <small class="text-danger">Razão social é obrigatória.</small>
+                <small class="text-danger">Nome é obrigatório.</small>
               </div>
             </div>
 
             <div class="form-group col-md-4">
-              <label for="nome_fantasia">Nome Fantasia *</label>
+              <label for="contato">Nome Contato*</label>
               <input
                 nbInput
                 fullWidth
-                placeholder="Nome fantasia"
-                formControlName="nome_fantasia"
-              />
-              <div
-                *ngIf="
-                  integradoraPixForm.get('nome_fantasia')?.invalid &&
-                  integradoraPixForm.get('nome_fantasia')?.touched
-                "
-              >
-                <small class="text-danger">Nome fantasia é inválido.</small>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group col-md-4">
-              <label for="fone_fixo">Telefone Fixo </label>
-              <input
-                nbInput
-                fullWidth
-                placeholder="Telefone Fixo"
-                formControlName="fone_fixo"
-                mask="(00) 0000-0000"
-              />
-              <div
-                *ngIf="
-                  integradoraPixForm.get('fone_fixo')?.invalid &&
-                  integradoraPixForm.get('fone_fixo')?.touched
-                "
-              >
-                <small class="text-danger">Telefone fixo é obrigatório.</small>
-              </div>
-            </div>
-            <div class="form-group col-md-4">
-              <label for="fone_movel">Celular</label>
-              <input
-                nbInput
-                fullWidth
-                placeholder="Celular"
-                formControlName="fone_movel"
-                mask="(00)0 0000-0000"
-              />
-              <div
-                *ngIf="
-                  integradoraPixForm.get('fone_movel')?.invalid &&
-                  integradoraPixForm.get('fone_movel')?.touched
-                "
-              >
-                <small class="text-danger">Celular é obrigatório.</small>
-              </div>
-            </div>
-
-            <div class="form-group col-md-4">
-              <label for="email">Email *</label>
-              <input
-                nbInput
-                fullWidth
-                placeholder="Email"
-                formControlName="email"
-              />
-              <div
-                *ngIf="
-                  integradoraPixForm.get('email')?.invalid &&
-                  integradoraPixForm.get('email')?.touched
-                "
-              >
-                <small class="text-danger">Email é inválido.</small>
-              </div>
-            </div>
-          </div>
-
-          <!-- Dados de Contato Comercial -->
-          <h4>Contato Comercial</h4>
-          <div class="form-row">
-            <div class="form-group col-md-4">
-              <label for="contato">Nome Contato Comercial</label>
-              <input
-                nbInput
-                fullWidth
-                placeholder="Nome Contato Comercial"
+                placeholder="Nome contato"
                 formControlName="contato"
               />
               <div
@@ -144,208 +46,29 @@
                   integradoraPixForm.get('contato')?.touched
                 "
               >
-                <small class="text-danger"
-                  >Contato comercial é obrigatório.</small
-                >
+                <small class="text-danger">Nome contato é obrigatório.</small>
               </div>
             </div>
+
             <div class="form-group col-md-4">
-              <label for="email_contato_comercial"
-                >Email Contato Comercial</label
-              >
+              <label for="fone_contato">Celular Contato </label>
               <input
                 nbInput
                 fullWidth
-                placeholder="Email Contato Comercial"
-                formControlName="email_contato_comercial"
+                placeholder="Celular Contato"
+                formControlName="fone_contato"
+                mask="(00) 00000-0000"
               />
               <div
                 *ngIf="
-                  integradoraPixForm.get('email_contato_comercial')?.invalid &&
-                  integradoraPixForm.get('email_contato_comercial')?.touched
+                  integradoraPixForm.get('fone_contato')?.invalid &&
+                  integradoraPixForm.get('fone_contato')?.touched
                 "
               >
                 <small class="text-danger"
-                  >Email do contato comercial é inválido.</small
+                  >Telefone contato é obrigatório.</small
                 >
               </div>
-            </div>
-            <div class="form-group col-md-4">
-              <label for="celular_contato_comercial"
-                >Celular Contato Comercial</label
-              >
-              <input
-                nbInput
-                fullWidth
-                placeholder="Celular Contato Comercial"
-                formControlName="celular_contato_comercial"
-                mask="(00)0 0000-0000"
-              />
-              <div
-                *ngIf="
-                  integradoraPixForm.get('celular_contato_comercial')
-                    ?.invalid &&
-                  integradoraPixForm.get('celular_contato_comercial')?.touched
-                "
-              >
-                <small class="text-danger"
-                  >Celular do contato comercial é obrigatório.</small
-                >
-              </div>
-            </div>
-          </div>
-
-          <!-- Endereço da Empresa -->
-          <h4>Endereço da Empresa</h4>
-          <div class="form-row">
-            <div class="form-group col-md-3">
-              <label for="cep">CEP *</label>
-              <input
-                nbInput
-                fullWidth
-                placeholder="CEP"
-                formControlName="cep"
-                maxlength="8"
-              />
-              <div
-                *ngIf="
-                  integradoraPixForm.get('cep')?.invalid &&
-                  integradoraPixForm.get('cep')?.touched
-                "
-              >
-                <small class="text-danger">CEP deve ter 8 dígitos.</small>
-              </div>
-            </div>
-            <div class="form-group col-md-6">
-              <label for="endereco">Endereço *</label>
-              <input
-                nbInput
-                fullWidth
-                placeholder="Endereço"
-                formControlName="endereco"
-              />
-              <div
-                *ngIf="
-                  integradoraPixForm.get('endereco')?.invalid &&
-                  integradoraPixForm.get('endereco')?.touched
-                "
-              >
-                <small class="text-danger">Endereço é obrigatório.</small>
-              </div>
-            </div>
-            <div class="form-group col-md-3">
-              <label for="numero">Número *</label>
-              <input
-                nbInput
-                fullWidth
-                placeholder="Número"
-                formControlName="numero"
-              />
-              <div
-                *ngIf="
-                  integradoraPixForm.get('numero')?.invalid &&
-                  integradoraPixForm.get('numero')?.touched
-                "
-              >
-                <small class="text-danger">Número é obrigatório.</small>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group col-md-3">
-              <label for="complemento">Complemento</label>
-              <input
-                nbInput
-                fullWidth
-                placeholder="Complemento"
-                formControlName="complemento"
-              />
-              <!-- Campo opcional, sem validação de erro -->
-            </div>
-            <div class="form-group col-md-3">
-              <label for="bairro">Bairro *</label>
-              <input
-                nbInput
-                fullWidth
-                placeholder="Bairro"
-                formControlName="bairro"
-              />
-              <div
-                *ngIf="
-                  integradoraPixForm.get('bairro')?.invalid &&
-                  integradoraPixForm.get('bairro')?.touched
-                "
-              >
-                <small class="text-danger">Bairro é obrigatório.</small>
-              </div>
-            </div>
-            <div class="form-group col-md-3">
-              <label for="cidade">Cidade *</label>
-              <input
-                nbInput
-                fullWidth
-                placeholder="Cidade"
-                formControlName="cidade"
-              />
-              <div
-                *ngIf="
-                  integradoraPixForm.get('cidade')?.invalid &&
-                  integradoraPixForm.get('cidade')?.touched
-                "
-              >
-                <small class="text-danger">Cidade é obrigatória.</small>
-              </div>
-            </div>
-            <div class="form-group col-md-3">
-              <label for="uf">UF *</label>
-              <input
-                nbInput
-                fullWidth
-                placeholder="UF"
-                formControlName="uf"
-                maxlength="2"
-              />
-              <div
-                *ngIf="
-                  integradoraPixForm.get('uf')?.invalid &&
-                  integradoraPixForm.get('uf')?.touched
-                "
-              >
-                <small class="text-danger">UF deve ter 2 caracteres.</small>
-              </div>
-            </div>
-          </div>
-
-          <!-- Dados Adicionais -->
-          <h4>Dados Adicionais</h4>
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="comissao">Comissão (%) *</label>
-              <input
-                nbInput
-                fullWidth
-                placeholder="Comissão"
-                formControlName="comissao"
-              />
-              <div
-                *ngIf="
-                  integradoraPixForm.get('comissao')?.invalid &&
-                  integradoraPixForm.get('comissao')?.touched
-                "
-              >
-                <small class="text-danger">Comissão é obrigatória.</small>
-              </div>
-            </div>
-            <div class="form-group col-md-6">
-              <label for="obs">Observações </label>
-              <textarea
-                nbInput
-                fullWidth
-                placeholder="Observações"
-                formControlName="obs"
-              ></textarea>
-              <!-- Campo opcional, sem validação de erro -->
             </div>
           </div>
 

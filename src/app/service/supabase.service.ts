@@ -99,7 +99,7 @@ export class SupabaseService {
         // Dados adicionais
         obs: data.obs || null, // Não obrigatório
         comissao: data.comissao,
-        id_capitalizadora: data.id_capitalizadora,
+        capitalizadora: data.capitalizadora,
         banco: data.banco,
         chave_pix: data.chave_pix,
         agencia: data.agencia,
@@ -108,6 +108,20 @@ export class SupabaseService {
       },
     ]);
 
+    if (error) {
+      throw new Error(`Erro ao inserir dados: ${error.message}`);
+    }
+  }
+
+  async editAdd(data: any) {
+    const { error } = await this.supabase
+      .from("influencer")
+      .update([
+        {
+          adicionais: data.adicionais,
+        },
+      ])
+      .eq("id", localStorage.getItem("id_influencer"));
     if (error) {
       throw new Error(`Erro ao inserir dados: ${error.message}`);
     }
@@ -164,7 +178,6 @@ export class SupabaseService {
           // Dados adicionais
           obs: data.obs || null, // Não obrigatório
           comissao: data.comissao,
-          id_capitalizadora: data.id_capitalizadora,
           banco: data.banco,
           chave_pix: data.chave_pix,
           agencia: data.agencia,
@@ -423,7 +436,7 @@ export class SupabaseService {
           id_entidade: data.id_entidade,
           produto: data.produto,
           id_distribuidor: data.id_distribuidor,
-          id_capitalizadora: data.id_capitalizadora,
+          capitalizadora: data.capitalizadora,
           id_influencer: data.id_influencer,
           regulamento: data.regulamento, // Se tiver no formulário
           obs_integradora: data.obs_integradora,
@@ -469,7 +482,7 @@ export class SupabaseService {
             id_entidade: data.id_entidade,
             produto: data.produto,
             id_distribuidor: data.id_distribuidor,
-            id_capitalizadora: data.id_capitalizadora,
+            capitalizadora: data.capitalizadora,
             id_influencer: data.id_influencer,
             regulamento: data.regulamento, // Se tiver no formulário
             obs_integradora: data.obs_integradora,
@@ -587,11 +600,24 @@ export class SupabaseService {
     return from(this.supabase.from("login").insert(usuario));
   }
 
+  inserirIntegraPix(dados: any): Observable<any> {
+    return from(this.supabase.from("banco").insert(dados));
+  }
+
   async buscarAdiantamentos() {
     const { data, error } = await this.supabase
       .from("sorteio_adiantamentos")
       .select("*")
       .eq("id_sorteio", localStorage.getItem("edicao"));
+    if (error) throw error;
+    return data;
+  }
+
+  async buscarCapitalizadora() {
+    const { data, error } = await this.supabase
+      .from("capitalizadoras")
+      .select("*")
+      .eq("razao_social", localStorage.getItem("capitalizadora"));
     if (error) throw error;
     return data;
   }

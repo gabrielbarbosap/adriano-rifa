@@ -1,5 +1,11 @@
 import { Component } from "@angular/core";
-import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from "@angular/forms";
 import { ErrorReqComponent } from "src/app/components/error-req/error-req.component";
 import { SucessReqComponent } from "src/app/components/sucess-req/sucess-req.component";
 import { CnpjService } from "src/app/service/cnpj-service.service";
@@ -16,6 +22,9 @@ export class CadastroInfluencerComponent {
   cadastroForm: FormGroup;
   invalidFields: string[] = []; // Array para armazenar campos inválidos
   capitalizadoras: any;
+  capitalizadora: any;
+
+  adicionais = new FormControl("");
 
   bancos = [
     { codigo: "001", nome: "Banco do Brasil S.A." },
@@ -58,74 +67,55 @@ export class CadastroInfluencerComponent {
           cpfValidator(),
         ],
       ],
-      data_nascimento: ["", Validators.required],
-      nome_completo: ["", Validators.required],
-      rg: [""], // Não obrigatório
-      titulo_eleitor: [""], // Não obrigatório
+      data_nascimento: [""],
+      nome_completo: ["", [Validators.required]],
+      rg: [""],
+      titulo_eleitor: [""],
 
       // Dados cadastrais pessoais
-      cep: [
-        "",
-        [Validators.required, Validators.minLength(8), Validators.maxLength(8)],
-      ],
-      endereco: ["", Validators.required],
-      numero: ["", Validators.required],
-      complemento: [""], // Não obrigatório
-      bairro: ["", Validators.required],
-      cidade: ["", Validators.required],
-      uf: [
-        "",
-        [Validators.required, Validators.minLength(2), Validators.maxLength(2)],
-      ],
-      email: ["", [Validators.required, Validators.email]],
-      fone_fixo: [""], // Não obrigatório
-      fone_movel: ["", Validators.required],
+      cep: ["", [Validators.minLength(8), Validators.maxLength(8)]],
+      endereco: [""],
+      numero: [""],
+      complemento: [""],
+      bairro: [""],
+      cidade: [""],
+      uf: ["", [Validators.minLength(2), Validators.maxLength(2)]],
+      email: ["", [Validators.email]],
+      fone_fixo: [""],
+      fone_movel: [""],
 
       // Dados de contato
-      contato: [""], // Não obrigatório
-      telefone_contato: [""], // Não obrigatório
-      email_contato: [""], // Não obrigatório
-      celular_contato: [""], // Não obrigatório
+      contato: [""],
+      telefone_contato: [""],
+      email_contato: [""],
+      celular_contato: [""],
 
       // Dados da empresa
-      cnpj: [
-        "",
-        [
-          Validators.required,
-          Validators.minLength(14),
-          Validators.maxLength(14),
-        ],
-      ],
-      razao_social: ["", Validators.required],
-      nome_fantasia: ["", Validators.required],
+      cnpj: ["", [Validators.minLength(14), Validators.maxLength(14)]],
+      razao_social: [""],
+      nome_fantasia: [""],
 
       // Endereço da empresa
-      cep_empresa: [
-        "",
-        [Validators.required, Validators.minLength(8), Validators.maxLength(8)],
-      ],
-      endereco_pj: ["", Validators.required],
-      numero_pj: ["", Validators.required],
-      complemento_pj: [""], // Não obrigatório
-      bairro_pj: ["", Validators.required],
-      cidade_pj: ["", Validators.required],
-      uf_pj: [
-        "",
-        [Validators.required, Validators.minLength(2), Validators.maxLength(2)],
-      ],
-      email_pj: ["", [Validators.required, Validators.email]],
-      fone_pj: [""], // Não obrigatório
-      celular_pj: [""], // Não obrigatório
-      data_abertura: ["", Validators.required],
+      cep_empresa: ["", [Validators.minLength(8), Validators.maxLength(8)]],
+      endereco_pj: [""],
+      numero_pj: [""],
+      complemento_pj: [""],
+      bairro_pj: [""],
+      cidade_pj: [""],
+      uf_pj: ["", [Validators.minLength(2), Validators.maxLength(2)]],
+      email_pj: ["", [Validators.email]],
+      fone_pj: [""],
+      celular_pj: [""],
+      data_abertura: [""],
 
       // Dados adicionais
-      obs: [""], // Não obrigatório
-      comissao: ["", Validators.required],
-      id_capitalizadora: ["", Validators.required],
-      banco: ["", Validators.required],
-      chave_pix: ["", Validators.required],
-      conta: ["", Validators.required],
-      agencia: ["", Validators.required],
+      obs: [""],
+      comissao: [""],
+      capitalizadora: [""],
+      banco: [""],
+      chave_pix: [""],
+      conta: [""],
+      agencia: [""],
       documentos: this.fb.array([]),
       ativo: [false],
 
@@ -135,6 +125,7 @@ export class CadastroInfluencerComponent {
   }
 
   ngOnInit(): void {
+    console.log("cadastroForm:", this.cadastroForm);
     const influencerId = localStorage.getItem("id_influencer");
 
     this.supabaseService
@@ -161,6 +152,49 @@ export class CadastroInfluencerComponent {
           console.log("Nenhum sócio encontrado para este influencer.");
         }
       });
+    }
+  }
+
+  async carregarCapitalizadora() {
+    try {
+      const capitalizadoraReq =
+        await this.supabaseService.buscarCapitalizadora();
+      this.capitalizadora = capitalizadoraReq || [];
+      console.log(this.capitalizadora[0].razao_social);
+      this.cadastroForm
+        .get("capitalizadora")
+        ?.setValue(this.capitalizadora[0].id);
+    } catch (error) {
+      console.error("Erro ao carregar adiantamentos:", error);
+    }
+  }
+
+  consultaCnpjCapitalizadora() {
+    const cnpj = this.cadastroForm.get("cnpj")?.value;
+
+    if (cnpj && cnpj.length === 14) {
+      this.cnpjService.consultarCnpj(cnpj).subscribe(
+        (dados) => {
+          this.cadastroForm.patchValue({
+            razao_social: dados.razao_social || "",
+            email_pj: dados.email || "",
+            fone_fixo: dados.fone_pj || "",
+
+            cep: dados.cep || "",
+            endereco: dados.logradouro || "",
+            numero: dados.numero || "",
+            complemento: dados.complemento || "",
+            bairro: dados.bairro || "",
+            cidade: dados.municipio || "",
+            uf: dados.uf || "",
+          });
+        },
+        (erro) => {
+          console.error("Erro ao consultar CNPJ:", erro);
+        }
+      );
+    } else {
+      console.warn("CNPJ inválido ou incompleto");
     }
   }
 
@@ -215,7 +249,7 @@ export class CadastroInfluencerComponent {
       // Dados adicionais
       obs: "", // Não fornecido no `data`
       comissao: data.comissao || "",
-      id_capitalizadora: data.id_capitalizadora || "",
+      capitalizadora: data.capitalizadora || "",
       banco: data.banco,
       chave_pix: data.chave_pix || "",
       conta: data.conta,
@@ -229,7 +263,7 @@ export class CadastroInfluencerComponent {
       data.documentos.forEach((doc: any) => {
         this.documentos.push(
           this.fb.group({
-            descricao: [doc.descricao, Validators.required],
+            descricao: [doc.descricao],
             arquivo: [doc.arquivo], // O Base64 para gerar o link
             isUploaded: [!!doc.arquivo], // Campo para controlar se é um arquivo já enviado
           })
@@ -276,6 +310,17 @@ export class CadastroInfluencerComponent {
       if (controls[name].invalid) {
         this.invalidFields.push(name); // Armazena os nomes dos campos inválidos
       }
+    }
+  }
+
+  async salvarInformacoes() {
+    try {
+      const result = await this.supabaseService.editAdd(this.adicionais.value);
+      console.log("Dados inseridos com sucesso", result);
+      this.open(true);
+    } catch (error) {
+      console.error("Erro ao inserir dados", error);
+      this.openError(true);
     }
   }
 
@@ -394,8 +439,8 @@ export class CadastroInfluencerComponent {
   // Adicionar um novo documento ao FormArray
   addDocumento() {
     const documentoForm = this.fb.group({
-      arquivo: [null, Validators.required], // Será preenchido ao selecionar o arquivo
-      descricao: ["", Validators.required], // Campo obrigatório
+      arquivo: [null], // Será preenchido ao selecionar o arquivo
+      descricao: [""], // Campo obrigatório
     });
 
     this.documentos.push(documentoForm);
@@ -457,28 +502,51 @@ export class CadastroInfluencerComponent {
     return this.cadastroForm.get("socios") as FormArray;
   }
 
+  consultaCnpjSocio(index: number) {
+    const cnpj = this.socios.at(index).get("cpf")?.value; // O campo `cpf` está armazenando o CNPJ
+
+    if (cnpj && cnpj.length === 14) {
+      this.cnpjService.consultarCnpj(cnpj).subscribe(
+        (dados) => {
+          this.socios.at(index).patchValue({
+            nome: dados.razao_social || "",
+            data_nascimento: dados.data_inicio_atividade || "",
+            email: dados.email || "",
+            fone: dados.ddd_telefone_1 || "",
+            cep: dados.cep || "",
+            endereco: dados.logradouro || "",
+            complemento: dados.complemento || "",
+            bairro: dados.bairro || "",
+            cidade: dados.municipio || "",
+            uf: dados.uf || "",
+          });
+        },
+        (erro) => {
+          console.error("Erro ao consultar CNPJ:", erro);
+        }
+      );
+    } else {
+      console.warn("CNPJ inválido ou incompleto");
+    }
+  }
+
   // Adicionar um novo sócio ao FormArray
   addSocio() {
     const socioForm = this.fb.group({
-      nome: ["", Validators.required],
+      nome: [""],
       cpf: [
         "",
-        [
-          Validators.required,
-          Validators.minLength(11),
-          Validators.maxLength(11),
-          cpfValidator(),
-        ],
+        [, Validators.minLength(11), Validators.maxLength(11), cpfValidator()],
       ],
-      data_nascimento: ["", Validators.required],
-      email: ["", [Validators.required, Validators.email]],
-      fone: ["", Validators.required],
-      cep: ["", Validators.required],
-      bairro: ["", Validators.required],
-      complemento: ["", Validators.required],
-      endereco: ["", Validators.required],
-      uf: ["", Validators.required],
-      cidade: ["", Validators.required],
+      data_nascimento: [""],
+      email: ["", [, Validators.email]],
+      fone: [""],
+      cep: [""],
+      bairro: [""],
+      complemento: [""],
+      endereco: [""],
+      uf: [""],
+      cidade: [""],
     });
 
     this.socios.push(socioForm);
@@ -503,24 +571,20 @@ export class CadastroInfluencerComponent {
       this.socios.push(
         this.fb.group({
           id: socio.id,
-          nome: [socio.nome, Validators.required],
+          nome: [socio.nome],
           cpf: [
             socio.cpf,
-            [
-              Validators.required,
-              Validators.minLength(11),
-              Validators.maxLength(14),
-            ],
+            [, Validators.minLength(11), Validators.maxLength(14)],
           ],
-          data_nascimento: [socio.data_nascimento, Validators.required],
-          email: [socio.email, [Validators.required, Validators.email]],
-          fone: [socio.fone, Validators.required],
-          cep: [socio.cep, Validators.required],
-          bairro: [socio.bairro, Validators.required],
-          complemento: [socio.complemento, Validators.required],
-          endereco: [socio.endereco, Validators.required],
-          uf: [socio.uf, Validators.required],
-          cidade: [socio.cidade, Validators.required],
+          data_nascimento: [socio.data_nascimento],
+          email: [socio.email, [, Validators.email]],
+          fone: [socio.fone],
+          cep: [socio.cep],
+          bairro: [socio.bairro],
+          complemento: [socio.complemento],
+          endereco: [socio.endereco],
+          uf: [socio.uf],
+          cidade: [socio.cidade],
         })
       );
     });

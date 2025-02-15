@@ -32,7 +32,7 @@ export class LoginComponent {
         (result) => {
           if (result && result.length > 0) {
             localStorage.setItem("nome_usuario", result[0].nome);
-            // Login bem-sucedido
+            localStorage.removeItem("capitalizadora");
             this.errorMessage = ""; // Limpa qualquer mensagem de erro anterior
             this.router.navigate(["/inicio"]);
           } else {

@@ -64,10 +64,20 @@ export class ConsultaInfluencerComponent implements OnInit {
       filtroMesAniversario,
     } = this.filtroForm.value;
 
+    console.log("Lista antes do filtro:", this.influencers);
+    console.log("Valores dos filtros:", {
+      filtroCpf,
+      filtroNomeCompleto,
+      filtroUf,
+      filtroCidade,
+      filtroAtivo,
+      filtroMesAniversario,
+    });
+
     this.influencersFiltrados = this.influencers.filter((influencer) => {
       const matchCpf =
         filtroCpf && filtroCpf.trim() !== ""
-          ? influencer.cnpj?.toString().includes(filtroCpf.trim())
+          ? influencer.cpf?.toString().includes(filtroCpf.trim())
           : true;
 
       const matchNomeCompleto =
@@ -89,29 +99,45 @@ export class ConsultaInfluencerComponent implements OnInit {
               .includes(filtroCidade.trim().toLowerCase())
           : true;
 
-      const matchAtivo = influencer.ativo === filtroAtivo;
+      const matchAtivo =
+        filtroAtivo !== null && filtroAtivo !== undefined
+          ? influencer.ativo === filtroAtivo
+          : true; // Se não houver filtro, permite qualquer valor
 
-      // Ajuste aqui: sem `.trim()` no filtroMesAniversario
-      const matchMesAniversario = filtroMesAniversario
-        ? new Date(influencer.data_nascimento).getMonth() + 1 ===
-          filtroMesAniversario
-        : true;
+      let matchMesAniversario = true;
+      if (filtroMesAniversario) {
+        const dataNascimento = influencer.data_nascimento?.trim();
+        if (dataNascimento) {
+          const data = new Date(dataNascimento);
+          if (!isNaN(data.getTime())) {
+            matchMesAniversario = data.getMonth() + 1 === filtroMesAniversario;
+          } else {
+            matchMesAniversario = false;
+          }
+        } else {
+          matchMesAniversario = false;
+        }
+      }
 
-      return (
+      const resultadoFinal =
         matchCpf &&
         matchNomeCompleto &&
         matchFiltroUf &&
         matchFiltroCidade &&
         matchAtivo &&
-        matchMesAniversario
-      );
+        matchMesAniversario;
+
+      return resultadoFinal;
     });
 
     this.paginaAtual = 1;
     this.totalPaginas = Math.ceil(
       this.influencersFiltrados.length / this.itensPorPagina
     );
-    this.atualizarPaginacao();
+
+    if (this.influencersFiltrados.length > 0) {
+      this.atualizarPaginacao();
+    }
   }
 
   limparFiltros(): void {

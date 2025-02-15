@@ -11,6 +11,7 @@ import { ActivatedRoute } from "@angular/router";
 import { SucessReqComponent } from "src/app/components/sucess-req/sucess-req.component";
 import { SupabaseService } from "src/app/service/supabase.service";
 import { ErrorReqComponent } from "src/app/components/error-req/error-req.component";
+import { CapitalizadoraService } from "src/app/service/capitalizadora.service";
 
 @Component({
   selector: "app-sorteio",
@@ -47,6 +48,8 @@ export class SorteioComponent {
 
   invalidFields: string[] = [];
 
+  capitalizadora = [] as any;
+
   success = false;
   error = false;
 
@@ -56,13 +59,14 @@ export class SorteioComponent {
     private fb: FormBuilder,
     private nbMenuService: NbMenuService,
     private supabaseService: SupabaseService,
+    private captalizadoraService: CapitalizadoraService,
     private dialogService: NbDialogService,
     private route: ActivatedRoute
   ) {
     this.cadastroForm = this.fb.group({
       edicao: ["", Validators.required],
       data_sorteio: ["", Validators.required],
-      nome_processo: ["", Validators.required],
+      nome_processo: ["SUSEPE"],
       processo_susepe: ["", Validators.required],
       premio_principal: ["", Validators.required],
       titulos_premiados: [""],
@@ -76,13 +80,13 @@ export class SorteioComponent {
       data_resgate: ["", Validators.required],
       premiacao_bruta: ["", Validators.required],
       id_banco: [""],
-      id_capitalizadora: [null, Validators.required],
+      capitalizadora: [null, Validators.required],
       id_entidade: [null, Validators.required],
       produto: ["", Validators.required],
       id_sistema: [, Validators.required],
       id_influencer: [null, Validators.required],
       obs_integradora: [null, Validators.required],
-      obs_capitalizadora: [null, Validators.required],
+      obs_capitalizadora: [null],
       data_real: [null],
       capital_minimo: [null, Validators.required],
       cota_carregamento: [null, Validators.required],
@@ -171,6 +175,23 @@ export class SorteioComponent {
     this.supabaseService
       .buscarDados("capitalizadoras")
       .subscribe((it) => (this.capitalizadoras = it));
+
+    // this.capitalizadora = this.captalizadoraService.getCapitalizadora();
+    this.carregarCapitalizadora();
+  }
+
+  async carregarCapitalizadora() {
+    try {
+      const capitalizadoraReq =
+        await this.supabaseService.buscarCapitalizadora();
+      this.capitalizadora = capitalizadoraReq || [];
+      console.log(this.capitalizadora[0].razao_social);
+      this.cadastroForm
+        .get("capitalizadora")
+        ?.setValue(this.capitalizadora[0].id);
+    } catch (error) {
+      console.error("Erro ao carregar adiantamentos:", error);
+    }
   }
 
   checkInvalidFields(): void {

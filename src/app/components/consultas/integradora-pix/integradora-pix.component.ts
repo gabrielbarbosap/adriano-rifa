@@ -38,19 +38,6 @@ export class ConsultaIntegradoraPixComponent {
   ngOnInit(): void {
     this.supabaseService.buscarDados("banco").subscribe((it) => {
       this.integradoras = it;
-      console.log(this.integradoras);
-
-      this.cnpjs = this.integradoras.map(
-        (capitalizadora) => capitalizadora.cnpj
-      );
-      this.razoesSociais = this.integradoras.map(
-        (capitalizadora) => capitalizadora.razao_social
-      );
-      this.cidades = this.integradoras.map(
-        (capitalizadora) => capitalizadora.cidade
-      );
-
-      this.uf = this.integradoras.map((capitalizadora) => capitalizadora.uf);
 
       this.aplicarFiltros();
     });

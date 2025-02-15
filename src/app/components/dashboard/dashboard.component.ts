@@ -18,14 +18,10 @@ export class DashboardComponent implements OnInit {
     if (!localStorage.getItem("capitalizadora")) {
       this.openWithoutBackdropClick();
     }
-
-    // this.auth.auth().subscribe((res) => {
-    //   console.log(res);
-    // });
   }
 
   openWithoutBackdropClick() {
-    this.open(false);
+    this.open(true);
   }
 
   protected open(closeOnBackdropClick: boolean) {

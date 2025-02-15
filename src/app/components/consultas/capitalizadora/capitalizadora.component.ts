@@ -36,7 +36,7 @@ export class ConsultaCapitalizadoraComponent {
   }
 
   ngOnInit(): void {
-    this.supabaseService.buscarDados("influencer").subscribe((it) => {
+    this.supabaseService.buscarDados("capitalizadoras").subscribe((it) => {
       this.capitalizadoras = it;
       console.log(this.capitalizadoras);
 

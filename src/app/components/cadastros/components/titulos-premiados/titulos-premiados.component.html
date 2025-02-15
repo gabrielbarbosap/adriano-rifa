@@ -32,6 +32,11 @@
           fullWidth
           placeholder="Valor Premiado"
           formControlName="valorPremiado"
+          mask="separator"
+          thousand-separator="."
+          decimal-marker=","
+          decimal-limit="2"
+          prefix="R$ "
         />
         <div
           *ngIf="

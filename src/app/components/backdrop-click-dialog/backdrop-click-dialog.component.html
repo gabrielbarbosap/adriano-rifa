@@ -7,9 +7,9 @@
       [(selected)]="selectedCapitalizadora"
     >
       <nb-option
-        *ngFor="let capitalizadora of capitalizadoras"
-        [value]="capitalizadora"
-        >{{ capitalizadora }}</nb-option
+        *ngFor="let it of capitalizadoras"
+        value="{{ it.razao_social }}"
+        >{{ it.razao_social }}</nb-option
       >
     </nb-select>
   </nb-card-body>

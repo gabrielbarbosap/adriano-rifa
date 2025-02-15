@@ -98,26 +98,7 @@
               </div>
 
               <div class="form-row">
-                <div class="form-group col-md-6">
-                  <label for="nome_processo">Nome do Processo *</label>
-                  <input
-                    nbInput
-                    fullWidth
-                    placeholder="Nome do Processo"
-                    formControlName="nome_processo"
-                  />
-                  <div
-                    *ngIf="
-                      cadastroForm.get('nome_processo')?.invalid &&
-                      cadastroForm.get('nome_processo')?.touched
-                    "
-                  >
-                    <small class="text-danger"
-                      >Nome do processo é obrigatório.</small
-                    >
-                  </div>
-                </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                   <label for="processo_susepe">Processo Susepe *</label>
                   <input
                     nbInput
@@ -136,10 +117,7 @@
                     >
                   </div>
                 </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                   <label for="premio_principal">Prêmio Principal *</label>
                   <input
                     nbInput
@@ -158,7 +136,7 @@
                     >
                   </div>
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                   <label for="id_influencer">Influencer *</label>
                   <nb-select
                     fullWidth
@@ -186,6 +164,11 @@
                     fullWidth
                     placeholder="Valor de Venda"
                     formControlName="valor_venda_titulo"
+                    mask="separator"
+                    thousand-separator="."
+                    decimal-marker=","
+                    decimal-limit="2"
+                    prefix="R$ "
                   />
                   <div
                     *ngIf="
@@ -348,6 +331,11 @@
                     fullWidth
                     placeholder="Capital Mínimo"
                     formControlName="capital_minimo"
+                    mask="separator"
+                    thousand-separator="."
+                    decimal-marker=","
+                    decimal-limit="2"
+                    prefix="R$ "
                   />
                   <div
                     *ngIf="
@@ -362,7 +350,6 @@
                 </div>
               </div>
 
-              <!-- Informações de Pagamento -->
               <h4>Informações de Pagamento</h4>
               <div class="form-row">
                 <div class="form-group col-md-6">
@@ -416,6 +403,11 @@
                     fullWidth
                     placeholder="Premiação Bruta"
                     formControlName="premiacao_bruta"
+                    mask="separator"
+                    thousand-separator="."
+                    decimal-marker=","
+                    decimal-limit="2"
+                    prefix="R$ "
                   />
                   <div
                     *ngIf="
@@ -452,7 +444,6 @@
                     >
                   </div>
                 </div>
-
                 <div class="form-group col-md-4">
                   <label for="obs_integradora">Obs Integradora *</label>
                   <input
@@ -474,34 +465,6 @@
                 </div>
               </div>
 
-              <!-- Informações da Integradora e Sistema -->
-              <!-- <h4>Integradora e Sistema</h4>
-              <div class="form-row">
-                <div class="form-group col-md-6">
-                  <label for="id_banco">Integradora *</label>
-                  <nb-select
-                    fullWidth
-                    placeholder="Selecione a Integradora"
-                    formControlName="id_banco"
-                  >
-                    <nb-option value="1">Itau</nb-option>
-                    <nb-option value="2">Banco Do Brasil</nb-option>
-                    <nb-option value="3">Santander</nb-option>
-                  </nb-select>
-                  <div
-                    *ngIf="
-                      cadastroForm.get('id_banco')?.invalid &&
-                      cadastroForm.get('id_banco')?.touched
-                    "
-                  >
-                    <small class="text-danger"
-                      >Integradora é obrigatória.</small
-                    >
-                  </div>
-                </div>
-              </div> -->
-
-              <!-- Informações da Entidade e Produto -->
               <h4>Entidade e Produto</h4>
               <div class="form-row">
                 <div class="form-group col-md-4">
@@ -543,47 +506,32 @@
                     <small class="text-danger">Produto é obrigatório.</small>
                   </div>
                 </div>
-                <!-- <div class="form-group col-md-4">
-                  <label for="distribuidor">Distribuidor *</label>
-                  <input
-                    nbInput
-                    fullWidth
-                    placeholder="Distribuidor"
-                    formControlName="distribuidor"
-                  />
-                  <div
-                    *ngIf="
-                      cadastroForm.get('distribuidor')?.invalid &&
-                      cadastroForm.get('distribuidor')?.touched
-                    "
-                  >
-                    <small class="text-danger"
-                      >Distribuidor é obrigatório.</small
-                    >
-                  </div>
-                </div> -->
               </div>
 
               <!-- Informações da Capitalizadora -->
-              <h4>Capitalizadora</h4>
+              <!-- <h4>Capitalizadora</h4>
               <div class="form-row">
                 <div class="form-group col-md-6">
-                  <label for="id_capitalizadora">Capitalizadora *</label>
+                  <label for="capitalizadora">Capitalizadora *</label>
                   <nb-select
                     fullWidth
                     placeholder="Selecione a Capitalizadora"
-                    formControlName="id_capitalizadora"
+                    formControlName="capitalizadora"
                   >
                     <nb-option
-                      *ngFor="let it of capitalizadoras"
-                      value="{{ it.id }}"
+                      *ngFor="let it of capitalizadora"
+                      [value]="it.id"
                       >{{ it.razao_social }}</nb-option
                     >
                   </nb-select>
+
+                  <span *ngIf="capitalizadora">
+                    {{ capitalizadora[0].razao_social }}</span
+                  >
                   <div
                     *ngIf="
-                      cadastroForm.get('id_capitalizadora')?.invalid &&
-                      cadastroForm.get('id_capitalizadora')?.touched
+                      cadastroForm.get('capitalizadora')?.invalid &&
+                      cadastroForm.get('capitalizadora')?.touched
                     "
                   >
                     <small class="text-danger"
@@ -611,7 +559,7 @@
                     >
                   </div>
                 </div>
-              </div>
+              </div> -->
 
               <!-- Botões de ação -->
               <div class="form-actions">

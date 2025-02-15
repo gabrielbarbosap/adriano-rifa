@@ -55,14 +55,19 @@ export class HeaderComponent {
     });
 
     this.capitalizadoraService.capitalizadora$.subscribe((cap) => {
-      if (cap === "Kovr") {
+      const capLower = cap.toLowerCase();
+      console.log(capLower);
+
+      if (capLower.includes("kovr")) {
         this.base64 = this.kovr;
-      } else if (cap.includes("Capemisa")) {
+      } else if (capLower.includes("capemisa")) {
         this.base64 = this.capemisa;
-      } else if (cap.includes("Aplicap")) {
+      } else if (capLower.includes("aplicap")) {
         this.base64 = this.aplicap;
-      } else if (cap.includes("ViaCap")) {
+      } else if (capLower.includes("viacap")) {
         this.base64 = this.viacap;
+      } else {
+        this.base64 = "";
       }
     });
   }
