@@ -64,7 +64,7 @@ export class HeaderComponent {
         this.base64 = this.capemisa;
       } else if (capLower.includes("aplicap")) {
         this.base64 = this.aplicap;
-      } else if (capLower.includes("viacap")) {
+      } else if (capLower.includes("via capitalizacao")) {
         this.base64 = this.viacap;
       } else {
         this.base64 = "";

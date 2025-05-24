@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
-import { from, map, Observable } from "rxjs";
+import { from, map, Observable, switchMap } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -99,12 +99,14 @@ export class SupabaseService {
         // Dados adicionais
         obs: data.obs || null, // Não obrigatório
         comissao: data.comissao,
-        capitalizadora: data.capitalizadora,
+        capitalizadora: localStorage.getItem("capitalizadora"),
         banco: data.banco,
         chave_pix: data.chave_pix,
         agencia: data.agencia,
         conta: data.conta,
         documentos: data.documentos,
+        produto: data.produto,
+        inicio_contrato: data.inicio_contrato,
       },
     ]);
 
@@ -183,6 +185,8 @@ export class SupabaseService {
           agencia: data.agencia,
           conta: data.conta,
           documentos: data.documentos,
+          produto: data.produto,
+          inicio_contrato: data.inicio_contrato,
         },
       ])
       .eq("id", localStorage.getItem("id_influencer"));
@@ -191,9 +195,15 @@ export class SupabaseService {
     }
   }
 
-  getSorteioById(id: string): Observable<any> {
+  getSorteioById(id: string, influencer: any): Observable<any> {
     return from(
-      this.supabase.from("sorteio").select("*").eq("edicao", id).single()
+      this.supabase
+        .from("sorteio")
+        .select("*")
+        .eq("edicao", id)
+        .eq("id_influencer", influencer)
+        .eq("capitalizadora", localStorage.getItem("capitalizadora"))
+        .single()
     ).pipe(
       map((response) => {
         if (response.error) {
@@ -236,6 +246,23 @@ export class SupabaseService {
   getInfluencerById(id: string): Observable<any> {
     return from(
       this.supabase.from("influencer").select("*").eq("id", id).single()
+    ).pipe(
+      map((response) => {
+        if (response.error) {
+          throw new Error(response.error.message); // Tratar erros se houver
+        }
+        return response.data; // Retorna os dados do sorteio
+      })
+    );
+  }
+
+  getSorteado(): Observable<any> {
+    return from(
+      this.supabase
+        .from("sorteio_ganhadores")
+        .select("*")
+        .eq("id_sorteio", localStorage.getItem("id_sorteio"))
+        .single()
     ).pipe(
       map((response) => {
         if (response.error) {
@@ -435,8 +462,8 @@ export class SupabaseService {
           id_sistema: data.id_sistema, // Se tiver no formulário
           id_entidade: data.id_entidade,
           produto: data.produto,
-          id_distribuidor: data.id_distribuidor,
-          capitalizadora: data.capitalizadora,
+
+          capitalizadora: localStorage.getItem("capitalizadora"),
           id_influencer: data.id_influencer,
           regulamento: data.regulamento, // Se tiver no formulário
           obs_integradora: data.obs_integradora,
@@ -453,47 +480,62 @@ export class SupabaseService {
   editarCadastroSorteio(
     data: any,
     nameTable: string,
-    edicao: any
+    edicao: any,
+    produto?: any
   ): Observable<any> {
-    // Retorna um Observable usando `from` para transformar a Promise
     return from(
       this.supabase
         .from(nameTable)
-        .update([
-          {
-            edicao: data.edicao,
-            data_sorteio: data.data_sorteio,
-            nome_processo: data.nome_processo,
-            processo_susepe: data.processo_susepe,
-            premio_principal: data.premio_principal,
-            desc_titulo_premiado: data.desc_titulo_premiado,
-            titulos_premiados: data.titulos_premiados || null, // Campo não obrigatório
-            valor_venda_titulo: data.valor_venda_titulo,
-            serie: data.serie,
-            data_inicio_vendas: data.data_inicio_vendas,
-            tipo_sorteio: data.tipo_sorteio,
-            venda_minima: data.venda_minima,
-            cota_sorteio: data.cota_sorteio,
-            data_carregamento: data.data_carregamento,
-            data_resgate: data.data_resgate,
-            premiacao_bruta: data.premiacao_bruta,
-            id_banco: data.id_banco,
-            id_sistema: data.id_sistema, // Se tiver no formulário
-            id_entidade: data.id_entidade,
-            produto: data.produto,
-            id_distribuidor: data.id_distribuidor,
-            capitalizadora: data.capitalizadora,
-            id_influencer: data.id_influencer,
-            regulamento: data.regulamento, // Se tiver no formulário
-            obs_integradora: data.obs_integradora,
-            obs_capitalizadora: data.obs_capitalizadora,
-            data_real: data.data_real,
-            capital_minimo: data.capital_minimo,
-            cota_carregamento: data.cota_carregamento,
-            cota_resgate: data.cota_resgate,
-          },
-        ])
+        .select("id")
         .eq("edicao", edicao)
+        .eq("produto", produto)
+        .eq("capitalizadora", localStorage.getItem("capitalizadora"))
+        .single()
+    ).pipe(
+      switchMap((result) => {
+        if (!result.data) {
+          throw new Error("Nenhum sorteio encontrado para edição.");
+        }
+
+        return from(
+          this.supabase
+            .from(nameTable)
+            .update([
+              {
+                edicao: data.edicao,
+                data_sorteio: data.data_sorteio,
+                nome_processo: data.nome_processo,
+                processo_susepe: data.processo_susepe,
+                premio_principal: data.premio_principal,
+                desc_titulo_premiado: data.desc_titulo_premiado,
+                titulos_premiados: data.titulos_premiados || null,
+                valor_venda_titulo: data.valor_venda_titulo,
+                serie: data.serie,
+                data_inicio_vendas: data.data_inicio_vendas,
+                tipo_sorteio: data.tipo_sorteio,
+                venda_minima: data.venda_minima,
+                cota_sorteio: data.cota_sorteio,
+                data_carregamento: data.data_carregamento,
+                data_resgate: data.data_resgate,
+                premiacao_bruta: data.premiacao_bruta,
+                id_banco: data.id_banco,
+                id_sistema: data.id_sistema,
+                id_entidade: data.id_entidade,
+                produto: data.produto,
+                capitalizadora: localStorage.getItem("capitalizadora"),
+                id_influencer: data.id_influencer,
+                regulamento: data.regulamento,
+                obs_integradora: data.obs_integradora,
+                obs_capitalizadora: data.obs_capitalizadora,
+                data_real: data.data_real,
+                capital_minimo: data.capital_minimo,
+                cota_carregamento: data.cota_carregamento,
+                cota_resgate: data.cota_resgate,
+              },
+            ])
+            .eq("id", result.data.id) // Atualiza apenas o ID encontrado
+        );
+      })
     );
   }
 
@@ -538,7 +580,7 @@ export class SupabaseService {
           documento_identificacao_foto:
             data.documentos.documentoIdentificacaoFoto,
           comprovante_residencia: data.documentos.comprovanteResidencia,
-          id_sorteio: localStorage.getItem("edicao"),
+          id_sorteio: localStorage.getItem("id_sorteio"),
           opcao_premio: data.opcao_premio,
         },
       ])
@@ -588,7 +630,7 @@ export class SupabaseService {
             documento_identificacao_foto:
               data.documentos.documentoIdentificacaoFoto,
             comprovante_residencia: data.documentos.comprovanteResidencia,
-            id_sorteio: localStorage.getItem("edicao"),
+            id_sorteio: localStorage.getItem("id_sorteio"),
             opcao_premio: data.opcao_premio,
           },
         ])
@@ -698,7 +740,8 @@ export class SupabaseService {
   async buscarTitulosPremiados() {
     const { data, error } = await this.supabase
       .from("sorteio_titulos_premiados")
-      .select("*");
+      .select("*")
+      .eq("id_sorteio", localStorage.getItem("id_sorteio"));
 
     if (error) throw error;
     return data;

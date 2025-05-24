@@ -38,10 +38,10 @@ export class ConsultaInfluencerComponent implements OnInit {
     private router: Router
   ) {
     this.filtroForm = this.fb.group({
-      filtroCpf: [""],
+      produto: [""],
       filtroNomeCompleto: [""],
       filtroUf: [""],
-      filtroCidade: [""],
+      filtroDataInicioContrato: [""],
       filtroAtivo: [true], // Filtro de ativos/inativos
       filtroMesAniversario: [""], // Novo filtro por mês de aniversário
     });
@@ -56,28 +56,31 @@ export class ConsultaInfluencerComponent implements OnInit {
 
   aplicarFiltros(): void {
     const {
-      filtroCpf,
+      produto,
       filtroNomeCompleto,
       filtroUf,
-      filtroCidade,
+      filtroDataInicioContrato,
       filtroAtivo,
       filtroMesAniversario,
     } = this.filtroForm.value;
 
     console.log("Lista antes do filtro:", this.influencers);
     console.log("Valores dos filtros:", {
-      filtroCpf,
+      produto,
       filtroNomeCompleto,
       filtroUf,
-      filtroCidade,
+      filtroDataInicioContrato,
       filtroAtivo,
       filtroMesAniversario,
     });
 
     this.influencersFiltrados = this.influencers.filter((influencer) => {
-      const matchCpf =
-        filtroCpf && filtroCpf.trim() !== ""
-          ? influencer.cpf?.toString().includes(filtroCpf.trim())
+      const matchProduto =
+        produto && produto.trim() !== ""
+          ? influencer.produto
+              ?.toString()
+              .toLowerCase()
+              .includes(produto.trim().toLowerCase())
           : true;
 
       const matchNomeCompleto =
@@ -92,11 +95,17 @@ export class ConsultaInfluencerComponent implements OnInit {
           ? influencer.uf?.toLowerCase().includes(filtroUf.trim().toLowerCase())
           : true;
 
-      const matchFiltroCidade =
-        filtroCidade && filtroCidade.trim() !== ""
-          ? influencer.cidade
-              ?.toLowerCase()
-              .includes(filtroCidade.trim().toLowerCase())
+      const matchDataInicioContrato =
+        filtroDataInicioContrato && filtroDataInicioContrato !== ""
+          ? (() => {
+              const dataContrato = influencer.inicio_contrato?.trim();
+              if (dataContrato) {
+                const inicioContrato = new Date(dataContrato);
+                const dataSelecionada = new Date(filtroDataInicioContrato);
+                return inicioContrato >= dataSelecionada;
+              }
+              return false;
+            })()
           : true;
 
       const matchAtivo =
@@ -120,10 +129,10 @@ export class ConsultaInfluencerComponent implements OnInit {
       }
 
       const resultadoFinal =
-        matchCpf &&
+        matchProduto &&
         matchNomeCompleto &&
         matchFiltroUf &&
-        matchFiltroCidade &&
+        matchDataInicioContrato &&
         matchAtivo &&
         matchMesAniversario;
 
@@ -142,10 +151,10 @@ export class ConsultaInfluencerComponent implements OnInit {
 
   limparFiltros(): void {
     this.filtroForm.reset({
-      filtroCpf: "",
+      produto: "",
       filtroNomeCompleto: "",
       filtroUf: "",
-      filtroCidade: "",
+      filtroDataInicioContrato: "",
       filtroAtivo: true,
       filtroMesAniversario: "", // Reseta o filtro por mês de aniversário
     });

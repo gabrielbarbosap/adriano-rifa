@@ -211,7 +211,7 @@
               </div>
 
               <div class="form-row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                   <label for="email">Email </label>
                   <input
                     nbInput
@@ -220,7 +220,7 @@
                     formControlName="email"
                   />
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                   <label for="fone_movel">Telefone Móvel </label>
                   <input
                     nbInput
@@ -228,6 +228,18 @@
                     placeholder="Telefone Móvel"
                     formControlName="fone_movel"
                     mask="(00)0 0000-0000"
+                  />
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label for="inicio_contrato"
+                    >Data de Início de Contrato
+                  </label>
+                  <input
+                    nbInput
+                    type="date"
+                    fullWidth
+                    formControlName="inicio_contrato"
                   />
                 </div>
               </div>
@@ -311,6 +323,16 @@
                     fullWidth
                     placeholder="Nome Fantasia"
                     formControlName="nome_fantasia"
+                  />
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label for="produto">Produto </label>
+                  <input
+                    nbInput
+                    fullWidth
+                    placeholder="Produto"
+                    formControlName="produto"
                   />
                 </div>
               </div>
@@ -509,7 +531,7 @@
             </form>
           </nb-tab>
 
-          <nb-tab tabTitle="Sócios">
+          <nb-tab tabTitle="Sócios" [disabled]="!isEditTab">
             <form [formGroup]="cadastroForm">
               <div formArrayName="socios" class="socios-container">
                 <div
@@ -666,7 +688,7 @@
             </form>
           </nb-tab>
 
-          <nb-tab tabTitle="Adicional">
+          <nb-tab tabTitle="Adicional" [disabled]="!isEditTab">
             <form [formGroup]="cadastroForm">
               <textarea
                 nbInput

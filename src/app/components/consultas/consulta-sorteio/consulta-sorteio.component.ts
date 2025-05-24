@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { SupabaseService } from "src/app/service/supabase.service";
 import { Router } from "@angular/router";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 interface Sorteio {
   edicao: string;
@@ -45,6 +47,7 @@ export class ConsultaSorteioComponent {
       filtroPremio: [""],
       filtroInfluencer: [""], // Campo de texto para o filtro de influencer
       filtroInfluencerSelecionado: [""], // Campo de seleção do influencer
+      filtroProdutoSelecionado: [""],
     });
   }
 
@@ -69,9 +72,10 @@ export class ConsultaSorteioComponent {
       filtroProduto,
       filtroPremio,
       filtroInfluencerSelecionado,
+      filtroProdutoSelecionado,
     } = this.filtroForm.value;
 
-    console.log(filtroInfluencerSelecionado);
+    console.log(filtroProdutoSelecionado);
     // Verifica se o "Selecionar Todos" foi escolhido
     const produtosFiltrados = filtroProduto.includes("all")
       ? this.produtos
@@ -91,6 +95,9 @@ export class ConsultaSorteioComponent {
           : true) &&
         (filtroInfluencerSelecionado
           ? sorteio.nome_completo === filtroInfluencerSelecionado
+          : true) &&
+        (filtroProdutoSelecionado
+          ? sorteio.produto.includes(filtroProdutoSelecionado)
           : true)
       );
     });
@@ -111,6 +118,7 @@ export class ConsultaSorteioComponent {
       filtroPremio: "",
       filtroInfluencer: "", // Limpa o campo de input do influencer
       filtroInfluencerSelecionado: "", // Limpa o select do influencer
+      filtroProdutoSelecionado: "",
     });
 
     // Restaura a lista completa de influenciadores no select
@@ -160,8 +168,44 @@ export class ConsultaSorteioComponent {
     }
   }
 
-  editarSorteio(sorteioId: any): void {
+  editarSorteio(sorteioId: any, idInfluencer: any): void {
     localStorage.setItem("edicao", sorteioId);
-    this.router.navigate([`/editar-sorteio`, sorteioId]);
+    this.router.navigate([`/editar-sorteio`, sorteioId, idInfluencer]);
+  }
+
+  gerarPDF(): void {
+    const doc = new jsPDF();
+
+    doc.setFontSize(16);
+    doc.text("Relatório de Sorteios", 14, 15);
+
+    const colunas = [
+      "Edição",
+      "Data Sorteio",
+      "Produto",
+      "Prêmio Principal",
+      "Influencer",
+      "Capitalizadora",
+    ];
+
+    const linhas = this.sorteiosFiltrados.map((sorteio) => [
+      sorteio.edicao,
+      sorteio.data_sorteio,
+      sorteio.produto,
+      sorteio.premio_principal,
+      sorteio.nome_completo,
+      (sorteio as any).razao_social || "-",
+    ]);
+
+    autoTable(doc, {
+      head: [colunas],
+      body: linhas,
+      startY: 20,
+      styles: { cellPadding: 2, fontSize: 10 },
+      headStyles: { fillColor: [40, 40, 40], textColor: 255 },
+      alternateRowStyles: { fillColor: [245, 245, 245] },
+    });
+
+    doc.save("relatorio_sorteios.pdf");
   }
 }

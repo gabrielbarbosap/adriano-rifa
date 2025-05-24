@@ -105,7 +105,7 @@ export class TitulosPremiadosComponent implements OnInit {
                 valor: titulo.valorPremiado,
                 fonte: titulo.fonte,
                 pago: titulo.pago,
-                id_sorteio: 22, // ID do sorteio fixo para exemplo
+                id_sorteio: localStorage.getItem("id_sorteio"),
               },
             ]);
           }

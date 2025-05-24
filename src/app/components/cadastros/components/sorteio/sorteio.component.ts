@@ -12,6 +12,9 @@ import { SucessReqComponent } from "src/app/components/sucess-req/sucess-req.com
 import { SupabaseService } from "src/app/service/supabase.service";
 import { ErrorReqComponent } from "src/app/components/error-req/error-req.component";
 import { CapitalizadoraService } from "src/app/service/capitalizadora.service";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import { forkJoin } from "rxjs/internal/observable/forkJoin";
 
 @Component({
   selector: "app-sorteio",
@@ -66,31 +69,31 @@ export class SorteioComponent {
     this.cadastroForm = this.fb.group({
       edicao: ["", Validators.required],
       data_sorteio: ["", Validators.required],
-      nome_processo: ["SUSEPE"],
       processo_susepe: ["", Validators.required],
       premio_principal: ["", Validators.required],
-      titulos_premiados: [""],
-      valor_venda_titulo: ["", Validators.required],
       serie: ["", Validators.required],
-      data_inicio_vendas: ["", Validators.required],
       tipo_sorteio: ["", Validators.required],
       venda_minima: ["", Validators.required],
       cota_sorteio: ["", Validators.required],
       data_carregamento: [null, Validators.required],
       data_resgate: ["", Validators.required],
       premiacao_bruta: ["", Validators.required],
-      id_banco: [""],
-      capitalizadora: [null, Validators.required],
       id_entidade: [null, Validators.required],
       produto: ["", Validators.required],
-      id_sistema: [, Validators.required],
+      id_sistema: [Validators.required],
       id_influencer: [null, Validators.required],
-      obs_integradora: [null, Validators.required],
+      cota_resgate: [null, Validators.required],
+      nome_processo: ["SUSEPE"],
+      titulos_premiados: [""],
+      valor_venda_titulo: [""],
+      data_inicio_vendas: [""],
+      id_banco: [""],
+      capitalizadora: [null],
+      obs_integradora: [""],
       obs_capitalizadora: [null],
       data_real: [null],
-      capital_minimo: [null, Validators.required],
-      cota_carregamento: [null, Validators.required],
-      cota_resgate: [null, Validators.required],
+      capital_minimo: [null],
+      cota_carregamento: [null],
     });
 
     this.regulamento.valueChanges.subscribe((it) => {
@@ -109,32 +112,50 @@ export class SorteioComponent {
   }
 
   ngOnInit(): void {
-    this.route.snapshot.paramMap.get("id")
-      ? this.loadData()
-      : this.capturarDados();
-
-    this.cadastroForm.statusChanges.subscribe(() => {
-      this.checkInvalidFields();
-    });
-
     const sorteioId = this.route.snapshot.paramMap.get("id");
+    const influencerId = this.route.snapshot.paramMap.get("idInfluencer");
+
     if (sorteioId) {
-      this.supabaseService.getSorteioById(sorteioId).subscribe((data) => {
-        if (data) {
-          this.dataInput = data;
-          this.cadastroForm.patchValue(data); // Preenche o formulário com os dados existentes
-          this.regulamento.setValue(data.regulamento); // Define o regulamento, se houver
-          localStorage.setItem("id_sorteio", data.id);
-          this.isEdit = false;
-          this.isEditTab = true;
+      // Primeiro carrega os dados necessários
+      forkJoin([
+        this.supabaseService.buscarDados("banco"),
+        this.supabaseService.buscarDados("entidade"),
+        this.supabaseService.buscarDados("sistema"),
+        this.supabaseService.buscarDados("influencer"),
+        this.supabaseService.buscarDados("capitalizadoras"),
+        this.supabaseService.getSorteioById(sorteioId, influencerId),
+      ]).subscribe(
+        ([bancos, entidades, sistemas, influencers, capitalizadoras, data]) => {
+          this.integradoras = bancos;
+          this.entidades = entidades;
+          this.integradoraSistema = sistemas;
+          this.influencers = influencers;
+          this.capitalizadoras = capitalizadoras;
+
+          if (data) {
+            this.dataInput = data;
+
+            this.cadastroForm.patchValue({
+              ...data,
+              id_influencer: Number(data.id_influencer),
+              id_sistema: Number(data.id_sistema),
+              id_entidade: Number(data.id_entidade),
+              id_banco: Number(data.id_banco),
+            });
+
+            this.regulamento.setValue(data.regulamento);
+            localStorage.setItem("id_sorteio", data.id);
+            this.isEdit = false;
+            this.isEditTab = true;
+          }
         }
-      });
+      );
+    } else {
+      this.capturarDados();
     }
   }
 
   loadData() {
-    this.isEdit = true;
-
     this.supabaseService
       .buscarDados("banco")
       .subscribe((it) => (this.integradoras = it));
@@ -146,6 +167,16 @@ export class SorteioComponent {
     this.supabaseService
       .buscarDados("sistema")
       .subscribe((it) => (this.integradoraSistema = it));
+
+    this.supabaseService
+      .buscarDados("influencer")
+      .subscribe((it) => (this.influencers = it));
+
+    this.supabaseService
+      .buscarDados("capitalizadoras")
+      .subscribe((it) => (this.capitalizadoras = it));
+
+    this.isEdit = true;
   }
 
   clickCadastroSorteado() {
@@ -154,8 +185,6 @@ export class SorteioComponent {
   }
 
   capturarDados() {
-    this.isEdit = false;
-
     this.supabaseService
       .buscarDados("banco")
       .subscribe((it) => (this.integradoras = it));
@@ -178,6 +207,7 @@ export class SorteioComponent {
 
     // this.capitalizadora = this.captalizadoraService.getCapitalizadora();
     this.carregarCapitalizadora();
+    this.isEdit = false;
   }
 
   async carregarCapitalizadora() {
@@ -242,7 +272,12 @@ export class SorteioComponent {
 
       console.log(formData);
       this.supabaseService
-        .editarCadastroSorteio(formData, "sorteio", edicao)
+        .editarCadastroSorteio(
+          formData,
+          "sorteio",
+          edicao,
+          this.cadastroForm.get("produto")?.value
+        )
         .subscribe((it) => {
           if (it.error) {
             this.openError(true);
@@ -265,9 +300,95 @@ export class SorteioComponent {
     this.dialogService.open(ErrorReqComponent, { hasBackdrop });
   }
 
-  // Função para exportar os dados do formulário para PDF
-  exportPDF(): void {
-    // Aqui você pode implementar a lógica para exportar o formulário preenchido para PDF
-    console.log("Exportar para PDF");
+  gerarPDF(): void {
+    const doc = new jsPDF();
+
+    const form = this.cadastroForm.value;
+
+    const getLabel = (key: string, fallback = "-") => {
+      switch (key) {
+        case "id_influencer":
+          return (
+            this.influencers.find((inf: any) => inf.id === form.id_influencer)
+              ?.nome_completo || fallback
+          );
+        case "id_entidade":
+          return (
+            this.entidades.find((ent: any) => ent.id === form.id_entidade)
+              ?.razao_social || fallback
+          );
+        case "id_sistema":
+          return (
+            this.integradoraSistema.find(
+              (sist: any) => sist.id === form.id_sistema
+            )?.razao_social || fallback
+          );
+        case "id_banco":
+          return (
+            this.integradoras.find((b: any) => b.id === form.id_banco)
+              ?.razao_social || fallback
+          );
+        case "capitalizadora":
+          return (
+            this.capitalizadoras.find((c: any) => c.id === form.capitalizadora)
+              ?.razao_social || fallback
+          );
+        default:
+          return form[key] ?? fallback;
+      }
+    };
+
+    // Data atual formatada
+    const dataGeracao = new Date().toLocaleDateString("pt-BR");
+
+    doc.setFontSize(18);
+    doc.text("Detalhes do Sorteio", 14, 15);
+
+    doc.setFontSize(11);
+    doc.text(`Data de geração: ${dataGeracao}`, 14, 22);
+    doc.text(`Data do Sorteio: ${form.data_sorteio || "-"}`, 14, 28);
+    doc.text(`Produto: ${form.produto || "-"}`, 14, 34);
+    doc.text(`Edição: ${form.edicao || "-"}`, 14, 40);
+
+    const data = [
+      ["Edição", form.edicao],
+      ["Data do Sorteio", form.data_sorteio],
+      ["Processo SUSEPE", form.processo_susepe],
+      ["Prêmio Principal", form.premio_principal],
+      ["Série", form.serie],
+      ["Tipo de Sorteio", form.tipo_sorteio],
+      ["Venda Mínima", form.venda_minima],
+      ["Cota Sorteio", form.cota_sorteio],
+      ["Data de Carregamento", form.data_carregamento],
+      ["Data de Resgate", form.data_resgate],
+      ["Premiação Bruta", form.premiacao_bruta],
+      ["Produto", form.produto],
+      ["Valor de Venda do Título", form.valor_venda_titulo],
+      ["Data Início de Vendas", form.data_inicio_vendas],
+      ["Capital Mínimo", form.capital_minimo],
+      ["Cota de Carregamento", form.cota_carregamento],
+      ["Cota de Resgate", form.cota_resgate],
+      ["Nome do Processo", form.nome_processo],
+      ["Banco (Integradora)", getLabel("id_banco")],
+      ["Sistema", getLabel("id_sistema")],
+      ["Entidade", getLabel("id_entidade")],
+      ["Influencer", getLabel("id_influencer")],
+      ["Capitalizadora", form.capitalizadora],
+      ["Observação Integradora", form.obs_integradora],
+      ["Observação Capitalizadora", form.obs_capitalizadora],
+      ["Data Real", form.data_real],
+      ["Regulamento", this.regulamento.value || "-"],
+    ];
+
+    autoTable(doc, {
+      head: [["Campo", "Valor"]],
+      body: data,
+      startY: 48,
+      styles: { cellPadding: 2, fontSize: 10 },
+      headStyles: { fillColor: [40, 40, 40], textColor: 255 },
+      alternateRowStyles: { fillColor: [245, 245, 245] },
+    });
+
+    doc.save(`sorteio_${form.edicao || "detalhes"}.pdf`);
   }
 }

@@ -52,7 +52,7 @@ const routes: Routes = [
     path: "consulta-capitalizadora",
     component: ConsultaCapitalizadoraComponent,
   },
-  { path: "editar-sorteio/:id", component: SorteioComponent },
+  { path: "editar-sorteio/:id/:idInfluencer", component: SorteioComponent },
   { path: "editar-sorteado/:id", component: CadastroSorteadoComponent },
   { path: "editar-influencer/:id", component: CadastroInfluencerComponent },
 ];

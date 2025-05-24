@@ -22,7 +22,7 @@ export class CadastroSorteadoComponent implements OnInit {
   uploadedFiles: { [key: string]: File[] } = {};
   uploadedFilesBase64: { [key: string]: string[] } = {};
   invalidFields: string[] = [];
-
+  sorteadoId: any;
   constructor(
     private fb: FormBuilder,
     private supabaseService: SupabaseService,
@@ -30,60 +30,51 @@ export class CadastroSorteadoComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.cadastroForm = this.fb.group({
-      produto: ["", Validators.required],
-      dataSorteio: ["", Validators.required],
-      numeroTitulo: ["", Validators.required],
-      valorLiquido: ["", Validators.required],
-      dataGeracao: ["", Validators.required],
-      cpf: [
-        "",
-        [
-          Validators.required,
-          Validators.minLength(11),
-          Validators.maxLength(11),
-          cpfValidator(),
-        ],
-      ],
-      dataNascimento: ["", Validators.required],
+      produto: [""],
+      dataSorteio: [""],
+      numeroTitulo: [""],
+      valorLiquido: [""],
+      dataGeracao: [""],
+      cpf: ["", [cpfValidator()]], // você pode remover até o cpfValidator se quiser CPF opcional
+      dataNascimento: [""],
       nomeSocial: [""],
-      nomeCompleto: ["", Validators.required],
-      profissao: ["", Validators.required],
-      renda: ["", Validators.required],
-      formaPagamento: ["", Validators.required],
-      tipoConta: ["", Validators.required],
-      banco: ["", Validators.required],
-      agencia: ["", Validators.required],
-      conta: ["", Validators.required],
-      numeroRegistro: ["", Validators.required],
-      dataEmissaoRegistro: ["", Validators.required],
-      orgaoEmissorRegistro: ["", Validators.required],
-      cep: ["", Validators.required],
-      uf: ["", [Validators.required, Validators.maxLength(2)]],
-      cidade: ["", Validators.required],
-      endereco: ["", Validators.required],
-      numeroEndereco: ["", Validators.required],
+      nomeCompleto: [""],
+      profissao: [""],
+      renda: [""],
+      formaPagamento: [""],
+      tipoConta: [""],
+      banco: [""],
+      agencia: [""],
+      conta: [""],
+      numeroRegistro: [""],
+      dataEmissaoRegistro: [""],
+      orgaoEmissorRegistro: [""],
+      cep: [""],
+      uf: [""],
+      cidade: [""],
+      endereco: [""],
+      numeroEndereco: [""],
       complemento: [""],
-      bairro: ["", Validators.required],
-      tipoTelefone: ["", Validators.required],
-      ddd: [
-        "",
-        [Validators.required, Validators.minLength(2), Validators.maxLength(2)],
-      ],
-      numeroTelefone: ["", Validators.required],
-      email: ["", [Validators.required, Validators.email]],
+      bairro: [""],
+      tipoTelefone: [""],
+      ddd: [""],
+      numeroTelefone: [""],
+      email: [""],
       aceitaComunicacao: [""],
-      opcao_premio: ["", Validators.required],
+      opcao_premio: [""],
     });
   }
 
   ngOnInit(): void {
-    const sorteioId = localStorage.getItem("id_sorteado");
-    if (sorteioId) {
-      this.supabaseService.getSorteadoById(sorteioId).subscribe((data) => {
-        if (data) {
-          this.preencherFormulario(data); // Preenche o formulário com o primeiro item
-        }
-      });
+    this.sorteadoId = localStorage.getItem("id_sorteado");
+    if (this.sorteadoId) {
+      this.supabaseService
+        .getSorteadoById(this.sorteadoId)
+        .subscribe((data) => {
+          if (data) {
+            this.preencherFormulario(data); // Preenche o formulário com o primeiro item
+          }
+        });
     }
   }
 
@@ -224,7 +215,7 @@ export class CadastroSorteadoComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.route.snapshot.paramMap.get("id")) {
+    if (this.sorteadoId) {
       console.log("tenotu editar");
       this.editarDados();
       return;
@@ -257,7 +248,10 @@ export class CadastroSorteadoComponent implements OnInit {
   }
 
   editarDados() {
+    console.log("outro");
     if (this.cadastroForm.valid) {
+      console.log("outro dentro");
+
       const formData = this.cadastroForm.value;
 
       const edicao = this.route.snapshot.paramMap.get("id")?.trim();

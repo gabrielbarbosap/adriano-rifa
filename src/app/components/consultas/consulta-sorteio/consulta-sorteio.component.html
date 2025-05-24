@@ -1,11 +1,30 @@
 <nb-layout *ngIf="sorteios.length">
   <nb-layout-column>
     <nb-card>
-      <nb-card-header
-        >Consulta de Sorteios Cadastrados
-        <button nbButton class="button-success" routerLink="../sorteio">
-          <nb-icon icon="folder-add-outline"></nb-icon></button
-      ></nb-card-header>
+      <nb-card-header class="header-actions">
+        <span>Consulta de Sorteios Cadastrados</span>
+
+        <div class="action-buttons">
+          <button
+            nbButton
+            status="success"
+            routerLink="../cadastros-sorteio"
+            nbTooltip="Cadastrar novo sorteio"
+          >
+            <nb-icon icon="folder-add-outline"></nb-icon>
+          </button>
+
+          <button
+            nbButton
+            status="primary"
+            (click)="gerarPDF()"
+            nbTooltip="Exportar sorteios para PDF"
+          >
+            Exportar PDF
+          </button>
+        </div>
+      </nb-card-header>
+
       <nb-card-body>
         <!-- Filtros -->
         <div class="filters">
@@ -29,6 +48,17 @@
                   type="date"
                   size="small"
                   formControlName="filtroData"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="filtroProdutoSelecionado">Produto</label>
+                <input
+                  nbInput
+                  fullWidth
+                  type="text"
+                  size="small"
+                  formControlName="filtroProdutoSelecionado"
                 />
               </div>
 
@@ -92,7 +122,12 @@
                 <td>{{ sorteio.premio_principal }}</td>
                 <td>{{ sorteio.nome_completo }}</td>
                 <td>
-                  <button (click)="editarSorteio(sorteio.edicao)" nbButton>
+                  <button
+                    (click)="
+                      editarSorteio(sorteio.edicao, sorteio.id_influencer)
+                    "
+                    nbButton
+                  >
                     <nb-icon icon="edit-2-outline"></nb-icon>
                   </button>
                 </td>

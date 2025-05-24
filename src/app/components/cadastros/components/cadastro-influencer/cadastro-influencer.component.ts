@@ -12,6 +12,7 @@ import { CnpjService } from "src/app/service/cnpj-service.service";
 import { SupabaseService } from "src/app/service/supabase.service";
 import { NbDialogService } from "@nebular/theme";
 import { cpfValidator } from "src/app/service/validatorCpf";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-cadastro-influencer",
@@ -23,6 +24,7 @@ export class CadastroInfluencerComponent {
   invalidFields: string[] = []; // Array para armazenar campos inválidos
   capitalizadoras: any;
   capitalizadora: any;
+  isEditTab = false;
 
   adicionais = new FormControl("");
 
@@ -49,13 +51,24 @@ export class CadastroInfluencerComponent {
     { codigo: "085", nome: "Cooperativa Central de Crédito Urbano - Cecred" },
     { codigo: "136", nome: "Unicred Cooperativa" },
     { codigo: "655", nome: "Banco Votorantim S.A." },
+    { codigo: "999", nome: "Asaas I.P S.A" },
+    { codigo: "888", nome: "CCR De São Miguel do Oeste" },
+    { codigo: "777", nome: "Viacred" },
+    { codigo: "333", nome: "Ailos" },
+    { codigo: "555", nome: "Banco Sicoob" },
+    { codigo: "000", nome: "C6 Bank" },
+    { codigo: "0031", nome: "Banco Banestes" },
+    { codigo: "0032", nome: "BPP Instituição de Pagamentos S.A" },
+    { codigo: "0033", nome: "Banco Cooperativo Sicred S.A" },
+    { codigo: "0034", nome: "Dock Instituição de Pagamentos S.A" },
   ];
 
   constructor(
     private fb: FormBuilder,
     private cnpjService: CnpjService,
     private supabaseService: SupabaseService,
-    private dialogService: NbDialogService
+    private dialogService: NbDialogService,
+    private router: Router
   ) {
     this.cadastroForm = this.fb.group({
       cpf: [
@@ -80,7 +93,7 @@ export class CadastroInfluencerComponent {
       bairro: [""],
       cidade: [""],
       uf: ["", [Validators.minLength(2), Validators.maxLength(2)]],
-      email: ["", [Validators.email]],
+      email: [""],
       fone_fixo: [""],
       fone_movel: [""],
 
@@ -103,7 +116,7 @@ export class CadastroInfluencerComponent {
       bairro_pj: [""],
       cidade_pj: [""],
       uf_pj: ["", [Validators.minLength(2), Validators.maxLength(2)]],
-      email_pj: ["", [Validators.email]],
+      email_pj: [""],
       fone_pj: [""],
       celular_pj: [""],
       data_abertura: [""],
@@ -118,6 +131,8 @@ export class CadastroInfluencerComponent {
       agencia: [""],
       documentos: this.fb.array([]),
       ativo: [false],
+      produto: [""],
+      inicio_contrato: [""],
 
       // FormArray para sócios
       socios: this.fb.array([]),
@@ -127,6 +142,7 @@ export class CadastroInfluencerComponent {
   ngOnInit(): void {
     console.log("cadastroForm:", this.cadastroForm);
     const influencerId = localStorage.getItem("id_influencer");
+    influencerId ? (this.isEditTab = true) : (this.isEditTab = false);
 
     this.supabaseService
       .buscarDados("capitalizadoras")
@@ -245,6 +261,8 @@ export class CadastroInfluencerComponent {
       fone_pj: data.fone_pj || "",
       celular_pj: data.celular_pj || "",
       data_abertura: data.data_abertura || "",
+      produto: data.produto,
+      inicio_contrato: data.inicio_contrato,
 
       // Dados adicionais
       obs: "", // Não fornecido no `data`
@@ -536,10 +554,10 @@ export class CadastroInfluencerComponent {
       nome: [""],
       cpf: [
         "",
-        [, Validators.minLength(11), Validators.maxLength(11), cpfValidator()],
+        [Validators.minLength(11), Validators.maxLength(11), cpfValidator()],
       ],
       data_nascimento: [""],
-      email: ["", [, Validators.email]],
+      email: [""],
       fone: [""],
       cep: [""],
       bairro: [""],
@@ -572,12 +590,9 @@ export class CadastroInfluencerComponent {
         this.fb.group({
           id: socio.id,
           nome: [socio.nome],
-          cpf: [
-            socio.cpf,
-            [, Validators.minLength(11), Validators.maxLength(14)],
-          ],
+          cpf: [socio.cpf],
           data_nascimento: [socio.data_nascimento],
-          email: [socio.email, [, Validators.email]],
+          email: [socio.email],
           fone: [socio.fone],
           cep: [socio.cep],
           bairro: [socio.bairro],

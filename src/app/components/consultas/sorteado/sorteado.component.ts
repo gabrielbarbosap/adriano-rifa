@@ -33,11 +33,11 @@ export class SorteadoComponent implements OnInit {
   carregarSorteios(): void {
     const edicaoId = this.route.snapshot.paramMap.get("id")?.trim();
 
-    this.supabaseService.buscarDados("sorteio_ganhadores").subscribe((it) => {
-      this.sorteios = it.filter((item) => {
-        return String(item.edicao).trim() === edicaoId;
-      });
-
+    this.supabaseService.getSorteado().subscribe((it) => {
+      // Se não for array, transforma em array com um único item
+      const data = Array.isArray(it) ? it : [it];
+      console.log(data);
+      this.sorteios = data;
       this.sorteiosFiltrados = this.sorteios;
       console.log("Sorteios filtrados:", this.sorteios);
 

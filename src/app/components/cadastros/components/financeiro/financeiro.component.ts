@@ -38,6 +38,16 @@ export class FinanceiroComponent implements OnInit {
     { codigo: "085", nome: "Cooperativa Central de Crédito Urbano - Cecred" },
     { codigo: "136", nome: "Unicred Cooperativa" },
     { codigo: "655", nome: "Banco Votorantim S.A." },
+    { codigo: "999", nome: "Asaas I.P S.A" },
+    { codigo: "888", nome: "CCR De São Miguel do Oeste" },
+    { codigo: "777", nome: "Viacred" },
+    { codigo: "333", nome: "Ailos" },
+    { codigo: "555", nome: "Banco Sicoob" },
+    { codigo: "000", nome: "C6 Bank" },
+    { codigo: "0031", nome: "Banco Banestes" },
+    { codigo: "0032", nome: "BPP Instituição de Pagamentos S.A" },
+    { codigo: "0033", nome: "Banco Cooperativo Sicred S.A" },
+    { codigo: "0034", nome: "Dock Instituição de Pagamentos S.A" },
   ];
 
   constructor(

@@ -7,7 +7,7 @@
   <nb-card-body>
     <!-- Tabela de Resultados -->
     <div class="table-container">
-      <table class="custom-table" *ngIf="sorteios.length > 0">
+      <table class="custom-table" *ngIf="sorteios">
         <thead>
           <tr>
             <th>Número do Título</th>
@@ -31,13 +31,13 @@
         </tbody>
       </table>
 
-      <div *ngIf="sorteios.length === 0">
+      <div *ngIf="!sorteios">
         <h2>Nenhum Ganhador cadastrado para este sorteio.</h2>
       </div>
     </div>
 
     <!-- Paginação -->
-    <div class="pagination" *ngIf="sorteios.length > 0">
+    <div class="pagination" *ngIf="sorteios">
       <button
         nbButton
         status="primary"

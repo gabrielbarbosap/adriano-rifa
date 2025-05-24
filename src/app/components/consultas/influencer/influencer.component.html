@@ -21,15 +21,15 @@
           >
             <div class="filter-row">
               <div class="form-group col-md-3">
-                <label for="filtroCpf">CPF</label>
+                <label for="produto">Produto</label>
                 <input
                   nbInput
                   fullWidth
-                  placeholder="Filtrar por CPF"
-                  formControlName="filtroCpf"
+                  placeholder="Filtrar por Produto"
+                  formControlName="produto"
                 />
               </div>
-              <div class="form-group col-md-3">
+              <!-- <div class="form-group col-md-3">
                 <label for="filtroUf">UF</label>
                 <input
                   nbInput
@@ -37,14 +37,17 @@
                   placeholder="Filtrar por UF"
                   formControlName="filtroUf"
                 />
-              </div>
+              </div> -->
               <div class="form-group col-md-3">
-                <label for="filtroCidade">Cidade</label>
+                <label for="filtroDiasContrato"
+                  >Início de Contrato(a partir de)</label
+                >
                 <input
                   nbInput
                   fullWidth
-                  placeholder="Filtrar por Cidade"
-                  formControlName="filtroCidade"
+                  type="date"
+                  placeholder="Início do contrato a partir de..."
+                  formControlName="filtroDataInicioContrato"
                 />
               </div>
               <div class="form-group col-md-3">
@@ -95,7 +98,7 @@
           <table class="custom-table">
             <thead>
               <tr>
-                <th>CPF</th>
+                <th>Início Contrato</th>
                 <th>Nome Completo</th>
                 <th>Data de Nascimento</th>
                 <th>Contato</th>
@@ -106,7 +109,7 @@
               <tr
                 *ngFor="let influencer of influencersPaginados; let i = index"
               >
-                <td>{{ influencer.cnpj }}</td>
+                <td>{{ influencer.inicio_contrato | date : "d/MM/yyyy" }}</td>
                 <td>{{ influencer.nome_completo }}</td>
                 <td>{{ influencer.data_nascimento | date : "dd/MM/yyyy" }}</td>
                 <td>{{ influencer.fone_movel }}</td>

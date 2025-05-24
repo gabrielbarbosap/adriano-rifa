@@ -82,10 +82,12 @@
                   >
                     <nb-option
                       *ngFor="let it of integradoraSistema"
-                      value="{{ it.id }}"
-                      >{{ it.razao_social }}</nb-option
+                      [value]="it.id"
                     >
+                      {{ it.razao_social }}
+                    </nb-option>
                   </nb-select>
+
                   <div
                     *ngIf="
                       cadastroForm.get('id_sistema')?.invalid &&
@@ -143,11 +145,9 @@
                     placeholder="Selecione o influencer"
                     formControlName="id_influencer"
                   >
-                    <nb-option
-                      *ngFor="let it of influencers"
-                      value="{{ it.id }}"
-                      >{{ it.nome_completo }}</nb-option
-                    >
+                    <nb-option *ngFor="let it of influencers" [value]="it.id">
+                      {{ it.nome_completo }}
+                    </nb-option>
                   </nb-select>
                 </div>
               </div>
@@ -191,7 +191,7 @@
                     <nb-option value="1-100.000">R$1 - 100.000</nb-option>
                     <nb-option value="2000-3000">R$1 - 500.000</nb-option>
                     <nb-option value="1-1.000.000">R$1 - 1.000.000</nb-option>
-                    <nb-option value="1-1.000.000">R$1 - 10.000.000</nb-option>
+                    <nb-option value="1-10.000.000">R$1 - 10.000.000</nb-option>
                   </nb-select>
                   <div
                     *ngIf="
@@ -306,26 +306,16 @@
                   </div>
                 </div>
                 <div class="form-group col-md-4">
-                  <label for="cota_carregamento">Cota Carregamento *</label>
+                  <label for="cota_carregamento">Cota Carregamento </label>
                   <input
                     nbInput
                     fullWidth
                     placeholder="Cota Carregamento"
                     formControlName="cota_carregamento"
                   />
-                  <div
-                    *ngIf="
-                      cadastroForm.get('cota_carregamento')?.invalid &&
-                      cadastroForm.get('cota_carregamento')?.touched
-                    "
-                  >
-                    <small class="text-danger"
-                      >Cota Carregamento é obrigatória.</small
-                    >
-                  </div>
                 </div>
                 <div class="form-group col-md-4">
-                  <label for="capital_minimo">Capital Mínimo *</label>
+                  <label for="capital_minimo">Capital Mínimo</label>
                   <input
                     nbInput
                     fullWidth
@@ -337,16 +327,6 @@
                     decimal-limit="2"
                     prefix="R$ "
                   />
-                  <div
-                    *ngIf="
-                      cadastroForm.get('capital_minimo')?.invalid &&
-                      cadastroForm.get('capital_minimo')?.touched
-                    "
-                  >
-                    <small class="text-danger"
-                      >Capital Mínimo é obrigatória.</small
-                    >
-                  </div>
                 </div>
               </div>
 
@@ -397,17 +377,12 @@
 
               <div class="form-row">
                 <div class="form-group col-md-4">
-                  <label for="premiacao_bruta">Premiação Bruta *</label>
+                  <label for="premiacao_bruta">Premiação Bruta (R$)*</label>
                   <input
                     nbInput
                     fullWidth
                     placeholder="Premiação Bruta"
                     formControlName="premiacao_bruta"
-                    mask="separator"
-                    thousand-separator="."
-                    decimal-marker=","
-                    decimal-limit="2"
-                    prefix="R$ "
                   />
                   <div
                     *ngIf="
@@ -445,23 +420,13 @@
                   </div>
                 </div>
                 <div class="form-group col-md-4">
-                  <label for="obs_integradora">Obs Integradora *</label>
+                  <label for="obs_integradora">Obs Integradora </label>
                   <input
                     nbInput
                     fullWidth
                     placeholder="Obs Integradora"
                     formControlName="obs_integradora"
                   />
-                  <div
-                    *ngIf="
-                      cadastroForm.get('obs_integradora')?.invalid &&
-                      cadastroForm.get('obs_integradora')?.touched
-                    "
-                  >
-                    <small class="text-danger"
-                      >Obs Integradora é obrigatória.</small
-                    >
-                  </div>
                 </div>
               </div>
 
@@ -476,10 +441,12 @@
                   >
                     <nb-option
                       *ngFor="let entidade of entidades"
-                      value="{{ entidade.id }}"
-                      >{{ entidade.razao_social }}</nb-option
+                      [value]="entidade.id"
                     >
+                      {{ entidade.razao_social }}
+                    </nb-option>
                   </nb-select>
+
                   <div
                     *ngIf="
                       cadastroForm.get('id_entidade')?.invalid &&
@@ -571,7 +538,7 @@
                 >
                   Salvar Dados
                 </button>
-                <button nbButton status="info" (click)="exportPDF()">
+                <button nbButton status="info" (click)="gerarPDF()">
                   Exportar PDF
                 </button>
               </div>
@@ -622,7 +589,7 @@
             </div>
           </nb-tab>
 
-          <nb-tab tabTitle="Financeiro" [disabled]="!isEditTab">
+          <nb-tab tabTitle="Financeiro" disabled>
             <div>
               <app-financeiro
                 *ngIf="isEditTab"
