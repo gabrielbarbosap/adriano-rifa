@@ -169,6 +169,7 @@
                     decimal-marker=","
                     decimal-limit="2"
                     prefix="R$ "
+                    [dropSpecialCharacters]="false"
                   />
                   <div
                     *ngIf="
@@ -404,7 +405,7 @@
                   >
                     <nb-option
                       *ngFor="let banco of integradoras"
-                      value="{{ banco.id }}"
+                      [value]="banco.id"
                       >{{ banco.razao_social }}</nb-option
                     >
                   </nb-select>
@@ -567,11 +568,11 @@
             </div>
           </nb-tab>
 
-          <nb-tab tabTitle="Premiados" [disabled]="!isEditTab">
+          <nb-tab tabTitle="Premiados" [disabled]="!isEditTab" *ngIf="view">
             <app-titulos-premiados></app-titulos-premiados>
           </nb-tab>
 
-          <nb-tab tabTitle="Ganhadores" [disabled]="!isEditTab">
+          <nb-tab tabTitle="Ganhadores" [disabled]="!isEditTab" *ngIf="view">
             <app-sorteado
               *ngIf="!cadastroSorteado"
               (clickCadastro)="clickCadastroSorteado()"
@@ -583,10 +584,24 @@
             ></app-cadastro-sorteado>
           </nb-tab>
 
-          <nb-tab tabTitle="Adiantamentos" [disabled]="!isEditTab">
+          <nb-tab tabTitle="Adiantamentos" [disabled]="!isEditTab" *ngIf="view">
             <div>
               <app-adiantamentos></app-adiantamentos>
             </div>
+          </nb-tab>
+
+          <!-- //elementos fantasma -->
+          <nb-tab tabTitle="Premiados" [disabled]="!isEditTab" *ngIf="!view">
+          </nb-tab>
+
+          <nb-tab tabTitle="Ganhadores" [disabled]="!isEditTab" *ngIf="!view">
+          </nb-tab>
+
+          <nb-tab
+            tabTitle="Adiantamentos"
+            [disabled]="!isEditTab"
+            *ngIf="!view"
+          >
           </nb-tab>
 
           <nb-tab tabTitle="Financeiro" disabled>

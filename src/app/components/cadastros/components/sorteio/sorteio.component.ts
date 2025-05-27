@@ -58,6 +58,8 @@ export class SorteioComponent {
 
   badgeText = "!";
   badgeStatus = "warning";
+
+  view = false;
   constructor(
     private fb: FormBuilder,
     private nbMenuService: NbMenuService,
@@ -145,13 +147,17 @@ export class SorteioComponent {
 
             this.regulamento.setValue(data.regulamento);
             localStorage.setItem("id_sorteio", data.id);
+            this.view = true;
             this.isEdit = false;
             this.isEditTab = true;
+            console.log(this.view);
           }
         }
       );
     } else {
       this.capturarDados();
+      this.view = true;
+      console.log(this.view);
     }
   }
 

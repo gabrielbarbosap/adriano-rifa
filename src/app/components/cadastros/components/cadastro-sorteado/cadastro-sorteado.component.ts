@@ -113,43 +113,171 @@ export class CadastroSorteadoComponent implements OnInit {
       aceitaComunicacao: data.aceita_comunicacao,
       opcao_premio: data.opcao_premio,
     });
+
+    const fakeFile = (base64: string, name: string): File => {
+      if (!base64 || typeof base64 !== "string") {
+        throw new Error("Base64 inválido ou não fornecido");
+      }
+
+      const cleanedBase64 = base64.includes(",")
+        ? base64
+        : `data:image/jpeg;base64,${base64}`;
+
+      const arr = cleanedBase64.split(",");
+      if (arr.length !== 2) throw new Error("Base64 malformado");
+
+      const mimeMatch = arr[0].match(/:(.*?);/);
+      const mime = mimeMatch?.[1] || "image/jpeg";
+
+      try {
+        const bstr = atob(arr[1]);
+        const u8arr = new Uint8Array(bstr.length);
+        for (let i = 0; i < bstr.length; i++) {
+          u8arr[i] = bstr.charCodeAt(i);
+        }
+        return new File([u8arr], name, { type: mime });
+      } catch (error) {
+        console.error("Erro ao decodificar base64:", error);
+        throw new Error("Erro ao converter base64 para arquivo");
+      }
+    };
+
+    // Função para parsear campo se vier como string de array
+    const parseArrayBase64 = (value: any): string | null => {
+      try {
+        const arr = JSON.parse(value);
+        return Array.isArray(arr) && arr.length > 0 ? arr[0] : null;
+      } catch {
+        return null;
+      }
+    };
+
+    const doc1 = parseArrayBase64(data.titulo_capitalizacao_frente);
+    const doc2 = parseArrayBase64(data.documento_identificacao_foto);
+    const doc3 = parseArrayBase64(data.comprovante_residencia);
+
+    if (doc1) {
+      this.uploadedFilesBase64["tituloCapitalizacaoFrente"] = [doc1];
+      this.uploadedFiles["tituloCapitalizacaoFrente"] = [
+        fakeFile(doc1, "titulo_capitalizacao_frente.jpg"),
+      ];
+    }
+    if (doc2) {
+      this.uploadedFilesBase64["documentoIdentificacaoFoto"] = [doc2];
+      this.uploadedFiles["documentoIdentificacaoFoto"] = [
+        fakeFile(doc2, "documento_identificacao.jpg"),
+      ];
+    }
+    if (doc3) {
+      this.uploadedFilesBase64["comprovanteResidencia"] = [doc3];
+      this.uploadedFiles["comprovanteResidencia"] = [
+        fakeFile(doc3, "comprovante_residencia.jpg"),
+      ];
+    }
   }
 
-  // Função de exportar PDF
   exportPDF(): void {
     const doc = new jsPDF();
     const formData = this.cadastroForm.value;
 
-    // Adiciona título ao PDF
     doc.setFontSize(18);
-    doc.text("Cadastro do Sorteado", 10, 10);
+    doc.text("Cadastro do Sorteado", 105, 15, { align: "center" });
+    doc.setDrawColor(150);
+    doc.line(10, 18, 200, 18);
 
-    doc.setFontSize(12);
-    let yPosition = 20; // Posição inicial no PDF
+    let y = 25;
 
-    // Itera sobre os dados do formulário e os adiciona ao PDF
-    for (const [key, value] of Object.entries(formData)) {
-      doc.text(`${this.formatKey(key)}: ${value}`, 10, yPosition);
-      yPosition += 10; // Incrementa a posição vertical
-    }
+    // Exibe formulário em colunas
+    const leftKeys = Object.keys(formData).slice(
+      0,
+      Math.ceil(Object.keys(formData).length / 2)
+    );
+    const rightKeys = Object.keys(formData).slice(
+      Math.ceil(Object.keys(formData).length / 2)
+    );
+    const lineHeight = 7;
 
-    // Se houver documentos carregados, adicionar os nomes ao PDF
-    if (Object.keys(this.uploadedFiles).length > 0) {
-      doc.text("Documentos Anexados:", 10, yPosition);
-      yPosition += 10;
+    leftKeys.forEach((key, i) =>
+      doc.text(
+        `${this.formatKey(key)}: ${formData[key]}`,
+        10,
+        y + i * lineHeight
+      )
+    );
+    rightKeys.forEach((key, i) =>
+      doc.text(
+        `${this.formatKey(key)}: ${formData[key]}`,
+        105,
+        y + i * lineHeight
+      )
+    );
 
-      for (const fileType in this.uploadedFiles) {
-        if (this.uploadedFiles[fileType]) {
-          for (const file of this.uploadedFiles[fileType]) {
-            doc.text(`${fileType}: ${file.name}`, 10, yPosition);
-            yPosition += 10;
+    y += Math.max(leftKeys.length, rightKeys.length) * lineHeight + 10;
+
+    doc.setFontSize(14);
+    doc.text("Documentos Anexados", 105, y, { align: "center" });
+    y += 10;
+
+    const insertImagePleasant = (
+      label: string,
+      base64: string,
+      yStart: number
+    ): Promise<number> => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          const maxWidth = 160; // Largura desejada no PDF (em mm)
+          const ratio = img.naturalHeight / img.naturalWidth;
+          const width = maxWidth;
+          const height = maxWidth * ratio;
+
+          // Quebra de página se necessário
+          if (yStart + height > 270) {
+            doc.addPage();
+            yStart = 20;
           }
+
+          doc.setFontSize(12);
+          doc.text(`${label}:`, 10, yStart);
+          yStart += 5;
+
+          doc.addImage(base64, "JPEG", 25, yStart, width, height); // Centraliza com margem esquerda 25
+          resolve(yStart + height + 10);
+        };
+
+        img.onerror = () => {
+          doc.text(`${label}: Erro ao carregar imagem.`, 10, yStart);
+          resolve(yStart + 10);
+        };
+
+        img.src = base64;
+      });
+    };
+
+    const exec = async () => {
+      const docs = [
+        {
+          label: "Título de Capitalização (Frente)",
+          key: "tituloCapitalizacaoFrente",
+        },
+        { label: "Documento com Foto", key: "documentoIdentificacaoFoto" },
+        { label: "Comprovante de Residência", key: "comprovanteResidencia" },
+      ];
+
+      for (const docItem of docs) {
+        const base64 = this.uploadedFilesBase64[docItem.key]?.[0];
+        if (base64) {
+          y = await insertImagePleasant(docItem.label, base64, y);
+        } else {
+          doc.text(`${docItem.label}: Documento não anexado.`, 10, y);
+          y += 10;
         }
       }
-    }
 
-    // Salva o PDF
-    doc.save("cadastro_sorteado.pdf");
+      doc.save("cadastro_sorteado.pdf");
+    };
+
+    exec();
   }
 
   formatKey(key: string): string {
